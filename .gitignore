@@ -1,0 +1,10 @@
+# Python
+**/__pycache__
+.idea
+venv
+
+# MacOS
+**/.DS_Store
+
+# Local download folder
+/1-dwnld/**
