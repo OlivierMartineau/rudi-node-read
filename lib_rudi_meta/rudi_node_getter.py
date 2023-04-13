@@ -27,7 +27,10 @@ class RudiNodeGetter:
         self._themes = None
         self._keywords = None
 
-    def _reset_cache(self):
+    def _reset_cache(self) -> None:
+        """
+        Resets the cached metadata
+        """
         self._meta_list = None
         self._meta_count = 0
         self._org_list = None
@@ -38,39 +41,52 @@ class RudiNodeGetter:
         self._keywords = None
 
     @property
-    def server_url(self):
+    def server_url(self) -> str:
+        """
+        :return: the URL of the RUDI Producer node
+        """
         return self._server_url
 
     @property
-    def connector(self):
+    def connector(self) -> RudiNodeConnector:
         if not self._connector:
             self._connector = RudiNodeConnector(self._server_url, self._headers_user_agent)
         return self._connector
 
-    def connect(self, server_url: str, headers_user_agent: str = 'RudiNodeGet'):
+    def connect(self, server_url: str, headers_user_agent: str = 'RudiNodeGet') -> None:
+        """
+        Reinitialize the connection to a RUDI node
+        :param server_url: the URL of the RUDI node
+        :param headers_user_agent: (optional) a way to identify the requests made to the node
+        """
         self._server_url = server_url
         self._headers_user_agent = headers_user_agent
         self._connector = RudiNodeConnector(self._server_url, self._headers_user_agent)
         self._reset_cache()
 
-    def disconnect(self):
-        self._connector = None
-        self._reset_cache()
-
     @property
-    def metadata_count(self):
+    def metadata_count(self) -> int:
+        """
+        :return: the number of metadata stored on the RUDI Producer node
+        """
         if not self._meta_count:
             self._meta_count = self.connector.get_metadata_count()
         return self._meta_count
 
     @property
-    def metadata_list(self):
+    def metadata_list(self) -> list[dict]:
+        """
+        :return: the full list of the metadata stored on the RUDI Producer node
+        """
         if not self._meta_list:
             self._meta_list = self.connector.get_metadata_list()
         return self._meta_list
 
     @property
-    def organization_list(self):
+    def organization_list(self) -> list[dict]:
+        """
+        :return: the list of the organizations (both data producer and metadata publisher) that appear in the metadata
+        """
         if not self._org_list:
             self._org_list = []
             for meta in self.metadata_list:
@@ -100,7 +116,11 @@ class RudiNodeGetter:
         return self._org_list
 
     @property
-    def organization_names(self):
+    def organization_names(self) -> list[str]:
+        """
+        :return: the list of the names of the organizations (both data producer and metadata publisher) that appear in
+        the metadata
+        """
         if not self._org_names:
             self._org_names = []
             for org in self.organization_list:
@@ -109,7 +129,10 @@ class RudiNodeGetter:
         return self._org_names
 
     @property
-    def contact_list(self):
+    def contact_list(self) -> list[dict]:
+        """
+        :return: the list of the contacts declared in the RUDI node metadata
+        """
         if not self._contact_list:
             self._contact_list = []
             for meta in self.metadata_list:
@@ -128,7 +151,10 @@ class RudiNodeGetter:
         return self._contact_list
 
     @property
-    def contact_names(self):
+    def contact_names(self) -> list[str]:
+        """
+        :return: the list of the names of the contacts declared in the RUDI node metadata
+        """
         if not self._contact_names:
             self._contact_names = []
             for contact in self.contact_list:
@@ -137,7 +163,10 @@ class RudiNodeGetter:
         return self._contact_names
 
     @property
-    def themes(self):
+    def themes(self) -> list[str]:
+        """
+        :return: the list of the themes declared in the RUDI node metadata
+        """
         if not self._themes:
             self._themes = []
             for meta in self.metadata_list:
@@ -148,7 +177,10 @@ class RudiNodeGetter:
         return self._themes
 
     @property
-    def keywords(self):
+    def keywords(self) -> list[str]:
+        """
+        :return: the list of the keywords declared in the RUDI node metadata
+        """
         if not self._keywords:
             self._keywords = []
             for meta in self.metadata_list:
@@ -160,7 +192,14 @@ class RudiNodeGetter:
         self._keywords.sort()
         return self._keywords
 
-    def filter_metadata(self, matching_filter):
+    def filter_metadata(self, matching_filter: dict) -> dict:
+        """
+        Returns an object with the following attributes:
+        - total: the number of metadata that match the filter
+        - items: the list of the metadata that match the filter
+        :param matching_filter: an object whose attributes will all be matched in the resulting metadata list
+        :return: list of the metadata that atch the filter
+        """
         items = filter_dict_list(self.metadata_list, matching_filter)
         total = len(items)
         return {'total': total, 'items': items}
@@ -195,10 +234,8 @@ class RudiNodeGetter:
             media_url = safe_get_key(media, 'connector', 'url')
             if media_type != 'FILE':
                 log_d('download_media_for_metadata', f"skipping media '{media_type}'", media['media_id'])
-                file_info = {'media_name': media_name,
-                             'media_url': media_url,
-                             'media_id': safe_get_key(media, 'media_id'),
-                             'media_type': media_type}
+                file_info = {'media_name': media_name, 'media_url': media_url,
+                             'media_id': safe_get_key(media, 'media_id'), 'media_type': media_type}
                 file_list['skipped'].append(file_info)
             else:
                 file_storage_status = safe_get_key(media, 'file_storage_status')
@@ -208,8 +245,7 @@ class RudiNodeGetter:
                     content = https_download(media_url)
                     open(destination_path, 'wb').write(content)
                     log_d('download_media_for_metadata', 'content saved to file', destination_path)
-                    file_info = {'media_name': media_name,
-                                 'media_url': media_url,
+                    file_info = {'media_name': media_name, 'media_url': media_url,
                                  'media_id': safe_get_key(media, 'media_id'),
                                  'file_type': safe_get_key(media, 'file_type'),
                                  'created': safe_get_key(media, 'media_dates', 'created'),
@@ -218,11 +254,9 @@ class RudiNodeGetter:
                     log_d('download_media_for_metadata', 'file_info', file_info)
                     file_list['downloaded'].append(file_info)
                 else:
-                    file_info = {'media_name': media_name,
-                                 'media_url': media_url,
+                    file_info = {'media_name': media_name, 'media_url': media_url,
                                  'media_id': safe_get_key(media, 'media_id'),
-                                 'file_type': safe_get_key(media, 'file_type'),
-                                 'status': file_storage_status}
+                                 'file_type': safe_get_key(media, 'file_type'), 'status': file_storage_status}
                     file_list['missing'].append(file_info)
         return file_list
 
@@ -244,21 +278,15 @@ if __name__ == '__main__':
     log_d('RudiNodeConnector', 'themes', rudi_node_getter.themes)
     log_d('RudiNodeConnector', 'keywords', rudi_node_getter.keywords)
     log_d('RudiNodeConnector', 'filter_metadata', rudi_node_getter.filter_metadata(
-        {'producer': {'organization_id': '1d6bc543-07ed-46f6-a813-958edb73d5f0',
-                      'organization_name': 'SIB (Test)'}}))
-    log_d('RudiNodeConnector', 'metadata_from_producer',
-          rudi_node_getter.get_metadata_with_producer('SIB (Test)'))
-    log_d('RudiNodeConnector', 'metadata_with_theme',
-          rudi_node_getter.get_metadata_with_theme('citizenship'))
+        {'producer': {'organization_id': '1d6bc543-07ed-46f6-a813-958edb73d5f0', 'organization_name': 'SIB (Test)'}}))
+    log_d('RudiNodeConnector', 'metadata_from_producer', rudi_node_getter.get_metadata_with_producer('SIB (Test)'))
+    log_d('RudiNodeConnector', 'metadata_with_theme', rudi_node_getter.get_metadata_with_theme('citizenship'))
     kw = ['répartition', 'Commune']
-    log_d('RudiNodeConnector', f"metadata_with_keyword '{kw}'",
-          rudi_node_getter.get_metadata_with_keyword(kw))
+    log_d('RudiNodeConnector', f"metadata_with_keyword '{kw}'", rudi_node_getter.get_metadata_with_keyword(kw))
     cont = 'Bacasable'
-    log_d('RudiNodeConnector', f"metadata_with_contact '{cont}'",
-          rudi_node_getter.get_metadata_with_contact(cont))
+    log_d('RudiNodeConnector', f"metadata_with_contact '{cont}'", rudi_node_getter.get_metadata_with_contact(cont))
     meta_id = 'f48b4bcd-bba3-47ba-86e6-c0754b748728'
-    meta_id = '050d3ba5-7b35-4e25-8b86-5461a0428fbe'
-    log_d('RudiNodeConnector', f"metadata_with_id '{meta_id}'",
-          rudi_node_getter.get_metadata_with_id(meta_id))
+    # meta_id = '050d3ba5-7b35-4e25-8b86-5461a0428fbe'
+    log_d('RudiNodeConnector', f"metadata_with_id '{meta_id}'", rudi_node_getter.get_metadata_with_id(meta_id))
     log_d('RudiNodeConnector', f"download_media_for_metadata '{meta_id}'",
           rudi_node_getter.download_media_for_metadata(meta_id, '../1-dwnld'))

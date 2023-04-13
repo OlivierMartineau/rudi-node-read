@@ -96,7 +96,7 @@ def is_element_matching_one_of_filters(element: dict, search_filter: list):
     return False
 
 
-def filter_dict_list(searched_list: list, search_filter: Union[dict, list[dict]]):
+def filter_dict_list(searched_list: list, search_filter: Union[dict, list[dict]]) -> list:
     """
     Filter the elements of a list with a given filter object.
     If the filter is a list of filter objects, a list element is kept if it matches at least one of the filter
