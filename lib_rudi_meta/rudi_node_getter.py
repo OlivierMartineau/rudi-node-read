@@ -2,7 +2,6 @@ from os.path import isdir, abspath
 from typing import Union
 
 from conf_read.connectors_conf_reader import ConnectorConfReader
-from lib_rudi_io.io_connector import Connector
 from lib_rudi_io.io_rudi_api import RudiNodeConnector
 from utils.dict_utils import safe_get_key, find_in_dict_list, filter_dict_list
 from utils.http_utils import https_download
@@ -189,18 +188,43 @@ class RudiNodeGetter:
         media_list = safe_get_key(meta, 'available_formats')
         if not media_list:
             return None
+        file_list = {'downloaded': [], 'missing': [], 'skipped': []}
         for media in media_list:
             media_type = safe_get_key(media, 'media_type')
+            media_name = safe_get_key(media, 'media_name')
+            media_url = safe_get_key(media, 'connector', 'url')
             if media_type != 'FILE':
                 log_d('download_media_for_metadata', f"skipping media '{media_type}'", media['media_id'])
+                file_info = {'media_name': media_name,
+                             'media_url': media_url,
+                             'media_id': safe_get_key(media, 'media_id'),
+                             'media_type': media_type}
+                file_list['skipped'].append(file_info)
             else:
-                media_url = safe_get_key(media, 'connector', 'url')
-                media_id = safe_get_key(media, 'media_id')
-                media_name = safe_get_key(media, 'media_name')
-                destination_path = abspath(slash_join(local_download_dir, media_name))
-                log_d('download_media_for_metadata', 'saving to file', destination_path)
-                content = https_download(media_url)
-                open(destination_path, 'wb').write(content)
+                file_storage_status = safe_get_key(media, 'file_storage_status')
+
+                if file_storage_status == 'available':
+                    destination_path = abspath(slash_join(local_download_dir, media_name))
+                    content = https_download(media_url)
+                    open(destination_path, 'wb').write(content)
+                    log_d('download_media_for_metadata', 'content saved to file', destination_path)
+                    file_info = {'media_name': media_name,
+                                 'media_url': media_url,
+                                 'media_id': safe_get_key(media, 'media_id'),
+                                 'file_type': safe_get_key(media, 'file_type'),
+                                 'created': safe_get_key(media, 'media_dates', 'created'),
+                                 'updated': safe_get_key(media, 'media_dates', 'updated'),
+                                 'file_path': destination_path}
+                    log_d('download_media_for_metadata', 'file_info', file_info)
+                    file_list['downloaded'].append(file_info)
+                else:
+                    file_info = {'media_name': media_name,
+                                 'media_url': media_url,
+                                 'media_id': safe_get_key(media, 'media_id'),
+                                 'file_type': safe_get_key(media, 'file_type'),
+                                 'status': file_storage_status}
+                    file_list['missing'].append(file_info)
+        return file_list
 
     @staticmethod
     def get_default():
@@ -220,14 +244,21 @@ if __name__ == '__main__':
     log_d('RudiNodeConnector', 'themes', rudi_node_getter.themes)
     log_d('RudiNodeConnector', 'keywords', rudi_node_getter.keywords)
     log_d('RudiNodeConnector', 'filter_metadata', rudi_node_getter.filter_metadata(
-        {'producer': {'organization_id': '1d6bc543-07ed-46f6-a813-958edb73d5f0', 'organization_name': 'SIB (Test)'}}))
-    log_d('RudiNodeConnector', 'metadata_from_producer', rudi_node_getter.get_metadata_with_producer('SIB (Test)'))
-    log_d('RudiNodeConnector', 'metadata_with_theme', rudi_node_getter.get_metadata_with_theme('citizenship'))
+        {'producer': {'organization_id': '1d6bc543-07ed-46f6-a813-958edb73d5f0',
+                      'organization_name': 'SIB (Test)'}}))
+    log_d('RudiNodeConnector', 'metadata_from_producer',
+          rudi_node_getter.get_metadata_with_producer('SIB (Test)'))
+    log_d('RudiNodeConnector', 'metadata_with_theme',
+          rudi_node_getter.get_metadata_with_theme('citizenship'))
     kw = ['répartition', 'Commune']
-    log_d('RudiNodeConnector', f"metadata_with_keyword '{kw}'", rudi_node_getter.get_metadata_with_keyword(kw))
+    log_d('RudiNodeConnector', f"metadata_with_keyword '{kw}'",
+          rudi_node_getter.get_metadata_with_keyword(kw))
     cont = 'Bacasable'
-    log_d('RudiNodeConnector', f"metadata_with_contact '{cont}'", rudi_node_getter.get_metadata_with_contact(cont))
+    log_d('RudiNodeConnector', f"metadata_with_contact '{cont}'",
+          rudi_node_getter.get_metadata_with_contact(cont))
     meta_id = 'f48b4bcd-bba3-47ba-86e6-c0754b748728'
-    log_d('RudiNodeConnector', f"metadata_with_id '{meta_id}'", rudi_node_getter.get_metadata_with_id(meta_id))
+    meta_id = '050d3ba5-7b35-4e25-8b86-5461a0428fbe'
+    log_d('RudiNodeConnector', f"metadata_with_id '{meta_id}'",
+          rudi_node_getter.get_metadata_with_id(meta_id))
     log_d('RudiNodeConnector', f"download_media_for_metadata '{meta_id}'",
           rudi_node_getter.download_media_for_metadata(meta_id, '../1-dwnld'))

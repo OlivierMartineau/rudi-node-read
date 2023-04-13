@@ -17,7 +17,7 @@ def https_download(url):
     else:
         log_d('https_download', f'OK {response.status}', url)
     data = response.read()
-    log_d('https_download', 'data', data)
+    # log_d('https_download', 'data', data)
     connection.close()
     return data
 
