@@ -213,17 +213,17 @@ class RudiNodeGetter:
     def get_metadata_with_theme(self, theme: str):
         return self.filter_metadata({'theme': theme})
 
-    def get_metadata_with_keyword(self, keyword: Union[str, list]):
-        return self.filter_metadata({'keywords': keyword})
+    def get_metadata_with_keywords(self, keywords: Union[str, list]):
+        return self.filter_metadata({'keywords': keywords})
 
     def get_metadata_with_id(self, metadata_id):
         return find_in_dict_list(self.metadata_list, {'global_id': metadata_id})
 
-    def download_media_for_metadata(self, meta, local_download_dir):
+    def download_media_for_metadata(self, metadata_id, local_download_dir):
         if not isdir(local_download_dir):
             raise FileNotFoundError(f"The following folder does not exist: '{local_download_dir}'")
 
-        meta = self.get_metadata_with_id(meta)
+        meta = self.get_metadata_with_id(metadata_id)
         media_list = safe_get_key(meta, 'available_formats')
         if not media_list:
             return None
@@ -270,8 +270,7 @@ class RudiNodeGetter:
 
 if __name__ == '__main__':
     rudi_node_getter = RudiNodeGetter.get_default()
-    log_d('RudiNodeConnector', 'metadata nb',
-          rudi_node_getter.metadata_count)  # log_d('RudiNodeConnector', 'metadata nb', rudi_node_getter.metadata_list)
+    log_d('RudiNodeConnector', 'metadata nb', rudi_node_getter.metadata_count)
     log_d('RudiNodeConnector', 'organizations', rudi_node_getter.organization_list)
     log_d('RudiNodeConnector', 'organization names', rudi_node_getter.organization_names)
     log_d('RudiNodeConnector', 'contact names', rudi_node_getter.contact_names)
@@ -282,7 +281,7 @@ if __name__ == '__main__':
     log_d('RudiNodeConnector', 'metadata_from_producer', rudi_node_getter.get_metadata_with_producer('SIB (Test)'))
     log_d('RudiNodeConnector', 'metadata_with_theme', rudi_node_getter.get_metadata_with_theme('citizenship'))
     kw = ['répartition', 'Commune']
-    log_d('RudiNodeConnector', f"metadata_with_keyword '{kw}'", rudi_node_getter.get_metadata_with_keyword(kw))
+    log_d('RudiNodeConnector', f"metadata_with_keyword '{kw}'", rudi_node_getter.get_metadata_with_keywords(kw))
     cont = 'Bacasable'
     log_d('RudiNodeConnector', f"metadata_with_contact '{cont}'", rudi_node_getter.get_metadata_with_contact(cont))
     meta_id = 'f48b4bcd-bba3-47ba-86e6-c0754b748728'

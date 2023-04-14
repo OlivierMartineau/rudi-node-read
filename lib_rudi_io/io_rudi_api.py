@@ -47,7 +47,7 @@ class RudiNodeConnector(Connector):
             # TODO: special cases of producer / contact / available_formats
             filter_str += f'&{key}={val}'
 
-        return self.get_api(f'resources?{filter_str[2:-1]}')
+        return self.get_api(f'resources?{filter_str[2:]}')
 
     def get_metadata_count(self):
         return self.get_api(f'resources?limit=1')['total']
