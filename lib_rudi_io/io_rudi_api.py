@@ -75,7 +75,7 @@ class RudiNodeConnector(Connector):
         media_list_final = []
         for media in media_list:
             media_list_final.append(
-                {'url': media['connector']['url'], 'type': media['media_type'], 'name': media['media_name'],
+                {'url': media['connector']['url'], 'type': media['media_type'], 'meta_contact': media['media_id'],
                  'id': media['media_id']})
         return media_list_final
 

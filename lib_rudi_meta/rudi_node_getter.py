@@ -1,12 +1,17 @@
+from json import dumps
 from os.path import isdir, abspath
-from typing import Union
+from typing import Union, Optional
 
 from conf_read.connectors_conf_reader import ConnectorConfReader
 from lib_rudi_io.io_rudi_api import RudiNodeConnector
-from utils.dict_utils import safe_get_key, find_in_dict_list, filter_dict_list
+from utils.dict_utils import safe_get_key, find_in_dict_list, filter_dict_list, pick_in_dict
 from utils.http_utils import https_download
 from utils.log import log_d
 from utils.string_utils import slash_join
+
+_STATUS_SKIPPED = 'skipped'
+_STATUS_MISSING = 'missing'
+_STATUS_DOWNLOADED = 'downloaded'
 
 
 class RudiNodeGetter:
@@ -19,6 +24,7 @@ class RudiNodeGetter:
         self._connector = None
 
         self._meta_list = None
+        self._meta_list_available = None
         self._meta_count = 0
         self._org_list = None
         self._org_names = None
@@ -32,6 +38,7 @@ class RudiNodeGetter:
         Resets the cached metadata
         """
         self._meta_list = None
+        self._meta_list_available = None
         self._meta_count = 0
         self._org_list = None
         self._org_names = None
@@ -49,6 +56,9 @@ class RudiNodeGetter:
 
     @property
     def connector(self) -> RudiNodeConnector:
+        """
+        :return: the RudiNodeConnector object used for requesting the RUDI node
+        """
         if not self._connector:
             self._connector = RudiNodeConnector(self._server_url, self._headers_user_agent)
         return self._connector
@@ -80,12 +90,14 @@ class RudiNodeGetter:
         """
         if not self._meta_list:
             self._meta_list = self.connector.get_metadata_list()
+
         return self._meta_list
 
     @property
     def organization_list(self) -> list[dict]:
         """
-        :return: the list of the organizations (both data producer and metadata publisher) that appear in the metadata
+        :return: the list of the organizations that appear in the metadata
+        (both data producer and metadata publisher)
         """
         if not self._org_list:
             self._org_list = []
@@ -118,8 +130,8 @@ class RudiNodeGetter:
     @property
     def organization_names(self) -> list[str]:
         """
-        :return: the list of the names of the organizations (both data producer and metadata publisher) that appear in
-        the metadata
+        :return: the list of the names of the organizations that appear in the metadata
+        (both data producer and metadata publisher)
         """
         if not self._org_names:
             self._org_names = []
@@ -186,82 +198,212 @@ class RudiNodeGetter:
             for meta in self.metadata_list:
                 keywords = safe_get_key(meta, 'keywords')
                 if keywords:
-                    for kw in keywords:
-                        if kw not in self._keywords:
-                            self._keywords.append(kw)
+                    for kword in keywords:
+                        if kword not in self._keywords:
+                            self._keywords.append(kword)
         self._keywords.sort()
         return self._keywords
 
-    def filter_metadata(self, matching_filter: dict) -> dict:
+    def filter_metadata(self, matching_filter: dict) -> list[dict]:
         """
         Returns an object with the following attributes:
         - total: the number of metadata that match the filter
         - items: the list of the metadata that match the filter
-        :param matching_filter: an object whose attributes will all be matched in the resulting metadata list
-        :return: list of the metadata that atch the filter
+        :param matching_filter: JSON-like object whose attributes are all matched in the resulting
+        metadata list
+        :return: list of the metadata that match the filter
         """
-        items = filter_dict_list(self.metadata_list, matching_filter)
-        total = len(items)
+        '''
+        items = filter_dict_list(self.metadata_list, matching_filter)    
+        total = len(items)   
         return {'total': total, 'items': items}
+        '''
+        return filter_dict_list(self.metadata_list, matching_filter)
 
-    def get_metadata_with_producer(self, producer_name: str):
+    @property
+    def metadata_with_available_media(self) -> list[dict]:
+        """
+        :return: list of the metadata whose `available_data` attribute contains at least one media for which
+        `file_storage_status`attirubte is set to `available`
+        """
+        if not self._meta_list_available:
+            self._meta_list_available = self.filter_metadata(
+                {'available_formats': [{'file_storage_status': 'available'}]})
+        return self._meta_list_available
+
+    def get_metadata_with_producer(self, producer_name: str) -> list[dict]:
+        """
+        :param producer_name: the meta_contact of the organization declared in the metadata
+        :return: list of the metadata whose `producer.organization_name` attribute matches the `producer_name` input
+        parameter
+        """
         return self.filter_metadata({'producer': {'organization_name': producer_name}})
 
-    def get_metadata_with_contact(self, contact_name: str):
+    def get_metadata_with_contact(self, contact_name: str) -> list[dict]:
+        """
+        :param contact_name: the meta_contact of the contact declared in the metadata
+        :return: list of the metadata whose `contacts` attribute contains a contact object whose `contact_name`
+        attribute matches the `contact_name` input parameter
+        """
         return self.filter_metadata({'contacts': [{'contact_name': contact_name}]})
 
-    def get_metadata_with_theme(self, theme: str):
+    def get_metadata_with_theme(self, theme: str) -> list[dict]:
+        """
+        :param theme: a string used to filter the metadata by theme
+        :return: list of the metadata whose `theme` attribute matches the `theme` input parameter
+        """
         return self.filter_metadata({'theme': theme})
 
-    def get_metadata_with_keywords(self, keywords: Union[str, list]):
+    def get_metadata_with_keywords(self, keywords: Union[str, list]) -> list[dict]:
+        """
+        :param keywords: a string or a list of strings used to filter the metadata by keywords
+        :return: list of the metadata whose `keywords` attribute contains every `keywords` input parameter
+        """
         return self.filter_metadata({'keywords': keywords})
 
-    def get_metadata_with_id(self, metadata_id):
+    def find_metadata_with_uuid(self, metadata_id: str) -> Optional[dict]:
+        """
+        :param metadata_id: a UUIDv4 string
+        :return: metadata whose `global_id` attribute matches the `metadata_id` input parameter
+        """
         return find_in_dict_list(self.metadata_list, {'global_id': metadata_id})
 
-    def download_media_for_metadata(self, metadata_id, local_download_dir):
+    def find_metadata_with_source_id(self, source_id: str) -> Optional[dict]:
+        """
+        :param source_id: a string that was used in the producer data source to identify the dataset
+        :return: metadata whose `local_id` attribute matches the `media_name` input parameter
+        """
+        return find_in_dict_list(self.metadata_list, {'local_id': source_id})
+
+    def find_metadata_with_title(self, title: str) -> Optional[dict]:
+        """
+        :param title: media_name of the metadata
+        :return: metadata whose `resource_title` attribute matches the `media_name` input parameter
+        """
+        return find_in_dict_list(self.metadata_list, {'resource_title': title})
+
+    def find_metadata_with_media_name(self, media_name: str) -> Optional[dict]:
+        """
+        :param media_name: meta_contact of the media
+        :return: metadata whose `resource_title` attribute matches the `title` input parameter
+        """
+        return find_in_dict_list(self.metadata_list, {'available_formats': [{'media_name': media_name}]})
+
+    def find_metadata_with_media_uuid(self, media_uuid: str) -> Optional[dict]:
+        """
+        :param media_uuid: UUIDv4 of the media
+        :return: metadata whose `resource_title` attribute matches the `title` input parameter
+        """
+        return find_in_dict_list(self.metadata_list, {'available_formats': [{'media_id': media_uuid}]})
+
+    @staticmethod
+    def _download_media_from_info(media: dict, local_download_dir: str) -> dict:
+        """
+        Download a file from its media metadata
+        :param media: the file metadata (as found in the RUDI metadata `available_formats` attribute
+        :param local_download_dir: the path to a local folder
+        :return: an object that states if the file was downloaded, skipped or found missing
+        """
+        # fun = '_download_media_from_info'
+
+        media_type = safe_get_key(media, 'media_type')
+
+        # Most likely for media_type == 'SERVICE'
+        if media_type != 'FILE':
+            return {'status': _STATUS_SKIPPED,
+                    'media': pick_in_dict(media, ['media_name', 'media_id', 'media_url', 'media_type']), }
+
+        # If the file is not available on storage, we won't try to download it.
+        if safe_get_key(media, 'file_storage_status') != 'available':
+            return {'status': _STATUS_MISSING, 'media': pick_in_dict(media, ['media_name', 'media_id', 'media_url',
+                                                                             'file_type', 'file_storage_status'])}
+
+        # The metadata says the file is available, let's download it
         if not isdir(local_download_dir):
             raise FileNotFoundError(f"The following folder does not exist: '{local_download_dir}'")
 
-        meta = self.get_metadata_with_id(metadata_id)
+        media_name = safe_get_key(media, 'media_name')
+        media_url = safe_get_key(media, 'connector', 'url')
+
+        destination_path = abspath(slash_join(local_download_dir, media_name))
+        content = https_download(media_url)
+        open(destination_path, 'wb').write(content)
+        log_d('media_download', 'content saved to file', destination_path)
+
+        file_info = {'media_name': media_name, 'media_id': safe_get_key(media, 'media_id'), 'media_url': media_url,
+                     'file_type': safe_get_key(media, 'file_type'),
+                     'created': safe_get_key(media, 'media_dates', 'created'),
+                     'updated': safe_get_key(media, 'media_dates', 'updated'), 'file_path': destination_path}
+        return {'status': _STATUS_DOWNLOADED, 'media': file_info}
+
+    def download_file_with_uuid(self, media_uuid: str, local_download_dir: str) -> dict:
+        """
+        Download a file identified with the input UUID
+        :param media_uuid: a UUIDv4 that identifies the media on the RUDI node
+        :param local_download_dir: the path to a local folder
+        :return: an object that states if the file was downloaded, skipped or found missing
+        """
+        # fun = 'download_media_with_uuid'
+        meta = self.find_metadata_with_media_uuid(media_uuid)
         media_list = safe_get_key(meta, 'available_formats')
         if not media_list:
             return None
-        file_list = {'downloaded': [], 'missing': [], 'skipped': []}
-        for media in media_list:
-            media_type = safe_get_key(media, 'media_type')
-            media_name = safe_get_key(media, 'media_name')
-            media_url = safe_get_key(media, 'connector', 'url')
-            if media_type != 'FILE':
-                log_d('download_media_for_metadata', f"skipping media '{media_type}'", media['media_id'])
-                file_info = {'media_name': media_name, 'media_url': media_url,
-                             'media_id': safe_get_key(media, 'media_id'), 'media_type': media_type}
-                file_list['skipped'].append(file_info)
-            else:
-                file_storage_status = safe_get_key(media, 'file_storage_status')
 
-                if file_storage_status == 'available':
-                    destination_path = abspath(slash_join(local_download_dir, media_name))
-                    content = https_download(media_url)
-                    open(destination_path, 'wb').write(content)
-                    log_d('download_media_for_metadata', 'content saved to file', destination_path)
-                    file_info = {'media_name': media_name, 'media_url': media_url,
-                                 'media_id': safe_get_key(media, 'media_id'),
-                                 'file_type': safe_get_key(media, 'file_type'),
-                                 'created': safe_get_key(media, 'media_dates', 'created'),
-                                 'updated': safe_get_key(media, 'media_dates', 'updated'),
-                                 'file_path': destination_path}
-                    log_d('download_media_for_metadata', 'file_info', file_info)
-                    file_list['downloaded'].append(file_info)
-                else:
-                    file_info = {'media_name': media_name, 'media_url': media_url,
-                                 'media_id': safe_get_key(media, 'media_id'),
-                                 'file_type': safe_get_key(media, 'file_type'), 'status': file_storage_status}
-                    file_list['missing'].append(file_info)
-        return file_list
+        media = find_in_dict_list(media_list, {'media_id': media_uuid})
+        return self._download_media_from_info(media, local_download_dir)
+
+    def download_file_with_name(self, media_name: str, local_download_dir: str) -> dict:
+        """
+        Find a file from its name and download it if it is available
+        :param media_name: the name of the file we want to download
+        :param local_download_dir: the path to a local folder
+        :return: an object that states if the file was downloaded, skipped or found missing
+        """
+        # fun = 'download_media_with_name'
+        meta = self.find_metadata_with_media_name(media_name)
+        media_list = safe_get_key(meta, 'available_formats')
+        if not media_list:
+            return None
+        media = find_in_dict_list(media_list, {'media_name': media_name})
+        return self._download_media_from_info(media, local_download_dir)
+
+    def download_files_for_metadata(self, metadata_id, local_download_dir) -> dict:
+        """
+        Download all the available files for a metadata
+        :param metadata_id: the UUIDv4 of the metadata
+        :param local_download_dir: the path to a local folder
+        :return: an object that lists the files that were downloaded, skipped or found missing
+        """
+        # fun = 'download_all_media_for_metadata'
+        if not isdir(local_download_dir):
+            raise FileNotFoundError(f"The following folder does not exist: '{local_download_dir}'")
+
+        meta = self.find_metadata_with_uuid(metadata_id)
+        media_list = safe_get_key(meta, 'available_formats')
+        if not media_list:
+            return None
+        files_dwnld_info = {_STATUS_DOWNLOADED: [], _STATUS_MISSING: [], _STATUS_SKIPPED: []}
+        for media in media_list:
+            dwnld_info = self._download_media_from_info(media, local_download_dir)
+            status = dwnld_info['status']
+            files_dwnld_info[status].append(dwnld_info['media'])
+        return files_dwnld_info
+
+    def save_metadata_to_file(self, local_download_dir: str, file_name: str = 'rudi_node_metadata.json') -> None:
+        """
+        Dumps the metadata list to a local file
+        :param local_download_dir: the path to a local folder
+        :param file_name: the name of the file in which the JSON representation of the list of metadata will be saved
+        """
+        file_path = abspath(slash_join(local_download_dir, file_name))
+        json_str = dumps(obj=self.metadata_list, ensure_ascii=False, indent=2).encode('utf-8')
+        open(file_path, 'wb').write(json_str)
 
     @staticmethod
     def get_default():
+        """
+
+        """
         if RudiNodeGetter._default_getter is None:
             rudi_api_conf = ConnectorConfReader.get_defaults()
             RudiNodeGetter._default_getter = RudiNodeGetter(server_url=rudi_api_conf.rudi_node_url)
@@ -269,23 +411,49 @@ class RudiNodeGetter:
 
 
 if __name__ == '__main__':
-    rudi_node_getter = RudiNodeGetter.get_default()
-    log_d('RudiNodeConnector', 'metadata nb', rudi_node_getter.metadata_count)
-    log_d('RudiNodeConnector', 'organizations', rudi_node_getter.organization_list)
-    log_d('RudiNodeConnector', 'organization names', rudi_node_getter.organization_names)
-    log_d('RudiNodeConnector', 'contact names', rudi_node_getter.contact_names)
-    log_d('RudiNodeConnector', 'themes', rudi_node_getter.themes)
-    log_d('RudiNodeConnector', 'keywords', rudi_node_getter.keywords)
-    log_d('RudiNodeConnector', 'filter_metadata', rudi_node_getter.filter_metadata(
+    rudi_node_info = RudiNodeGetter.get_default()
+    info_tag = 'RudiNode info'
+    log_d(info_tag, 'metadata nb', rudi_node_info.metadata_count)
+    log_d(info_tag, 'organizations', rudi_node_info.organization_list)
+    log_d(info_tag, 'organization names', rudi_node_info.organization_names)
+    meta_producer = rudi_node_info.organization_names[-1]
+
+    log_d(info_tag, 'contact names', rudi_node_info.contact_names)
+    log_d(info_tag, 'themes', rudi_node_info.themes)
+    log_d(info_tag, 'keywords', rudi_node_info.keywords)
+
+    filter_tag = 'Filtering metadata'
+    log_d(filter_tag, 'filter_metadata', rudi_node_info.filter_metadata(
         {'producer': {'organization_id': '1d6bc543-07ed-46f6-a813-958edb73d5f0', 'organization_name': 'SIB (Test)'}}))
-    log_d('RudiNodeConnector', 'metadata_from_producer', rudi_node_getter.get_metadata_with_producer('SIB (Test)'))
-    log_d('RudiNodeConnector', 'metadata_with_theme', rudi_node_getter.get_metadata_with_theme('citizenship'))
-    kw = ['répartition', 'Commune']
-    log_d('RudiNodeConnector', f"metadata_with_keyword '{kw}'", rudi_node_getter.get_metadata_with_keywords(kw))
-    cont = 'Bacasable'
-    log_d('RudiNodeConnector', f"metadata_with_contact '{cont}'", rudi_node_getter.get_metadata_with_contact(cont))
+
+    meta_producer = 'SIB (Test)'
+    log_d(filter_tag, f"with producer '{meta_producer}'", rudi_node_info.get_metadata_with_producer(meta_producer))
+
+    meta_contact = 'Bacasable'
+    log_d(filter_tag, f"with contact '{meta_contact}'", rudi_node_info.get_metadata_with_contact(meta_contact))
+
+    meta_theme = 'citizenship'
+    log_d(filter_tag, f"with theme '{meta_theme}'", rudi_node_info.get_metadata_with_theme(meta_theme))
+
+    meta_keywords = ['python']
+    log_d(filter_tag, f"with keywords '{meta_keywords}'", rudi_node_info.get_metadata_with_keywords(meta_keywords))
+
+    log_d(filter_tag, f"with available media", rudi_node_info.metadata_with_available_media)
+
+    find_tag = 'Finding metadata'
     meta_id = 'f48b4bcd-bba3-47ba-86e6-c0754b748728'
-    # meta_id = '050d3ba5-7b35-4e25-8b86-5461a0428fbe'
-    log_d('RudiNodeConnector', f"metadata_with_id '{meta_id}'", rudi_node_getter.get_metadata_with_id(meta_id))
-    log_d('RudiNodeConnector', f"download_media_for_metadata '{meta_id}'",
-          rudi_node_getter.download_media_for_metadata(meta_id, '../1-dwnld'))
+    log_d(find_tag, f"with uuid '{meta_id}'", rudi_node_info.find_metadata_with_uuid(meta_id))
+
+    f_name = 'toucan.jpg'
+    log_d(find_tag, f"with media name '{f_name}'", rudi_node_info.find_metadata_with_media_name(f_name))
+
+    f_uuid = '782bab2d-7ee8-4633-9c0a-173649b4d879'
+    log_d(find_tag, f"with media uuid '{f_uuid}'", rudi_node_info.find_metadata_with_media_uuid(f_uuid))
+
+    dwnld_tag = 'Downloading'
+    dwnld_dir = '../1-dwnld'
+    log_d(dwnld_tag, f"media for metadata '{meta_id}'", rudi_node_info.download_files_for_metadata(meta_id, dwnld_dir))
+    log_d(dwnld_tag, f"media with uuid '{f_uuid}'", rudi_node_info.download_file_with_uuid(f_uuid, dwnld_dir))
+    log_d(dwnld_tag, f"media with name '{f_name}'", rudi_node_info.download_file_with_name(f_name, dwnld_dir))
+
+    rudi_node_info.save_metadata_to_file(dwnld_dir)

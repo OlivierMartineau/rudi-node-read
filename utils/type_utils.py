@@ -17,6 +17,10 @@ def is_array(obj):
     return is_list(obj)
 
 
+def is_list_or_dict(obj):
+    return get_type_name(obj) in ['dict', 'list']
+
+
 def check_type(obj, type_name: str, param_name: str = None):
     param_str = 'Parameter' if param_name is None else f"Parameter '{param_name}'"
     if not is_type(obj, type_name):

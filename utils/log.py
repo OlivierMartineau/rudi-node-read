@@ -48,9 +48,12 @@ def decorator_timer(some_function):
     return _wrap
 
 
+def log_assert(cond: bool, ok_tag: str = 'OK', ko_tag: str = '!! KO !!'):
+    return ok_tag if cond else ko_tag
+
+
 if __name__ == '__main__':
     log_d()
     log_d('Test log')
     log_d('Log', 'Test')
     log_d('Log', 'Main', 'test')
-
