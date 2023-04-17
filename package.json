@@ -1,0 +1,13 @@
+{
+  "name": "@aqmo.org/rudi_node_get",
+  "version": "1.0.0",
+  "description": "Tools focused on taking advantage of the external API of a RUDI Producer node",
+  "keywords": [
+    "RUDI",
+    "aqmo.org",
+    "univ-rennes1",
+    "univ-rennes",
+    "syslog"
+  ],
+  "homepage": "https://gitlab.aqmo.org/rudidev/rudinode-get"
+}

@@ -416,7 +416,6 @@ if __name__ == '__main__':
     log_d(info_tag, 'metadata nb', rudi_node_info.metadata_count)
     log_d(info_tag, 'organizations', rudi_node_info.organization_list)
     log_d(info_tag, 'organization names', rudi_node_info.organization_names)
-    meta_producer = rudi_node_info.organization_names[-1]
 
     log_d(info_tag, 'contact names', rudi_node_info.contact_names)
     log_d(info_tag, 'themes', rudi_node_info.themes)
