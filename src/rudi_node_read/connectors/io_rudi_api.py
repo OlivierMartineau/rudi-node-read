@@ -1,14 +1,13 @@
-from conf_read.connectors_conf_reader import ConnectorConfReader
-from lib_rudi_io.io_connector import Connector
-from utils.log import log_d, log_e
-from utils.string_utils import slash_join
+from src.rudi_node_read.connectors.io_connector import Connector
+from src.rudi_node_read.utils.log import log_d, log_e
+from src.rudi_node_read.utils.type_string import slash_join
 
 REQ_LIMIT = 500
 
 
 class RudiNodeConnector(Connector):
 
-    def __init__(self, server_url: str, headers_user_agent: str = 'RudiNodeGet'):
+    def __init__(self, server_url: str, headers_user_agent: str = 'RudiNodeConnector'):
         """
         Creates a connector to the API/proxy module of a RUDI Node
         :param server_url: the URL of the RUDI Node
@@ -79,16 +78,9 @@ class RudiNodeConnector(Connector):
                  'id': media['media_id']})
         return media_list_final
 
-    @staticmethod
-    def get_default_connector():
-        if RudiNodeConnector._default_connector is None:
-            rudi_api_conf = ConnectorConfReader.get_defaults()
-            RudiNodeConnector._default_connector = RudiNodeConnector(server_url=rudi_api_conf.rudi_node_url)
-        return RudiNodeConnector._default_connector
-
 
 if __name__ == '__main__':
-    rudi_node_connector = RudiNodeConnector.get_default_connector()
+    rudi_node_connector = RudiNodeConnector('https://bacasable.fenix.rudi-univ-rennes1.fr')
     log_d('RudiNodeConnector', 'metadata nb', rudi_node_connector.get_metadata_count())
     log_d('RudiNodeConnector', 'metadata_ids', rudi_node_connector.get_metadata_ids())
     meta1 = rudi_node_connector.get_metadata_list()[1]

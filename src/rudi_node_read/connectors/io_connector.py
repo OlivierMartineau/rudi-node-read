@@ -1,15 +1,34 @@
 from http.client import HTTPSConnection, HTTPConnection
 from json import dumps, loads, JSONDecodeError
-from typing import Literal, Final, get_args
+from typing import Literal, get_args
 from urllib.parse import urlsplit
 
-from utils.err import HttpError, LiteralUnexpectedValueException
-from utils.log import log_d_if, log_e, log_d
-from utils.serializable import Serializable
-from utils.string_utils import slash_join
+from src.rudi_node_read.utils.err import HttpError, LiteralUnexpectedValueException
+from src.rudi_node_read.utils.log import log_d_if, log_e, log_d
+from src.rudi_node_read.utils.serializable import Serializable
+from src.rudi_node_read.utils.type_string import slash_join
 
-HttpRequestMethod: Final = Literal['GET', 'PUT', 'DEL', 'POST']
+HttpRequestMethod = Literal['GET', 'PUT', 'DEL', 'POST']
 http_request_methods = get_args(HttpRequestMethod)
+
+
+def https_download(resource_url: str, should_show_debug_line: bool = False):
+    fun = 'https_download'
+    (scheme, netloc, path, query, fragment) = urlsplit(resource_url)
+    if scheme != 'https':
+        raise NotImplementedError('only HTTPS protocol is supported')
+    connection = HTTPSConnection(netloc)
+    connection.request(method='GET', url=resource_url)
+    response = connection.getresponse()
+    if response.status != 200:
+        log_e(fun, f'ERR {response.status}', resource_url)
+        return None
+    else:
+        log_d_if(should_show_debug_line, fun, f'OK {response.status}', resource_url)
+        data = response.read()
+        # log_d('https_download', 'data', data)
+        connection.close()
+        return data
 
 
 class Connector(Serializable):
@@ -32,12 +51,8 @@ class Connector(Serializable):
     def full_path(self, url: str = '/'):
         return slash_join('/', self.path, url)
 
-    def request(self,
-                url: str = '/',
-                req_method: HttpRequestMethod = 'GET',
-                body: object = None,
-                headers: object = None,
-                should_log_response: bool = False) -> (str, object):
+    def request(self, url: str = '/', req_method: HttpRequestMethod = 'GET', body: object = None,
+                headers: object = None, should_log_response: bool = False) -> (str, object):
         """ Send a http(obj) request
         """
         if self.scheme == 'https':
@@ -48,12 +63,7 @@ class Connector(Serializable):
             raise LiteralUnexpectedValueException('incorrect type for request method', HttpRequestMethod, req_method)
 
         if not headers:
-            headers = {
-                'Content-Type': 'text/plain',
-                'Accept': 'application/json'
-            }
-        # log_d(f'{self.__class__.__name__}.request', 'url', url)
-        # log_d_if(should_log_response, 'headers', headers)
+            headers = {'Content-Type': 'text/plain', 'Accept': 'application/json'}
         if body and type(body) == dict:
             headers['Content-type'] = 'application/json'
             body = dumps(body)
@@ -63,27 +73,19 @@ class Connector(Serializable):
         try:
             connection.request(req_method, path_url, body, headers)
         except ConnectionRefusedError as e:
-            log_e(self.__class__.__name__, 'Error on request', req_method,
-                  self.full_url(url))
+            log_e(self.__class__.__name__, 'Error on request', req_method, self.full_url(url))
             log_e(self.__class__.__name__, 'ERR', e)
             raise e
-        return self.parse_response(connection, url, req_method, headers, body,
-                                   should_log_response)
+        return self.parse_response(connection, url, req_method, headers, body, should_log_response)
 
-    def parse_response(self,
-                       connection: HTTPConnection,
-                       url,
-                       req_method,
-                       headers,
-                       body,
+    def parse_response(self, connection: HTTPConnection, url, req_method, headers, body,
                        should_log_response: bool = True):
         """ Basic parsing of the result
         """
         fun = f'{self.__class__.__name__}.parse_response'
         response = connection.getresponse()
-        if response.status not in [200, 500, 501] \
-                and not (530 <= response.status < 540) \
-                and not (400 <= response.status < 500):
+        if response.status not in [200, 500, 501] and not (530 <= response.status < 540) and not (
+                400 <= response.status < 500):
             return None
 
         rdata = response.read()
@@ -115,3 +117,6 @@ if __name__ == '__main__':
     connector = Connector('https://data-rudi.aqmo.org/api/v1')
     data = connector.request(url='resources?limit=1')
     print(data)
+
+    url = 'https://bacasable.fenix.rudi-univ-rennes1.fr/media/download/b086c7b2-bd6d-401f-86f5-f1f207023bae'
+    log_d('https_utils', url, https_download(url))

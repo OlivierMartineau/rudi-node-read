@@ -1,15 +1,15 @@
-import re
+from re import compile
 from uuid import UUID
 
-from utils.log import log_d
-from utils.type_utils import is_type
+from src.rudi_node_read.utils.log import log_d
+from src.rudi_node_read.utils.types import is_type
 
 
 def is_string(s):
     return is_type(s, 'str')
 
 
-ISO_FULL_DATE_REGEX = re.compile(
+ISO_FULL_DATE_REGEX = compile(
     r'^([\+-]?\d{4})-(\d{2})-(\d{2})T([0-2]\d):([0-5]\d):([0-5]\d)(?:\.(\d{3}))?(?:Z|([\+-][0-5]\d:(?:0|3)0))$')
 
 

@@ -1,7 +1,7 @@
 from typing import Union
 
-from utils.log import log_d, log_assert
-from utils.type_utils import is_type, is_list, get_type_name, is_list_or_dict
+from src.rudi_node_read.utils.log import log_d, log_assert
+from src.rudi_node_read.utils.types import is_type, is_list, get_type_name, is_list_or_dict
 
 
 def is_dict(obj) -> bool:

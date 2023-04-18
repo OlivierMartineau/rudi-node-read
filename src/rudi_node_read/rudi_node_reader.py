@@ -2,22 +2,20 @@ from json import dumps
 from os.path import isdir, abspath
 from typing import Union, Optional
 
-from conf_read.connectors_conf_reader import ConnectorConfReader
-from lib_rudi_io.io_rudi_api import RudiNodeConnector
-from utils.dict_utils import safe_get_key, find_in_dict_list, filter_dict_list, pick_in_dict
-from utils.http_utils import https_download
-from utils.log import log_d
-from utils.string_utils import slash_join
+from src.rudi_node_read.connectors.io_connector import https_download
+from src.rudi_node_read.connectors.io_rudi_api import RudiNodeConnector
+from src.rudi_node_read.utils.type_dict import safe_get_key, find_in_dict_list, filter_dict_list, pick_in_dict
+from src.rudi_node_read.utils.log import log_d
+from src.rudi_node_read.utils.type_string import slash_join
 
 _STATUS_SKIPPED = 'skipped'
 _STATUS_MISSING = 'missing'
 _STATUS_DOWNLOADED = 'downloaded'
 
 
-class RudiNodeGetter:
-    _default_getter = None
+class RudiNodeReader:
 
-    def __init__(self, server_url: str, headers_user_agent: str = 'RudiNodeGet'):
+    def __init__(self, server_url: str, headers_user_agent: str = 'RudiNodeRead'):
         self._server_url = server_url
         self._headers_user_agent = headers_user_agent
 
@@ -224,7 +222,7 @@ class RudiNodeGetter:
     def metadata_with_available_media(self) -> list[dict]:
         """
         :return: list of the metadata whose `available_data` attribute contains at least one media for which
-        `file_storage_status`attirubte is set to `available`
+        `file_storage_status`attribute is set to `available`
         """
         if not self._meta_list_available:
             self._meta_list_available = self.filter_metadata(
@@ -399,19 +397,9 @@ class RudiNodeGetter:
         json_str = dumps(obj=self.metadata_list, ensure_ascii=False, indent=2).encode('utf-8')
         open(file_path, 'wb').write(json_str)
 
-    @staticmethod
-    def get_default():
-        """
-
-        """
-        if RudiNodeGetter._default_getter is None:
-            rudi_api_conf = ConnectorConfReader.get_defaults()
-            RudiNodeGetter._default_getter = RudiNodeGetter(server_url=rudi_api_conf.rudi_node_url)
-        return RudiNodeGetter._default_getter
-
 
 if __name__ == '__main__':
-    rudi_node_info = RudiNodeGetter.get_default()
+    rudi_node_info = RudiNodeReader(server_url='https://bacasable.fenix.rudi-univ-rennes1.fr')
     info_tag = 'RudiNode info'
     log_d(info_tag, 'metadata nb', rudi_node_info.metadata_count)
     log_d(info_tag, 'organizations', rudi_node_info.organization_list)
@@ -450,7 +438,7 @@ if __name__ == '__main__':
     log_d(find_tag, f"with media uuid '{f_uuid}'", rudi_node_info.find_metadata_with_media_uuid(f_uuid))
 
     dwnld_tag = 'Downloading'
-    dwnld_dir = '../1-dwnld'
+    dwnld_dir = '../../dwnld'
     log_d(dwnld_tag, f"media for metadata '{meta_id}'", rudi_node_info.download_files_for_metadata(meta_id, dwnld_dir))
     log_d(dwnld_tag, f"media with uuid '{f_uuid}'", rudi_node_info.download_file_with_uuid(f_uuid, dwnld_dir))
     log_d(dwnld_tag, f"media with name '{f_name}'", rudi_node_info.download_file_with_name(f_name, dwnld_dir))
