@@ -3,6 +3,7 @@
 This library offers tools to take advantage of
 the [external API](https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER) of a RUDI Producer node (also
 referred as RUDI node).
+
 The Jupyter notebook [README.ipynb](doc/README.ipynb) offers an overview of the available functionalities.
 
 ## Installation
@@ -22,12 +23,4 @@ print(len(node_reader.metadata_list))
 print(node_reader.organization_names)
 print(node_reader.find_metadata_with_media_name('toucan.jpg'))
 
-```
-
-## Developing RudiNodeReader
-
-To install rudi_node_read, along with the tools you need to develop and run tests, run the following in your virtualenv:
-
-```bash
-$ pip install -e .[dev]
 ```

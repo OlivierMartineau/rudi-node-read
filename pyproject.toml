@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rudi-node-read"
-version = "0.0.4"
+version = "0.1.0"
 authors = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 description = "Use the external API of a RUDI Producer node"
 readme = "README.md"
@@ -24,7 +24,7 @@ keywords = ["RUDI", "producer node", "RUDI node", "open-data", "Univ. Rennes"]
 [project.urls]
 repository = "https://github.com/OlivierMartineau/rudi-node-read"
 documentation = "https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER"
-chengelog = "https://github.com/OlivierMartineau/rudi-node-read/blob/release/CHANGELOG.md"
+changelog = "https://github.com/OlivierMartineau/rudi-node-read/blob/release/CHANGELOG.md"
 
 [project.optional-dependencies]
 packaging = ["build", "twine", "pip-autoremove"]

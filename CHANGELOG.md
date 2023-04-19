@@ -1,8 +1,8 @@
 # Changelog
 
-## v0.0.1: initial release
+## v0.1.0: initial release
 
-_Release date: 2023.04.18_
+_Release date: 2023.04.19_
 
 ### Connection to a RUDI producer node
 
