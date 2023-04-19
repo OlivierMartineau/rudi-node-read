@@ -1,6 +1,7 @@
-from src.rudi_node_read.connectors.io_connector import Connector
-from src.rudi_node_read.utils.log import log_d, log_e
-from src.rudi_node_read.utils.type_string import slash_join
+from rudi_node_read.connectors.io_connector import Connector
+from rudi_node_read.utils.log import log_d, log_e
+from rudi_node_read.utils.type_string import slash_join
+
 
 REQ_LIMIT = 500
 

@@ -1,8 +1,8 @@
 from re import compile
 from uuid import UUID
 
-from src.rudi_node_read.utils.log import log_d
-from src.rudi_node_read.utils.types import is_type
+from rudi_node_read.utils.log import log_d
+from rudi_node_read.utils.types import is_type
 
 
 def is_string(s):

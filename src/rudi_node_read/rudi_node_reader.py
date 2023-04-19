@@ -2,11 +2,11 @@ from json import dumps
 from os.path import isdir, abspath
 from typing import Union, Optional
 
-from src.rudi_node_read.connectors.io_connector import https_download
-from src.rudi_node_read.connectors.io_rudi_api import RudiNodeConnector
-from src.rudi_node_read.utils.type_dict import safe_get_key, find_in_dict_list, filter_dict_list, pick_in_dict
-from src.rudi_node_read.utils.log import log_d
-from src.rudi_node_read.utils.type_string import slash_join
+from rudi_node_read.connectors.io_connector import https_download
+from rudi_node_read.connectors.io_rudi_api import RudiNodeConnector
+from rudi_node_read.utils.log import log_d
+from rudi_node_read.utils.type_dict import safe_get_key, find_in_dict_list, filter_dict_list, pick_in_dict
+from rudi_node_read.utils.type_string import slash_join
 
 _STATUS_SKIPPED = 'skipped'
 _STATUS_MISSING = 'missing'
@@ -14,8 +14,9 @@ _STATUS_DOWNLOADED = 'downloaded'
 
 
 class RudiNodeReader:
+    _default_getter = None
 
-    def __init__(self, server_url: str, headers_user_agent: str = 'RudiNodeRead'):
+    def __init__(self, server_url: str, headers_user_agent: str = 'RudiNodeGet'):
         self._server_url = server_url
         self._headers_user_agent = headers_user_agent
 
@@ -399,7 +400,7 @@ class RudiNodeReader:
 
 
 if __name__ == '__main__':
-    rudi_node_info = RudiNodeReader(server_url='https://bacasable.fenix.rudi-univ-rennes1.fr')
+    rudi_node_info = RudiNodeReader('https://bacasable.fenix.rudi-univ-rennes1.fr')
     info_tag = 'RudiNode info'
     log_d(info_tag, 'metadata nb', rudi_node_info.metadata_count)
     log_d(info_tag, 'organizations', rudi_node_info.organization_list)

@@ -1,7 +1,7 @@
 from datetime import datetime
 from time import time
 
-SHOULD_LOG = True
+SHOULD_LOG = False
 
 
 def log(*args):

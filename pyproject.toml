@@ -4,26 +4,33 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rudi-node-read"
-version = "0.0.1"
-authors = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
+version = "0.0.4"
+authors = ["Olivier Martineau <olivier.martineau@irisa.fr>"]
 description = "Use the external API of a RUDI Producer node"
 readme = "README.md"
 requires-python = ">=3.8"
-license = { file = "LICENCE.md" }
-classifiers = [
-    "Programming Language :: Python :: 3",
+license = { text = "EUPL-1.2" }
+classifiers = ["Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Licence :: OSI Approved :: European Union Public License, version 1.2 (EUPL-1.2)",
+    "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
 ]
-urls = { "RUDI Producer node API" = "https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER" }
+keywords = ["RUDI", "producer node", "RUDI node", "open-data", "Univ. Rennes"]
+
+[project.urls]
+repository = "https://github.com/OlivierMartineau/rudi-node-read"
+documentation = "https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER"
+chengelog = "https://github.com/OlivierMartineau/rudi-node-read/blob/release/CHANGELOG.md"
+
+[project.optional-dependencies]
+packaging = ["build", "twine", "pip-autoremove"]
+tests = ["pytest"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["rudi_node_read*"]
 
-[tool.setuptools.dynamic]
-version = { attr = "rudi_node_read.__version__" }

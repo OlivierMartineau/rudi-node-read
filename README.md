@@ -1,4 +1,4 @@
-# RUDI Node tools: _rudi_node_get_ library
+# RUDI Node tools: _rudi-node-read_ library
 
 This library offers tools to take advantage of
 the [external API](https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER) of a RUDI Producer node (also

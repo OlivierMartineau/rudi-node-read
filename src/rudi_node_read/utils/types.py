@@ -1,4 +1,4 @@
-from src.rudi_node_read.utils.log import log_d, log_e
+from rudi_node_read.utils.log import log_d, log_e
 
 
 def get_type_name(obj):

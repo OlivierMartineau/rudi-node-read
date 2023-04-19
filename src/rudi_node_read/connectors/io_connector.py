@@ -3,10 +3,10 @@ from json import dumps, loads, JSONDecodeError
 from typing import Literal, get_args
 from urllib.parse import urlsplit
 
-from src.rudi_node_read.utils.err import HttpError, LiteralUnexpectedValueException
-from src.rudi_node_read.utils.log import log_d_if, log_e, log_d
-from src.rudi_node_read.utils.serializable import Serializable
-from src.rudi_node_read.utils.type_string import slash_join
+from rudi_node_read.utils.err import HttpError, LiteralUnexpectedValueException
+from rudi_node_read.utils.log import log_d_if, log_e, log_d
+from rudi_node_read.utils.serializable import Serializable
+from rudi_node_read.utils.type_string import slash_join
 
 HttpRequestMethod = Literal['GET', 'PUT', 'DEL', 'POST']
 http_request_methods = get_args(HttpRequestMethod)

@@ -1,6 +1,6 @@
 from typing import get_args
 
-from src.rudi_node_read.utils.type_string import slash_join
+from rudi_node_read.utils.type_string import slash_join
 
 
 class MissingEnvironmentVariableException(Exception):
