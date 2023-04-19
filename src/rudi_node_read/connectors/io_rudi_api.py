@@ -2,7 +2,6 @@ from rudi_node_read.connectors.io_connector import Connector
 from rudi_node_read.utils.log import log_d, log_e
 from rudi_node_read.utils.type_string import slash_join
 
-
 REQ_LIMIT = 500
 
 
@@ -60,7 +59,9 @@ class RudiNodeConnector(Connector):
             max_number = meta_nb
         while req_offset < meta_nb and req_offset < max_number:
             req_limit = REQ_LIMIT if req_offset + REQ_LIMIT < max_number else max_number - req_offset
-            meta_list_partial = self.get_api(f'resources?limit=={req_limit}&offset={req_offset}')
+            meta_list_partial = self.get_api(f'resources?sort_by=-updatedAt&limit={req_limit}&offset={req_offset}')
+            log_d('get_metadata_list', 'total', meta_list_partial['total'])
+            log_d('get_metadata_list', 'len', len(meta_list_partial['items']))
             meta_set += meta_list_partial['items']
             req_offset += REQ_LIMIT
         return meta_set

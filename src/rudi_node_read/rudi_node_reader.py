@@ -403,6 +403,7 @@ if __name__ == '__main__':
     rudi_node_info = RudiNodeReader('https://bacasable.fenix.rudi-univ-rennes1.fr')
     info_tag = 'RudiNode info'
     log_d(info_tag, 'metadata nb', rudi_node_info.metadata_count)
+    log_d(info_tag, 'metadata list nb', len(rudi_node_info.metadata_list))
     log_d(info_tag, 'organizations', rudi_node_info.organization_list)
     log_d(info_tag, 'organization names', rudi_node_info.organization_names)
 

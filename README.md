@@ -14,7 +14,14 @@ $ pip install rudi_node_read
 ## Usage
 
 ```python
-from rudi_node_read import RudiNodeReader
+from rudi_node_read.rudi_node_reader import RudiNodeReader
+
+node_reader = RudiNodeReader('https://bacasable.fenix.rudi-univ-rennes1.fr')
+print(node_reader.metadata_count)
+print(len(node_reader.metadata_list))
+print(node_reader.organization_names)
+print(node_reader.find_metadata_with_media_name('toucan.jpg'))
+
 ```
 
 ## Developing RudiNodeReader

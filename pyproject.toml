@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rudi-node-read"
 version = "0.0.4"
-authors = ["Olivier Martineau <olivier.martineau@irisa.fr>"]
+authors = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 description = "Use the external API of a RUDI Producer node"
 readme = "README.md"
 requires-python = ">=3.8"
