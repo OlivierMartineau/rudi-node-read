@@ -7,7 +7,7 @@ Every little bit helps, and credit will always be given.
 
 ### Report Bugs
 
-Report bugs at https://github.com/OlivierMartineau/rudi-node-read/issues
+Report bugs at https://github.com/OlivierMartineau/rudi-node-read/issues.
 
 If you are reporting a bug, please include:
 
@@ -24,6 +24,10 @@ Anything tagged with “bug” and “help wanted” is open to whoever wants to
 
 Look through the GitHub issues for features.
 Anything tagged with “enhancement” and “help wanted” is open to whoever wants to implement it.
+
+### Complete tests
+
+Test coverage can always get better. Don't hesitate to submit a modification.
 
 ### Write Documentation
 

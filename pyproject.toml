@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=67.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -20,12 +20,13 @@ classifiers = ["Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
     "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
 ]
-keywords = ["RUDI", "producer node", "RUDI node", "open-data", "Univ. Rennes"]
+keywords = ["rudi-node-read", "rudi-node-get", "RUDI", "producer node", "RUDI node", "open-data", "Univ. Rennes"]
 
 [project.urls]
-repository = "https://github.com/OlivierMartineau/rudi-node-read"
-documentation = "https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER"
-changelog = "https://github.com/OlivierMartineau/rudi-node-read/blob/release/CHANGELOG.md"
+Homepage = "https://github.com/OlivierMartineau/rudi-node-read"
+Documentation = "https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER"
+Changelog = "https://github.com/OlivierMartineau/rudi-node-read/blob/release/CHANGELOG.md"
+Repository = "https://github.com/OlivierMartineau/rudi-node-read"
 
 [project.optional-dependencies]
 packaging = ["build", "twine", "pip-chill", "pip-autoremove"]
