@@ -1,0 +1,36 @@
+build==0.10.0
+pip-autoremove==0.10.0
+pip-chill==1.0.3
+pytest~=7.3.1
+pytest-cov==4.0.0
+rudi-node-read==0.1.2
+twine==4.0.2
+# bleach==6.0.0 # Installed as dependency for readme-renderer
+# certifi==2022.12.7 # Installed as dependency for requests
+# charset-normalizer==3.1.0 # Installed as dependency for requests
+# coverage==7.2.3 # Installed as dependency for pytest-cov
+# docutils==0.19 # Installed as dependency for readme-renderer
+# idna==3.4 # Installed as dependency for requests
+# importlib-metadata==6.5.0 # Installed as dependency for keyring, twine
+# iniconfig==2.0.0 # Installed as dependency for pytest
+# jaraco.classes==3.2.3 # Installed as dependency for keyring
+# keyring==23.13.1 # Installed as dependency for twine
+# markdown-it-py==2.2.0 # Installed as dependency for rich
+# mdurl==0.1.2 # Installed as dependency for markdown-it-py
+# more-itertools==9.1.0 # Installed as dependency for jaraco.classes
+# packaging==23.1 # Installed as dependency for build, pytest
+# pkginfo==1.9.6 # Installed as dependency for twine
+# pluggy==1.0.0 # Installed as dependency for pytest
+# pygments==2.15.1 # Installed as dependency for readme-renderer, rich
+# pyproject-hooks==1.0.0 # Installed as dependency for build
+# pytest==7.3.1 # Installed as dependency for pytest-cov
+# readme-renderer==37.3 # Installed as dependency for twine
+# requests==2.28.2 # Installed as dependency for requests-toolbelt, twine
+# requests-toolbelt==0.10.1 # Installed as dependency for twine
+# rfc3986==2.0.0 # Installed as dependency for twine
+# rich==13.3.4 # Installed as dependency for twine
+# six==1.16.0 # Installed as dependency for bleach
+# urllib3==1.26.15 # Installed as dependency for requests, twine
+# webencodings==0.5.1 # Installed as dependency for bleach
+# zipp==3.15.0 # Installed as dependency for importlib-metadata
+

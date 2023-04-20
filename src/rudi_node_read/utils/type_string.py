@@ -10,7 +10,8 @@ def is_string(s):
 
 
 ISO_FULL_DATE_REGEX = compile(
-    r'^([\+-]?\d{4})-(\d{2})-(\d{2})T([0-2]\d):([0-5]\d):([0-5]\d)(?:\.(\d{3}))?(?:Z|([\+-][0-5]\d:(?:0|3)0))$')
+    r'^([+-]?[1-9]\d{3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12]\d)T(2[0-3]|[01]\d):([0-5]\d):([0-5]\d)(?:\.(\d{3}))?('
+    r'?:Z|[+-](?:1[0-2]|0\d):[03]0)$')
 
 
 def is_iso_full_date(date_str):
@@ -52,31 +53,9 @@ def slash_join(*args):
     for frag in args:
         if frag is None or frag == '':
             pass
+        elif not is_string(frag):
+            raise AttributeError('input parameters must be strings')
         else:
             non_null_args.append(frag.strip('/'))
     joined_str = '/'.join(non_null_args)
     return joined_str
-
-
-if __name__ == '__main__':
-    host = 'http://thing.org/'
-    path = '/first_level/'
-    url = '/second_level/'
-    additional_url = '/'
-    log_d('slash_join', 'No args', slash_join())
-    log_d('slash_join', 'None arg', slash_join(None))
-    log_d('slash_join', 'None args', slash_join(None, None, None))
-    log_d('slash_join', 'host only', slash_join(host))
-    log_d('slash_join', 'host+path', slash_join(host, path))
-    log_d('slash_join', 'host+None+path+url', slash_join(host, None, path, url))
-    log_d('slash_join', 'host+""+/+None+path+url+//', slash_join(host, '', '/', None, path, url, '//'))
-    log_d('slash_join', 'None+path+url', slash_join(None, path, url))
-    log_d('slash_join', '/4+None+path+url', slash_join('/4', None, path, url))
-    # start = time()
-    # for i in range(100000):
-    #     slash_join(host, path, rudi_node_url, additional_url, None, None)
-    # end = time()
-    # print('Time needed:', (end - start)/100000)
-
-    log_d('Utils', 'is_uuid_v4', is_uuid_v4('2fbbafc5-43fe-4859-99a1-19077530e35a'))
-    log_d('Utils', 'is_iso_date', is_iso_full_date('2019-05-02T11:30:57+00:00'))

@@ -51,7 +51,7 @@ def safe_get_key(obj: dict, *args):
             return None
         if i + 1 == nb_args:
             return o
-        if not is_object(o):
+        if not is_dict(o):
             return None
 
 
@@ -84,39 +84,29 @@ def is_element_matching_filter(element, match_filter):
             if not has_key(element, key) or not is_element_matching_filter(element[key], val):
                 return False
         return True
-    elif is_list(element):
-        if is_dict(match_filter):
-            for e in element:
-                if is_element_matching_filter(e, match_filter):
-                    return True
-            return False
-        elif is_list(match_filter):
-            for mf in match_filter:
-                if not is_element_matching_filter(element, mf):
-                    return False
-            return True
-        else:
-            return match_filter in element
-    log_d(fun, 'cannot be here, element is', get_type_name(element))
-    return False
+    # elif is_list(element):
+    if is_dict(match_filter):
+        for e in element:
+            if is_element_matching_filter(e, match_filter):
+                return True
+        return False
+    if is_list(match_filter):
+        for mf in match_filter:
+            if not is_element_matching_filter(element, mf):
+                return False
+        return True
+    return match_filter in element
 
 
-def is_one_of_elements_matching_filter(elements: list[dict], search_filter: dict):
-    for element in elements:
-        if is_element_matching_filter(element, search_filter):
-            return True
-    return False
-
-
-def is_element_matching_one_of_filters(element: dict, search_filter: list):
+def is_element_matching_one_of_filters(element, search_filter_list: list) -> bool:
     """
     An element is matching a filter list if it matches at least one of the filters in the filter list.
     An element is considered to be matching a filter if all the key/value pairs in the filter are found in the element
     :param element: element to be tested
-    :param search_filter: list of filter objects
+    :param search_filter_list: list of filter objects
     :return: True if the element is matching at least one of the filter object of the filter list
     """
-    for i, filter_dict in enumerate(search_filter):
+    for i, filter_dict in enumerate(search_filter_list):
         if is_element_matching_filter(element, filter_dict):
             return True
     return False
@@ -155,54 +145,3 @@ def find_in_dict_list(searched_list: list, search_filter: dict):
         if is_element_matching_filter(element, search_filter):
             return element
     return None
-
-
-if __name__ == '__main__':
-    log_d('Utils', 'safe_get_key', {'1': 'toto'}, ['1'], '=>', safe_get_key({'1': 'toto'}, '1'))
-    log_d('Utils', 'safe_get_key', {'1': 'toto'}, ['2'], '=>', safe_get_key({'1': 'toto'}, '2'))
-    log_d('Utils', 'safe_get_key', {"1": {"2": {"3": {"4": 'toto'}}}}, ['1', '2', '3', '4'], '=>',
-          safe_get_key({"1": {"2": {"3": {"4": 'toto'}}}}, '1', '2', '3', '4'))
-
-    a_list = [{'cele': 'ri', 'pot': 'ato'}, {'cele': 'riss', 'pot': 'atos'}, {'celse': 'riss', 'pot': 'atos'}]
-    a_filter = {'cele': 'ri', 'pot': 'ato'}
-    b_filter = {'ele': 'ri', 'pot': 'ato'}
-    log_d('Utils', 'filter_list', log_assert(filter_dict_list(a_list, a_filter)))
-    log_d('Utils', 'filter_list', log_assert(not filter_dict_list(a_list, b_filter)))
-
-    log_d('Utils', 'is_dict', log_assert(not is_dict(a_list)))
-    log_d('Utils', 'is_dict', log_assert(is_dict(b_filter)))
-    #
-    # o1 = {}
-    # o1.update({'e': 'y'})
-    # log_d('Utils', 'merge dicts', o1)
-    # o1.update({'e': 55})
-    # log_d('Utils', 'merge dicts', o1)
-    # o1.update({'t': [55]})
-    # log_d('Utils', 'merge dicts', o1)
-    # o1.update({'t': ['r']})
-    # log_d('Utils', 'merge dicts', o1)
-    # log_d('Utils', 'items()', o1.items())
-    # log_d('Utils', 'keys()', o1.keys())
-    # o2 = {'a': 4, 'b': 'oimh', 'c': 'ergomuh', 'd': 5789}
-    # log_d('Utils', 'keys()', pick_in_dict(o2, ['b', 'a']))
-
-    elt = {'a': {'b'}, 'c': 3, 'd': {'e': 'f'}}
-    etl = {'c': 3, 'd': {'e': 'f'}, 'a': {'b'}}
-    eelt = {'a': {'b'}, 'c': 3, 'd': {'e': 'f'}, 't': ['v']}
-    log_d('Utils', 'recursive matching 1 (false)', log_assert(not is_element_matching_filter(a_list, b_filter)))
-    log_d('Utils', 'recursive matching 2 (true)', log_assert(is_element_matching_filter(elt, etl)))
-    log_d('Utils', 'recursive matching 3 (true)', log_assert(is_element_matching_filter(eelt, elt)))
-
-    data_test = {
-        'producer': {'organization_id': '1d6bc543-07ed-46f6-a813-958edb73d5f0', 'organization_name': 'SIB (Test)'}}
-    filter_test = {'producer': {'organization_name': 'SIB (Test)'}}
-    log_d('Utils', 'recursive matching', log_assert(is_element_matching_filter(data_test, filter_test)))
-    log_d('Utils', 'recursive matching', log_assert(is_element_matching_filter([data_test], filter_test)))
-
-    data_test2 = {'organization_id': '1d6bc543-07ed-46f6-a813-958edb73d5f0', 'organization_name': 'SIB (Test)'}
-    filter_test2 = {'organization_name': 'SIB (Test)'}
-    log_d('Utils', 'recursive matching', log_assert(is_element_matching_filter(data_test2, filter_test2)))
-    log_d('Utils', 'recursive matching',
-          log_assert(is_element_matching_filter({'producer': data_test2}, {'producer': filter_test2})))
-    log_d('Utils', 'test matching', log_assert(is_element_matching_filter([5, data_test, 4], [4, data_test])))
-    log_d('Utils', 'test matching', log_assert(is_element_matching_filter([5, 4], 5)))

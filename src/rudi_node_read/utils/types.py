@@ -30,27 +30,6 @@ def check_type(obj, type_name: str, param_name: str = None):
 def to_float(val):
     try:
         f_val = float(val)
-    except (TypeError, ValueError) as e:
-        # log_e('to_float', 'cast', e)
+    except (TypeError, ValueError):
         raise ValueError(f"could not convert value into a float: '{val}'")
     return f_val
-
-
-if __name__ == '__main__':
-    log_d('Utils', 'to_float 456', to_float("456"))
-    try:
-        x = to_float("toto")
-    except ValueError as e:
-        log_e('Utils', 'to_float("toto")', e)
-
-    t = list(range(10))
-    log_d('List tests', 't', t)
-    log_d('List tests', 't[0]', t[0])
-    log_d('List tests', 't[1]', t[1])
-    log_d('List tests', 't[-1]', t[-1])
-    log_d('List tests', 't[3:]', t[3:])
-    log_d('List tests', 't[0:-1]', t[0:-1])
-    log_d('List tests', 't[1:-1]', t[1:-1])
-    log_d('List tests', 't[0:0]', t[0:0])
-    log_d('List tests', 't[:-1]', t[:-1])
-    log_d('List tests', 't[::-1]', t[::-1])

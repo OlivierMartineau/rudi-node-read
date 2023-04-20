@@ -21,13 +21,12 @@ class IniUnexpectedValueException(Exception):
 class UnexpectedValueException(Exception):
     def __init__(self, param_name: str, expected_val, received_val):
         super().__init__(
-            f"Unexpected value for parameter '{param_name}': expected {expected_val}, got '{received_val}'")
+            f"Unexpected value for parameter '{param_name}': expected '{expected_val}', got '{received_val}'")
 
 
 class LiteralUnexpectedValueException(Exception):
     def __init__(self, err_msg, expected_literal, received_val):
-        super().__init__(f"{err_msg}. "
-                         f"Expected {get_args(expected_literal)}, got '{received_val}'")
+        super().__init__(f"{err_msg}. Expected {get_args(expected_literal)}, got '{received_val}'")
 
 
 def rudi_api_http_error_to_string(status, err_type, err_msg):
