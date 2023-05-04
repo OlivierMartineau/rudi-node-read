@@ -19,7 +19,7 @@ class RudiNodeConnector(Connector):
 
         log_d('RudiNodeConnector', 'attributes', self)
         self.test_rudi_api_connection()
-        self._headers = {'User-Agent': headers_user_agent}
+        self._headers = {'User-Agent': headers_user_agent, 'Content-type': 'text/plain', 'Accept': 'application/json'}
 
     def get_api(self, url: str):
         """
@@ -27,8 +27,7 @@ class RudiNodeConnector(Connector):
         :param url: part of the URL that comes after /api/admin
         :return: a JSON
         """
-        return self.request(url=slash_join('api/v1', url), req_method='GET',
-                            headers={'Content-type': 'text/plain', 'Accept': 'application/json'})
+        return self.request(url=slash_join('api/v1', url), req_method='GET', headers=self._headers)
 
     def test_rudi_api_connection(self):
         test = self.request('api/admin/hash')
@@ -42,7 +41,7 @@ class RudiNodeConnector(Connector):
 
     def get_metadata_with_filter(self, rudi_fields_filter: dict):
         filter_str = ''
-        for i, (key, val) in rudi_fields_filter:
+        for i, (key, val) in enumerate(rudi_fields_filter.items()):
             # TODO: special cases of producer / contact / available_formats
             filter_str += f'&{key}={val}'
 

@@ -1,17 +1,12 @@
-# Changelog
+# History
 
-## v0.1.2: initial release
+## v0.1.2 (2023-04-19)
 
-_Release date: 2023.04.19_
+- listing, enumerating, filtering or finding the metadata or a RUDI node
+- listing metadata-related information (producers, contacts, keywords, theme)
+- downloading the files referenced in the metadata
+- Jupyter notebook to document the actions available
 
-### Connection to a RUDI producer node
+## v0.1.4 (2023-04-20)
 
-- Primary access to a RUDI producer node information, using the external API to get access to the metadata 
-(listing, enumerating, filtering or finding the metadata) and metadata-related information (producers and contacts but 
-also keywords or theme) 
-- The files referenced in the metadata can be downloaded.
-
-### Documentation
-
-[README.ipynb](https://github.com/OlivierMartineau/rudi-node-read/blob/release/README.ipynb) gives explicit and
-extensive examples of how to use the library.
+- test coverage: 70%

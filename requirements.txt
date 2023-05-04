@@ -3,7 +3,6 @@ pip-autoremove==0.10.0
 pip-chill==1.0.3
 pytest~=7.3.1
 pytest-cov==4.0.0
-rudi-node-read==0.1.2
 twine==4.0.2
 # bleach==6.0.0 # Installed as dependency for readme-renderer
 # certifi==2022.12.7 # Installed as dependency for requests

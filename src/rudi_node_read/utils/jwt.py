@@ -12,7 +12,7 @@ def pad_b64_str(jwt_base64url: str):
 
 def get_jwt_basic_auth(usr: str, pwd: str):
     token = urlsafe_b64encode(bytes(f'{usr}:{pwd}', 'utf-8')).decode('ascii').replace('=', '')
-    return f'Basic {token}'
+    return f'Basic {pad_b64_str(token)}'
 
 
 def is_jwt_expired(jwt_b64: str) -> bool:

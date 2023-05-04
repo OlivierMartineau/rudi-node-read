@@ -3,7 +3,7 @@ from os.path import isdir, abspath
 from typing import Union, Optional
 
 from rudi_node_read.connectors.io_connector import https_download
-from rudi_node_read.connectors.io_rudi_api import RudiNodeConnector
+from rudi_node_read.connectors.io_rudi_node_read import RudiNodeConnector
 from rudi_node_read.utils.log import log_d
 from rudi_node_read.utils.type_dict import safe_get_key, find_in_dict_list, filter_dict_list, pick_in_dict
 from rudi_node_read.utils.type_string import slash_join
@@ -16,7 +16,7 @@ _STATUS_DOWNLOADED = 'downloaded'
 class RudiNodeReader:
     _default_getter = None
 
-    def __init__(self, server_url: str, headers_user_agent: str = 'RudiNodeGet'):
+    def __init__(self, server_url: str, headers_user_agent: str = 'RudiNodeReader'):
         self._server_url = server_url
         self._headers_user_agent = headers_user_agent
 
@@ -335,7 +335,7 @@ class RudiNodeReader:
                      'updated': safe_get_key(media, 'media_dates', 'updated'), 'file_path': destination_path}
         return {'status': _STATUS_DOWNLOADED, 'media': file_info}
 
-    def download_file_with_uuid(self, media_uuid: str, local_download_dir: str) -> dict:
+    def download_file_with_uuid(self, media_uuid: str, local_download_dir: str) -> Optional[dict]:
         """
         Download a file identified with the input UUID
         :param media_uuid: a UUIDv4 that identifies the media on the RUDI node
@@ -351,7 +351,7 @@ class RudiNodeReader:
         media = find_in_dict_list(media_list, {'media_id': media_uuid})
         return self._download_media_from_info(media, local_download_dir)
 
-    def download_file_with_name(self, media_name: str, local_download_dir: str) -> dict:
+    def download_file_with_name(self, media_name: str, local_download_dir: str) -> Optional[dict]:
         """
         Find a file from its name and download it if it is available
         :param media_name: the name of the file we want to download
