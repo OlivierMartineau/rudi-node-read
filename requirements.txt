@@ -1,8 +1,8 @@
 build==0.10.0
 pip-autoremove==0.10.0
 pip-chill==1.0.3
-pytest~=7.3.1
-pytest-cov==4.0.0
+pytest==7.4.0
+pytest-cov==4.1.0
 twine==4.0.2
 # bleach==6.0.0 # Installed as dependency for readme-renderer
 # certifi==2022.12.7 # Installed as dependency for requests

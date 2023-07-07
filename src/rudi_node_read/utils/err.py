@@ -25,8 +25,8 @@ class UnexpectedValueException(Exception):
 
 
 class LiteralUnexpectedValueException(Exception):
-    def __init__(self, err_msg, expected_literal, received_val):
-        super().__init__(f"{err_msg}. Expected {get_args(expected_literal)}, got '{received_val}'")
+    def __init__(self, received_val, expected_literal: tuple, err_msg: str = 'Unexpected value error'):
+        super().__init__(f"{err_msg}. Expected {expected_literal}, got '{received_val}'")
 
 
 def rudi_api_http_error_to_string(status, err_type, err_msg):

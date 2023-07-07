@@ -1,7 +1,6 @@
 from re import compile
 from uuid import UUID
 
-from rudi_node_read.utils.log import log_d
 from rudi_node_read.utils.types import is_type
 
 
@@ -34,15 +33,16 @@ def is_uuid_v4(uuid: str):
         return False
 
 
-def validate_uuid_v4(uuid: str):
+def check_is_uuid4(uuid: str | UUID) -> str:
+    if uuid is None:
+        raise ValueError('Input parameter should not be null')
     try:
-        if uuid is not None:
-            uuid_v4 = UUID(str(uuid))
-            if uuid_v4.version == 4:
-                return str(uuid_v4)
+        uuid_v4 = UUID(str(uuid))
+        if uuid_v4.version == 4:
+            return str(uuid_v4)
     except ValueError:
         pass
-    raise ValueError('System ID should be a UUIDv4')
+    raise ValueError(f"Input parameter is not a valid UUID v4: '{uuid}'")
 
 
 def slash_join(*args):

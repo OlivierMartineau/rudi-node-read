@@ -33,7 +33,9 @@ packaging = ["build", "twine", "pip-chill", "pip-autoremove"]
 tests = ["pytest-cov"]
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
 norecursedirs = ["*.egg", ".eggs", "dist", "build"]
+addopts = ["--cov=rudi_node_read", "--cov-report=term-missing", "--cov-report=html"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

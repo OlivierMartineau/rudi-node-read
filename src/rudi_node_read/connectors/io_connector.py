@@ -9,7 +9,7 @@ from rudi_node_read.utils.serializable import Serializable
 from rudi_node_read.utils.type_string import slash_join
 
 HttpRequestMethod = Literal['GET', 'PUT', 'DEL', 'POST']
-http_request_methods = get_args(HttpRequestMethod)
+HTTP_REQUEST_METHODS = get_args(HttpRequestMethod)
 
 
 def https_download(resource_url: str, should_show_debug_line: bool = False):
@@ -59,8 +59,8 @@ class Connector(Serializable):
             connection = HTTPSConnection(self.host)
         else:
             connection = HTTPConnection(self.host)
-        if req_method not in http_request_methods:
-            raise LiteralUnexpectedValueException('incorrect type for request method', HttpRequestMethod, req_method)
+        if req_method not in HTTP_REQUEST_METHODS:
+            raise LiteralUnexpectedValueException(req_method, HTTP_REQUEST_METHODS, 'incorrect type for request method')
 
         if not headers:
             headers = {'Content-Type': 'text/plain', 'Accept': 'application/json'}

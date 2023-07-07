@@ -1,7 +1,6 @@
 from typing import Union
 
-from rudi_node_read.utils.log import log_d, log_assert
-from rudi_node_read.utils.types import is_type, is_list, get_type_name, is_list_or_dict
+from rudi_node_read.utils.types import is_type, is_list, is_list_or_dict
 
 
 def is_dict(obj) -> bool:
@@ -32,6 +31,7 @@ def has_key(obj: dict, key_name: str) -> bool:
 def check_has_key(obj: dict, key_name: str):
     if not has_key(obj, key_name):
         raise AttributeError(f"Property '{key_name}' missing in obj {obj}")
+    return obj[key_name]
 
 
 def safe_get_key(obj: dict, *args):
@@ -80,7 +80,7 @@ def is_element_matching_filter(element, match_filter):
     if is_dict(element):
         if not is_dict(match_filter):
             return False
-        for i, (key, val) in enumerate(match_filter.items()):
+        for key, val in match_filter.items():
             if not has_key(element, key) or not is_element_matching_filter(element[key], val):
                 return False
         return True

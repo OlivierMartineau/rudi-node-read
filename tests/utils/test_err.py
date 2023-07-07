@@ -46,13 +46,14 @@ def test_UnexpectedValueException():
 
 
 def test_ULiteralUnexpectedValueException():
-    err = LiteralUnexpectedValueException('error', Literal['valA', 'valB'], 'val')
+    err = LiteralUnexpectedValueException('val', ('valA', 'valB'), 'error')
     target_err_msg = "error. Expected ('valA', 'valB'), got 'val'"
     assert str(err) == target_err_msg
     try:
         raise err
     except LiteralUnexpectedValueException as e:
         assert str(e) == target_err_msg
+
 
 def test_rudi_api_http_error_to_string():
     assert rudi_api_http_error_to_string(444, 'TestError', 'testing err msg') == 'ERR 444 TestError: testing err msg'

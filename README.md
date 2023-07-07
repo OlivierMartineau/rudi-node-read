@@ -28,8 +28,6 @@ print(node_reader.find_metadata_with_media_name('toucan.jpg'))
 ## Testing
 
 ```bash
-pip install pytest-cov
-
-python3 -m pytest --cov=rudi_node_read --cov-report term-missing --cov-report html
+$ pytest
 ```
 

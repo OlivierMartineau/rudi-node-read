@@ -1,8 +1,8 @@
 from rudi_node_read.utils.serializable import Serializable
 
 
-def test_toJSON():
-    assert Serializable().toJSON() == '{}'
+def test_to_json():
+    assert Serializable().to_json() == '{}'
 
 
 def test_str():

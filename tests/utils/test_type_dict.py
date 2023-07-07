@@ -20,7 +20,7 @@ def test_has_key():
 
 
 def test_check_has_key():
-    assert check_has_key({'arg': 'val'}, 'arg') is None
+    assert check_has_key({'arg': 'val'}, 'arg') is 'val'
     with pytest.raises(AttributeError):
         check_has_key({'arg': 'val'}, 'val')
 

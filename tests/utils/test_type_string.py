@@ -1,6 +1,6 @@
 import pytest
 
-from rudi_node_read.utils.type_string import is_iso_full_date, is_string, is_uuid_v4, validate_uuid_v4, slash_join
+from rudi_node_read.utils.type_string import is_iso_full_date, is_string, is_uuid_v4, check_is_uuid4, slash_join
 
 
 def test_is_string():
@@ -25,12 +25,12 @@ def test_is_uuid_v4():
 
 def test_validate_uuid_v4():
     with pytest.raises(ValueError):
-        validate_uuid_v4(None)
+        check_is_uuid4(None)
     with pytest.raises(ValueError):
-        validate_uuid_v4('')
+        check_is_uuid4('')
     with pytest.raises(ValueError):
-        validate_uuid_v4('1')
-    assert validate_uuid_v4('d8b8d5d5-82d4-4a93-96e8-451daa124a70') == 'd8b8d5d5-82d4-4a93-96e8-451daa124a70'
+        check_is_uuid4('1')
+    assert check_is_uuid4('d8b8d5d5-82d4-4a93-96e8-451daa124a70') == 'd8b8d5d5-82d4-4a93-96e8-451daa124a70'
 
 
 def test_slash_join():
