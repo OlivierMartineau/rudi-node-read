@@ -1,6 +1,3 @@
-from rudi_node_read.utils.log import log_d, log_e
-
-
 def get_type_name(obj):
     return type(obj).__name__
 
@@ -10,7 +7,7 @@ def is_type(obj, type_name: str):
 
 
 def is_list(obj):
-    return get_type_name(obj) == 'list'
+    return get_type_name(obj) == "list"
 
 
 def is_array(obj):
@@ -18,11 +15,11 @@ def is_array(obj):
 
 
 def is_list_or_dict(obj):
-    return get_type_name(obj) in ['dict', 'list']
+    return get_type_name(obj) in ["dict", "list"]
 
 
-def check_type(obj, type_name: str, param_name: str = None):
-    param_str = 'Parameter' if param_name is None else f"Parameter '{param_name}'"
+def check_type(obj, type_name: str, param_name: str | None = None):
+    param_str = "Parameter" if param_name is None else f"Parameter '{param_name}'"
     if not is_type(obj, type_name):
         raise TypeError(f"{param_str} should be a '{type_name}', got '{get_type_name(obj)}'")
 

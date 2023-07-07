@@ -1,7 +1,7 @@
 from json import loads, dumps
 
 
-class Serializable(object):
+class Serializable:
     def to_json(self) -> str:
         return dumps(self.__dict__, default=lambda o: o.__dict__)
 

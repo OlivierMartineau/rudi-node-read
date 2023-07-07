@@ -1,3 +1,5 @@
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 # RUDI Node tools: _rudi-node-read_ library
 
 This library offers tools to take advantage of
@@ -25,9 +27,9 @@ print(node_reader.organization_names)
 print(node_reader.find_metadata_with_media_name('toucan.jpg'))
 
 ```
+
 ## Testing
 
 ```bash
 $ pytest
 ```
-

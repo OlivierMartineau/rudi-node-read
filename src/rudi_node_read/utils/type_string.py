@@ -1,16 +1,17 @@
 from re import compile
 from uuid import UUID
 
-from rudi_node_read.utils.types import is_type
+from rudi_node_read.utils.type_misc import is_type
 
 
 def is_string(s):
-    return is_type(s, 'str')
+    return is_type(s, "str")
 
 
 ISO_FULL_DATE_REGEX = compile(
-    r'^([+-]?[1-9]\d{3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12]\d)T(2[0-3]|[01]\d):([0-5]\d):([0-5]\d)(?:\.(\d{3}))?('
-    r'?:Z|[+-](?:1[0-2]|0\d):[03]0)$')
+    r"^([+-]?[1-9]\d{3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12]\d)T(2[0-3]|[01]\d):([0-5]\d):([0-5]\d)(?:\.(\d{3}))?("
+    r"?:Z|[+-](?:1[0-2]|0\d):[03]0)$"
+)
 
 
 def is_iso_full_date(date_str):
@@ -35,7 +36,7 @@ def is_uuid_v4(uuid: str):
 
 def check_is_uuid4(uuid: str | UUID) -> str:
     if uuid is None:
-        raise ValueError('Input parameter should not be null')
+        raise ValueError("Input parameter should not be null")
     try:
         uuid_v4 = UUID(str(uuid))
         if uuid_v4.version == 4:
@@ -51,11 +52,11 @@ def slash_join(*args):
     """
     non_null_args = []
     for frag in args:
-        if frag is None or frag == '':
+        if frag is None or frag == "":
             pass
         elif not is_string(frag):
-            raise AttributeError('input parameters must be strings')
+            raise AttributeError("input parameters must be strings")
         else:
-            non_null_args.append(frag.strip('/'))
-    joined_str = '/'.join(non_null_args)
+            non_null_args.append(frag.strip("/"))
+    joined_str = "/".join(non_null_args)
     return joined_str

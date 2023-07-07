@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rudi-node-read"
-version = "0.1.3"
+version = "0.2.0"
 authors = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 maintainers = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 description = "Use the external API of a RUDI Producer node"
@@ -19,17 +19,24 @@ classifiers = ["Programming Language :: Python :: 3.8",
     "Operating System :: OS Independent",
     "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
 ]
-keywords = ["rudi-node-read", "rudi-node-get", "RUDI", "producer node", "RUDI node", "open-data", "Univ. Rennes"]
+keywords = ["rudi-node-read", "rudi-node-get",
+    "RUDI", "producer node",
+    "RUDI node", "rudinode",
+    "open-data", "Univ. Rennes"]
 
 [project.urls]
 Homepage = "https://github.com/OlivierMartineau/rudi-node-read"
 Documentation = "https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER"
 Changelog = "https://github.com/OlivierMartineau/rudi-node-read/blob/release/CHANGELOG.md"
-Repository = "https://github.com/OlivierMartineau/rudi-node-read"
+Source = "https://github.com/OlivierMartineau/rudi-node-read"
 
 [project.optional-dependencies]
-packaging = ["build", "twine", "pip-chill", "pip-autoremove"]
+packaging = ["build", "commitizen", "pip-autoremove", "pip-chill", "twine"]
 tests = ["pytest-cov"]
+
+[tool.black]
+line-length = 120
+target-version = ['py311']
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
@@ -40,3 +47,7 @@ addopts = ["--cov=rudi_node_read", "--cov-report=term-missing", "--cov-report=ht
 where = ["src"]
 include = ["rudi_node_read*"]
 
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.2.0"
+version_files = ["pyproject.toml:version"]

@@ -7,24 +7,24 @@ SHOULD_LOG = False
 def log(*args):
     if SHOULD_LOG:
         if len(args) < 2:
-            print(f'D {now()}')
+            print(f"D {now()}")
         elif len(args) == 2:
-            print(f'{args[0]} {now()} [{args[1]}] <')
+            print(f"{args[0]} {now()} [{args[1]}] <")
         elif len(args) == 3:
-            print(f'{args[0]} {now()} [{args[1]}] {args[2]}')
+            print(f"{args[0]} {now()} [{args[1]}] {args[2]}")
         else:
             try:
-                print(f'{args[0]} {now()} [{args[1]}] {args[2]}:', *args[3:])
+                print(f"{args[0]} {now()} [{args[1]}] {args[2]}:", *args[3:])
             except UnicodeDecodeError:
-                print(f'{args[0]} {now()} [{args[1]}] {args[2]}:', str(*args[3:]))
+                print(f"{args[0]} {now()} [{args[1]}] {args[2]}:", str(*args[3:]))
 
 
 def log_e(*args):
-    log('E', *args)
+    log("E", *args)
 
 
 def log_d(*args):
-    log('D', *args)
+    log("D", *args)
 
 
 def log_d_if(should_print: bool, *args):
@@ -48,12 +48,12 @@ def decorator_timer(some_function):
     return _wrap
 
 
-def log_assert(cond: bool, ok_tag: str = 'OK', ko_tag: str = '!! KO !!'):
+def log_assert(cond: bool, ok_tag: str = "OK", ko_tag: str = "!! KO !!"):
     return ok_tag if cond else ko_tag
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     log_d()
-    log_d('Test log')
-    log_d('Log', 'Test')
-    log_d('Log', 'Main', 'test')
+    log_d("Test log")
+    log_d("Log", "Test")
+    log_d("Log", "Main", "test")

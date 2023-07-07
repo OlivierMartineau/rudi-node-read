@@ -1,13 +1,13 @@
 from typing import Union
 
-from rudi_node_read.utils.types import is_type, is_list, is_list_or_dict
+from rudi_node_read.utils.type_misc import is_type, is_list, is_list_or_dict
 
 
 def is_dict(obj) -> bool:
     """
     :return: True of input obj is an object, False otherwise
     """
-    return is_type(obj, 'dict')
+    return is_type(obj, "dict")
 
 
 def is_object(obj) -> bool:
@@ -72,7 +72,7 @@ def is_element_matching_filter(element, match_filter):
     :param match_filter: object whose key/value pairs must be found in the tested element
     :return: True if the element is matching the filter object
     """
-    fun = 'match_filter'
+    fun = "match_filter"
     if element == match_filter:
         return True
     if not is_list_or_dict(element):
@@ -127,7 +127,7 @@ def filter_dict_list(searched_list: list, search_filter: Union[dict, list[dict]]
         if is_dict(search_filter):
             if is_element_matching_filter(element, search_filter):
                 found_elements.append(element)
-        elif is_type(search_filter, 'list'):
+        elif is_type(search_filter, "list"):
             if is_element_matching_one_of_filters(element, search_filter):
                 found_elements.append(element)
     return found_elements
