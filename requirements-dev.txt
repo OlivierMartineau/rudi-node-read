@@ -14,15 +14,15 @@ typing-extensions==4.7.1
 # argcomplete==3.1.1 # Installed as dependency for commitizen
 # bleach==6.0.0 # Installed as dependency for readme-renderer
 # certifi==2023.5.7 # Installed as dependency for requests
-# charset-normalizer==3.1.0 # Installed as dependency for commitizen, requests
+# charset-normalizer==3.2.0 # Installed as dependency for commitizen, requests
 # colorama==0.4.6 # Installed as dependency for commitizen
 # coverage==7.2.7 # Installed as dependency for pytest-cov
 # decli==0.6.1 # Installed as dependency for commitizen
 # docutils==0.20.1 # Installed as dependency for readme-renderer
 # idna==3.4 # Installed as dependency for requests
-# importlib-metadata==6.7.0 # Installed as dependency for commitizen, keyring, twine
+# importlib-metadata==6.8.0 # Installed as dependency for commitizen, keyring, twine
 # iniconfig==2.0.0 # Installed as dependency for pytest
-# jaraco.classes==3.2.3 # Installed as dependency for keyring
+# jaraco.classes==3.3.0 # Installed as dependency for keyring
 # jinja2==3.1.2 # Installed as dependency for commitizen
 # keyring==24.2.0 # Installed as dependency for twine
 # markdown-it-py==3.0.0 # Installed as dependency for rich
@@ -49,4 +49,4 @@ typing-extensions==4.7.1
 # urllib3==2.0.3 # Installed as dependency for requests, twine
 # wcwidth==0.2.6 # Installed as dependency for prompt-toolkit
 # webencodings==0.5.1 # Installed as dependency for bleach
-# zipp==3.15.0 # Installed as dependency for importlib-metadata
+# zipp==3.16.0 # Installed as dependency for importlib-metadata

@@ -3,13 +3,21 @@
 repos:
   - repo: local
     hooks:
+      - id: pre-commit-up
+        name: pre-commit-up
+        entry: ./scripts/pre-commit-up.sh
+        language: script
+        pass_filenames: false
+  - repo: local
+    hooks:
       - id: pip-chill
         name: pip-chill
         entry: ./scripts/pip-chill.sh
         language: script
         pass_filenames: false
+
   - repo: https://github.com/ambv/black
-    rev: 23.3.0
+    rev: 23.7.0
     hooks:
       - id: black
         language_version: python3.11
@@ -35,3 +43,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: 3.5.2
+    hooks:
+      - id: commitizen
+      - id: commitizen-branch
+        stages: [ push ]
