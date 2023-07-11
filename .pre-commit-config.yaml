@@ -3,13 +3,6 @@
 repos:
   - repo: local
     hooks:
-      - id: pre-commit-up
-        name: pre-commit-up
-        entry: ./scripts/pre-commit-up.sh
-        language: script
-        pass_filenames: false
-  - repo: local
-    hooks:
       - id: pip-chill
         name: pip-chill
         entry: ./scripts/pip-chill.sh
