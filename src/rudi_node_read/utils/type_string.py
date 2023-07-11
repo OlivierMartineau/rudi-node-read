@@ -4,7 +4,7 @@ from uuid import UUID
 from rudi_node_read.utils.type_misc import is_type
 
 
-def is_string(s):
+def is_string(s) -> bool:
     return is_type(s, "str")
 
 
@@ -14,23 +14,23 @@ ISO_FULL_DATE_REGEX = compile(
 )
 
 
-def is_iso_full_date(date_str):
+def is_iso_full_date(date_str) -> bool:
     return bool(ISO_FULL_DATE_REGEX.match(date_str))
 
 
 # REGEX_UUID = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')
 
 
-def is_uuid_v4(uuid: str):
+def is_uuid_v4(uuid: str) -> bool:
     if uuid is None:
         return False
     try:
         uuid_v4 = UUID(str(uuid))
         if uuid_v4.version == 4:
-            return uuid_v4
+            return True
         else:
             return False
-    except ValueError as e:
+    except ValueError:
         return False
 
 
@@ -46,7 +46,7 @@ def check_is_uuid4(uuid: str | UUID) -> str:
     raise ValueError(f"Input parameter is not a valid UUID v4: '{uuid}'")
 
 
-def slash_join(*args):
+def slash_join(*args) -> str:
     """
     Joins a set of strings with a slash (/) between them (useful for merging URLs or paths fragments)
     """

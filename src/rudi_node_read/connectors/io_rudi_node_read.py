@@ -51,7 +51,7 @@ class RudiNodeConnector(Connector):
         return self.get_api(f"resources?{filter_str[1:]}")
 
     def get_metadata_count(self):
-        return self.get_api(f"resources?limit=1")["total"]
+        return self.get_api("resources?limit=1")["total"]
 
     def get_metadata_list(self, max_number: int = 0):
         meta_nb = self.get_metadata_count()

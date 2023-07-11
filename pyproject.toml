@@ -45,6 +45,7 @@ addopts = ["--cov=rudi_node_read", "--cov-report=term-missing", "--cov-report=ht
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
 include = ["rudi_node_read*"]
 
 [tool.commitizen]

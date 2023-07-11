@@ -483,7 +483,7 @@ if __name__ == "__main__":
 
     log_d(
         filter_tag,
-        f"with available media",
+        "with available media",
         rudi_node_info.metadata_with_available_media,
     )
 

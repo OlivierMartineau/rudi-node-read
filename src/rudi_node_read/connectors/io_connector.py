@@ -89,10 +89,10 @@ class Connector(Serializable):
     def parse_response(
         self,
         connection: HTTPConnection,
-        url,
-        req_method,
-        headers,
-        body,
+        url: str,
+        req_method: HttpRequestMethod,
+        headers: dict,
+        body: dict,
         should_log_response: bool = True,
     ):
         """Basic parsing of the result"""
@@ -109,7 +109,7 @@ class Connector(Serializable):
         try:
             response_data = loads(rdata)
             log_d_if(should_log_response, fun, "Response is a JSON", response_data)
-        except (TypeError, JSONDecodeError) as e:
+        except (TypeError, JSONDecodeError):
             response_data = repr(rdata)
             log_d_if(should_log_response, fun, "Response is not a JSON", response_data)
         connection.close()

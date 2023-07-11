@@ -65,14 +65,14 @@ def pick_in_dict(obj: dict, props: list[str]):
     return dict((k, obj[k]) for k in props if k in obj)
 
 
-def is_element_matching_filter(element, match_filter):
+def is_element_matching_filter(element, match_filter) -> bool:
     """
     An element is considered to be matching a filter if all the key/value pairs in the filter are found in the element
     :param element: element that is tested
     :param match_filter: object whose key/value pairs must be found in the tested element
     :return: True if the element is matching the filter object
     """
-    fun = "match_filter"
+    # fun = "match_filter"
     if element == match_filter:
         return True
     if not is_list_or_dict(element):
