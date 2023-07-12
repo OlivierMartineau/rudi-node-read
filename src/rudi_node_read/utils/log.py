@@ -1,7 +1,8 @@
 from datetime import datetime
+from os import getenv
 from time import time
 
-SHOULD_LOG = False
+SHOULD_LOG = bool(getenv("RUDI_NODE_DEV"))
 
 
 def log(*args):

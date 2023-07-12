@@ -22,10 +22,12 @@ class RudiNodeReader:
     _default_getter = None
 
     def __init__(self, server_url: str, headers_user_agent: str = "RudiNodeReader"):
+        fun = "RudiNodeReader.__init__"
         self._server_url = server_url
         self._headers_user_agent = headers_user_agent
-
-        self._connector = None
+        log_d(fun, "connecting")
+        self._connector = RudiNodeConnector(self._server_url, self._headers_user_agent)
+        log_d(fun, self._connector)
 
         self._meta_list = None
         self._meta_list_available = None
@@ -429,7 +431,9 @@ class RudiNodeReader:
 
 if __name__ == "__main__":
     rudi_node_info = RudiNodeReader("https://bacasable.fenix.rudi-univ-rennes1.fr")
+    # rudi_node_info = RudiNodeReader("https://audiar.rudi.irisa.fr")
     info_tag = "RudiNode info"
+
     log_d(info_tag, "metadata nb", rudi_node_info.metadata_count)
     log_d(info_tag, "metadata list nb", len(rudi_node_info.metadata_list))
     log_d(info_tag, "organizations", rudi_node_info.organization_list)
@@ -528,3 +532,6 @@ if __name__ == "__main__":
     )
 
     rudi_node_info.save_metadata_to_file(dwnld_dir)
+
+    rudi_node_with_redirect = RudiNodeReader("https://audiar.rudi.irisa.fr")
+    log_d(info_tag, "metadata nb", rudi_node_with_redirect.metadata_count)

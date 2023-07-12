@@ -11,6 +11,9 @@ from rudi_node_read.utils.type_string import slash_join
 HttpRequestMethod = Literal["GET", "PUT", "DEL", "POST"]
 HTTP_REQUEST_METHODS = get_args(HttpRequestMethod)
 
+STATUS = "status"
+REDIRECTION = "redirection"
+
 
 def https_download(resource_url: str, should_show_debug_line: bool = False):
     fun = "https_download"
@@ -35,6 +38,13 @@ class Connector(Serializable):
     _default_connector = None
 
     def __init__(self, server_url: str):
+        self.scheme = None
+        self.host = None
+        self.path = None
+        self.base_url = None
+        self._set_url(server_url)
+
+    def _set_url(self, server_url: str):
         (scheme, netloc, path, query, fragment) = urlsplit(server_url)
         if scheme != "http" and scheme != "https":
             raise NotImplementedError("only http and https are supported")
@@ -42,7 +52,6 @@ class Connector(Serializable):
         self.host = netloc
         self.path = path
         self.base_url = slash_join(f"{self.scheme}://{self.host}", self.path)
-
         log_d("Connector", "base_url", self.base_url)
 
     def full_url(self, url: str = "/"):
@@ -98,6 +107,9 @@ class Connector(Serializable):
         """Basic parsing of the result"""
         fun = f"{self.__class__.__name__}.parse_response"
         response = connection.getresponse()
+        # log_d(fun, "Response", response.getcode(), response.getheaders(), response.info())
+        if response.status in [301, 302]:
+            return {STATUS: response.status, REDIRECTION: response.getheader("location")}
         if (
             response.status not in [200, 500, 501]
             and not (530 <= response.status < 540)

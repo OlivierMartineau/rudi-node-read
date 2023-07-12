@@ -1,5 +1,6 @@
-from rudi_node_read.connectors.io_connector import Connector
+from rudi_node_read.connectors.io_connector import Connector, STATUS, REDIRECTION
 from rudi_node_read.utils.log import log_d, log_e
+from rudi_node_read.utils.type_dict import is_dict
 from rudi_node_read.utils.type_string import slash_join
 
 REQ_LIMIT = 500
@@ -13,10 +14,11 @@ class RudiNodeConnector(Connector):
         :param headers_user_agent: (optional) identifies the user launching the request (or at least the module)
         in the request headers, for logging purpose.
         """
+        fun = "RudiNodeConnector.__init__"
 
         super().__init__(server_url)
 
-        log_d("RudiNodeConnector", "attributes", self)
+        # log_d("RudiNodeConnector", "attributes", self)
         self.test_rudi_api_connection()
         self._headers = {
             "User-Agent": headers_user_agent,
@@ -33,9 +35,23 @@ class RudiNodeConnector(Connector):
         return self.request(url=slash_join("api/v1", url), req_method="GET", headers=self._headers)
 
     def test_rudi_api_connection(self):
-        test = self.request("api/admin/hash")
+        test_path = "api/admin/hash"
+        test = self.request(test_path)
         if test is None:
             log_e("RudiNodeConnector", f"!! Node '{self.host}'", "no connection!")
+            raise ConnectionError(f"Connection failed to node '{self.host}'")
+        if is_dict(test) and test.get(STATUS) in [301, 302]:
+            server_url = str(test.get(REDIRECTION))
+            if not server_url.endswith(test_path):
+                log_e("RudiNodeConnector", f"!! Node '{self.host}'", "redirection incorrect!")
+                raise ConnectionError(f"Connection failed to node '{self.host}'")
+            self._set_url(server_url.replace(f"/{test_path}", ""))
+            test = self.request(test_path)
+            if test is None:
+                log_e("RudiNodeConnector", f"!! Node '{self.host}'", "redirection failed!")
+                raise ConnectionError(f"Connection failed to node '{self.host}'")
+            log_d("RudiNodeConnector", f"Node '{self.host}'", "redirection OK")
+
         else:
             log_d("RudiNodeConnector", f"Node '{self.host}'", "connection OK")
 
@@ -89,10 +105,11 @@ class RudiNodeConnector(Connector):
 
 
 if __name__ == "__main__":
-    rudi_node_connector = RudiNodeConnector("https://bacasable.fenix.rudi-univ-rennes1.fr")
+    # rudi_node_connector = RudiNodeConnector("https://bacasable.fenix.rudi-univ-rennes1.fr")
+    rudi_node_connector = RudiNodeConnector("https://audiar.rudi.irisa.fr")
     log_d("RudiNodeConnector", "metadata nb", rudi_node_connector.get_metadata_count())
     log_d("RudiNodeConnector", "metadata_ids", rudi_node_connector.get_metadata_ids())
-    meta1 = rudi_node_connector.get_metadata_list()[1]
+    meta1 = rudi_node_connector.get_metadata_list()[0]
     meta1_id = meta1["global_id"]
     rudi_node_connector.get_metadata_with_uuid(meta1_id)
     log_d("RudiNodeConnector", "meta1", meta1_id)
