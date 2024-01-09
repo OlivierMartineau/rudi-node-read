@@ -4,7 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rudi-node-read"
-version = "0.1.6"
 authors = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 maintainers = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 description = "Use the external API of a RUDI Producer node"
@@ -40,31 +39,8 @@ target-version = ['py311']
 # ----- Tool: commitizen
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.1.6"
+version = "0.1.7"
 version_files = ["pyproject.toml:version"]
-
-# ----- Tool: poetry
-[tool.poetry]
-name = "rudi-node-read"
-version = "0.1.6"
-authors = ["Olivier Martineau <olivier.martineau@irisa.fr>"]
-maintainers = ["Olivier Martineau <olivier.martineau@irisa.fr>"]
-description = "Use the external API of a RUDI Producer node"
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-
-[tool.poetry.group.test.dependencies]
-pytest-cov = "^4.1.0"
-
-[tool.poetry.group.build.dependencies]
-build = "^0.10.0"
-commitizen = "^3.5.2"
-pip-autoremove = "^0.10.0"
-pip-chill = "^1.0.3"
-pytest-cov = "^4.1.0"
-twine = "^4.0.2"
 
 # ----- Tool: pytest
 [tool.pytest.ini_options]
