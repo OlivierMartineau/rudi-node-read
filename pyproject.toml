@@ -42,13 +42,13 @@ target-version = ['py311']
 # ----- Tool: commitizen
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.1.5"
+version = "0.1.6"
 version_files = ["pyproject.toml:version"]
 
 # ----- Tool: poetry
 [tool.poetry]
 name = "rudi-node-read"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Olivier Martineau <olivier.martineau@irisa.fr>"]
 maintainers = ["Olivier Martineau <olivier.martineau@irisa.fr>"]
 description = "Use the external API of a RUDI Producer node"
