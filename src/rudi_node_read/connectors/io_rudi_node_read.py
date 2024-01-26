@@ -14,7 +14,7 @@ class RudiNodeConnector(Connector):
         :param headers_user_agent: (optional) identifies the user launching the request (or at least the module)
         in the request headers, for logging purpose.
         """
-        fun = "RudiNodeConnector.__init__"
+        here = "RudiNodeConnector.__init__"
 
         super().__init__(server_url)
 

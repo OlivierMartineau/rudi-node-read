@@ -72,7 +72,7 @@ def is_element_matching_filter(element, match_filter) -> bool:
     :param match_filter: object whose key/value pairs must be found in the tested element
     :return: True if the element is matching the filter object
     """
-    # fun = "match_filter"
+    # here = "match_filter"
     if element == match_filter:
         return True
     if not is_list_or_dict(element):

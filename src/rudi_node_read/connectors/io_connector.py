@@ -16,7 +16,7 @@ REDIRECTION = "redirection"
 
 
 def https_download(resource_url: str, should_show_debug_line: bool = False):
-    fun = "https_download"
+    here = "https_download"
     (scheme, netloc, path, query, fragment) = urlsplit(resource_url)
     if scheme != "https":
         raise NotImplementedError("only HTTPS protocol is supported")
@@ -24,10 +24,10 @@ def https_download(resource_url: str, should_show_debug_line: bool = False):
     connection.request(method="GET", url=resource_url)
     response = connection.getresponse()
     if response.status != 200:
-        log_e(fun, f"ERR {response.status}", resource_url)
+        log_e(here, f"ERR {response.status}", resource_url)
         return None
     else:
-        log_d_if(should_show_debug_line, fun, f"OK {response.status}", resource_url)
+        log_d_if(should_show_debug_line, here, f"OK {response.status}", resource_url)
         data = response.read()
         # log_d('https_download', 'data', data)
         connection.close()
@@ -76,7 +76,7 @@ class Connector(Serializable):
 
         if not headers:
             headers = {"Content-Type": "text/plain", "Accept": "application/json"}
-        if body and type(body) == dict:
+        if body and isinstance(body, dict):
             headers["Content-type"] = "application/json"
             body = dumps(body)
 
@@ -105,9 +105,9 @@ class Connector(Serializable):
         should_log_response: bool = True,
     ):
         """Basic parsing of the result"""
-        fun = f"{self.__class__.__name__}.parse_response"
+        here = f"{self.__class__.__name__}.parse_response"
         response = connection.getresponse()
-        # log_d(fun, "Response", response.getcode(), response.getheaders(), response.info())
+        # log_d(here, "Response", response.getcode(), response.getheaders(), response.info())
         if response.status in [301, 302]:
             return {STATUS: response.status, REDIRECTION: response.getheader("location")}
         if (
@@ -120,18 +120,18 @@ class Connector(Serializable):
         rdata = response.read()
         try:
             response_data = loads(rdata)
-            log_d_if(should_log_response, fun, "Response is a JSON", response_data)
+            log_d_if(should_log_response, here, "Response is a JSON", response_data)
         except (TypeError, JSONDecodeError):
             response_data = repr(rdata)
-            log_d_if(should_log_response, fun, "Response is not a JSON", response_data)
+            log_d_if(should_log_response, here, "Response is not a JSON", response_data)
         connection.close()
         if type(response_data) is str:
-            log_d_if(should_log_response, fun, "Response is a string", response_data)
+            log_d_if(should_log_response, here, "Response is a string", response_data)
             if response.status == 200:
                 return rdata.decode("utf8")
         if response.status == 200:
             return response_data
         if response.status >= 400:
-            log_e(fun, "Connection error", response_data)
-            log_e(fun, "Request in error", req_method, self.full_url(url))
+            log_e(here, "Connection error", response_data)
+            log_e(here, "Request in error", req_method, self.full_url(url))
             raise HttpError(response_data, req_method, self.base_url, url)

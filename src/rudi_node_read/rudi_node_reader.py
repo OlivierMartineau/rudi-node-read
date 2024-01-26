@@ -22,12 +22,12 @@ class RudiNodeReader:
     _default_getter = None
 
     def __init__(self, server_url: str, headers_user_agent: str = "RudiNodeReader"):
-        fun = "RudiNodeReader.__init__"
+        here = "RudiNodeReader.__init__"
         self._server_url = server_url
         self._headers_user_agent = headers_user_agent
-        log_d(fun, "connecting")
+        log_d(here, "connecting")
         self._connector = RudiNodeConnector(self._server_url, self._headers_user_agent)
-        log_d(fun, self._connector)
+        log_d(here, self._connector)
 
         self._meta_list = None
         self._meta_list_available = None
@@ -311,8 +311,6 @@ class RudiNodeReader:
         :param local_download_dir: the path to a local folder
         :return: an object that states if the file was downloaded, skipped or found missing
         """
-        # fun = '_download_media_from_info'
-
         media_type = safe_get_key(media, "media_type")
 
         # Most likely for media_type == 'SERVICE'
@@ -368,7 +366,6 @@ class RudiNodeReader:
         :param local_download_dir: the path to a local folder
         :return: an object that states if the file was downloaded, skipped or found missing
         """
-        # fun = 'download_media_with_uuid'
         meta = self.find_metadata_with_media_uuid(media_uuid)
         media_list = safe_get_key(meta, "available_formats")
         if not media_list:
@@ -384,7 +381,6 @@ class RudiNodeReader:
         :param local_download_dir: the path to a local folder
         :return: an object that states if the file was downloaded, skipped or found missing
         """
-        # fun = 'download_media_with_name'
         meta = self.find_metadata_with_media_name(media_name)
         media_list = safe_get_key(meta, "available_formats")
         if not media_list:
@@ -399,7 +395,6 @@ class RudiNodeReader:
         :param local_download_dir: the path to a local folder
         :return: an object that lists the files that were downloaded, skipped or found missing
         """
-        # fun = 'download_all_media_for_metadata'
         if not isdir(local_download_dir):
             raise FileNotFoundError(f"The following folder does not exist: '{local_download_dir}'")
 
