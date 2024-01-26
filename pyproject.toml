@@ -13,6 +13,7 @@ requires-python = ">=3.10"
 license = { text = "EUPL-1.2" }
 classifiers = ["Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
@@ -46,9 +47,10 @@ version_files = ["pyproject.toml:version"]
 # ----- Tool: pytest
 [tool.pytest.ini_options]
 pythonpath = ["src"]
-norecursedirs = ["*.egg", ".eggs", "dist", "build"]
-addopts = ["--cov=rudi_node_read", "--cov-report=term-missing", "--cov-report=html"]
+addopts = ["-ra", "--cov=rudi_node_read", "--cov-report=term-missing", "--cov-report=html"]
+norecursedirs = ["*.egg", ".eggs", "dist", "build", "lib"]
 
+# ----- Tool: setuptools
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["rudi_node_read*"]

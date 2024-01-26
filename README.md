@@ -12,7 +12,8 @@ an overview of the available functionalities.
 ## Installation
 
 ```bash
-$ pip install rudi_node_read
+# pip install rudi_node_read
+RUDI_NODE_DEV=true
 ```
 
 ## Usage

@@ -135,17 +135,3 @@ class Connector(Serializable):
             log_e(fun, "Connection error", response_data)
             log_e(fun, "Request in error", req_method, self.full_url(url))
             raise HttpError(response_data, req_method, self.base_url, url)
-
-
-if __name__ == "__main__":
-    if "GET" in HTTP_REQUEST_METHODS:
-        log_d("Testing Literal", "GET in HttpRequestMethod", "OK")
-    else:
-        log_d("Testing Literal", "GET in HttpRequestMethod", "KO")
-
-    connector = Connector("https://data-rudi.aqmo.org/api/v1")
-    data = connector.request(url="resources?limit=1")
-    print(data)
-
-    url = "https://bacasable.fenix.rudi-univ-rennes1.fr/media/download/b086c7b2-bd6d-401f-86f5-f1f207023bae"
-    log_d("https_utils", url, https_download(url))

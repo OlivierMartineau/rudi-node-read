@@ -2,7 +2,7 @@ from datetime import datetime
 from os import getenv
 from time import time
 
-SHOULD_LOG = bool(getenv("RUDI_NODE_DEV"))
+SHOULD_LOG = bool(getenv("RUDI_NODE_DEV")) or bool(getenv("RNR_LOGS"))
 
 
 def log(*args):
@@ -51,10 +51,3 @@ def decorator_timer(some_function):
 
 def log_assert(cond: bool, ok_tag: str = "OK", ko_tag: str = "!! KO !!"):
     return ok_tag if cond else ko_tag
-
-
-if __name__ == "__main__":
-    log_d()
-    log_d("Test log")
-    log_d("Log", "Test")
-    log_d("Log", "Main", "test")

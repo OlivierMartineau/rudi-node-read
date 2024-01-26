@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pip3 list --outdated --format=json | jq '.[].name' | xargs -n1 pip3 install -U
+pip list --outdated --format=json | jq '.[].name' | xargs -n1 pip install -U
 echo 'DONE: all libraries upgraded'
 
 pre-commit autoupdate

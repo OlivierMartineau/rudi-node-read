@@ -102,16 +102,3 @@ class RudiNodeConnector(Connector):
                 }
             )
         return media_list_final
-
-
-if __name__ == "__main__":
-    # rudi_node_connector = RudiNodeConnector("https://bacasable.fenix.rudi-univ-rennes1.fr")
-    rudi_node_connector = RudiNodeConnector("https://audiar.rudi.irisa.fr")
-    log_d("RudiNodeConnector", "metadata nb", rudi_node_connector.get_metadata_count())
-    log_d("RudiNodeConnector", "metadata_ids", rudi_node_connector.get_metadata_ids())
-    meta1 = rudi_node_connector.get_metadata_list()[0]
-    meta1_id = meta1["global_id"]
-    rudi_node_connector.get_metadata_with_uuid(meta1_id)
-    log_d("RudiNodeConnector", "meta1", meta1_id)
-    meta1_media = rudi_node_connector.get_list_media_for_metadata(meta1_id)
-    log_d("RudiNodeConnector", "meta1 media", meta1_media)
