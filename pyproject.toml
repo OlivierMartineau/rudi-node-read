@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rudi-node-read"
-version = "0.2.0"
+version = "0.2.1"
 authors = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 maintainers = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 description = "Use the external API of a RUDI Producer node"
@@ -41,7 +41,7 @@ target-version = ['py311']
 # ----- Tool: commitizen
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.2.0"
+version = "0.2.1"
 version_files = ["pyproject.toml:version"]
 
 # ----- Tool: pytest
