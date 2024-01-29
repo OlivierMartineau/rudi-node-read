@@ -19,7 +19,7 @@ You don't need installing any additional library to use this.
 
 ## Usage
 
-See [Python notebook](./README.ipynb) for use examples.
+See [Python notebook](https://github.com/OlivierMartineau/rudi-node-read/blob/release/README.ipynb) for use examples.
 
 ## Testing
 
@@ -38,4 +38,4 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
-You may have a look at the [tests](./tests) if you wish to see how every class or function is used.
+You may have a look at the [tests](https://github.com/OlivierMartineau/rudi-node-read/tree/release/tests) if you wish to see how every class or function is used.
