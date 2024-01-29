@@ -11,26 +11,31 @@ an overview of the available functionalities.
 
 ## Installation
 
-```bash
-# pip install rudi_node_read
-RUDI_NODE_DEV=true
+```sh
+pip install rudi-node-read
 ```
+
+You don't need installing any additional library to use this.
 
 ## Usage
 
-```python
-from rudi_node_read.rudi_node_reader import RudiNodeReader
-
-node_reader = RudiNodeReader('https://bacasable.fenix.rudi-univ-rennes1.fr')
-print(node_reader.metadata_count)
-print(len(node_reader.metadata_list))
-print(node_reader.organization_names)
-print(node_reader.find_metadata_with_media_name('toucan.jpg'))
-
-```
+See [Python notebook](./README.ipynb) for use examples.
 
 ## Testing
 
-```bash
-$ pytest
+Rudi-node-read supports unit test discovery using Pytest:
+
+```sh
+dest_dir="rudi-node-read"
+git clone https://github.com/OlivierMartineau/rudi-node-read.git $dest_dir
+cd $dest_dir
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements-dev.txt
+
+pytest
 ```
+
+You may have a look at the [tests](./tests) if you wish to see how every class or function is used.
