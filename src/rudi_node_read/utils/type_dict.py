@@ -72,12 +72,11 @@ def is_element_matching_filter(element, match_filter) -> bool:
     :param match_filter: object whose key/value pairs must be found in the tested element
     :return: True if the element is matching the filter object
     """
-    # here = "match_filter"
     if element == match_filter:
         return True
-    if not is_list_or_dict(element):
+    if not isinstance(element, (list, dict)):
         return False
-    if is_dict(element):
+    if isinstance(element, dict):
         if not is_dict(match_filter):
             return False
         for key, val in match_filter.items():
@@ -85,12 +84,12 @@ def is_element_matching_filter(element, match_filter) -> bool:
                 return False
         return True
     # elif is_list(element):
-    if is_dict(match_filter):
+    if isinstance(match_filter, dict):
         for e in element:
             if is_element_matching_filter(e, match_filter):
                 return True
         return False
-    if is_list(match_filter):
+    if isinstance(match_filter, list):
         for mf in match_filter:
             if not is_element_matching_filter(element, mf):
                 return False

@@ -26,7 +26,7 @@ keywords = ["rudi-node-read", "rudi-node-get",
 Homepage = "https://github.com/OlivierMartineau/rudi-node-read"
 Documentation = "https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER"
 Changelog = "https://github.com/OlivierMartineau/rudi-node-read/blob/release/CHANGELOG.md"
-Source = "https://github.com/OlivierMartineau/rudi-node-read"
+Repository = "https://github.com/OlivierMartineau/rudi-node-read"
 
 [project.optional-dependencies]
 packaging = ["build", "commitizen", "pip-autoremove", "pip-chill", "twine"]

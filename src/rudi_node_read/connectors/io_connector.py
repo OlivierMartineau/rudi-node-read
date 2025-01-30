@@ -108,8 +108,10 @@ class Connector(Serializable):
         here = f"{self.__class__.__name__}.parse_response"
         response = connection.getresponse()
         # log_d(here, "Response", response.getcode(), response.getheaders(), response.info())
-        if response.status in [301, 302]:
-            return {STATUS: response.status, REDIRECTION: response.getheader("location")}
+        if response.status in [301, 302, 307, 308]:
+            res = {STATUS: response.status, REDIRECTION: response.getheader("location")}
+            log_d_if(should_log_response, here, "A redirection occurs")
+            return res
         if (
             response.status not in [200, 500, 501]
             and not (530 <= response.status < 540)

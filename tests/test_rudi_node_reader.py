@@ -23,7 +23,7 @@ def test_organization_list(rudi_node):
     assert len(rudi_node.organization_list) > 0
 
 
-def test_organization_list(rudi_node):
+def test_organization_names(rudi_node):
     assert len(rudi_node.organization_names) == len(rudi_node.organization_list)
 
 

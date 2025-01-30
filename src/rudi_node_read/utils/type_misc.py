@@ -7,15 +7,15 @@ def is_type(obj, type_name: str):
 
 
 def is_list(obj):
-    return get_type_name(obj) == "list"
+    return isinstance(obj, list)
 
 
 def is_array(obj):
-    return is_list(obj)
+    return isinstance(obj, list)
 
 
 def is_list_or_dict(obj):
-    return get_type_name(obj) in ["dict", "list"]
+    return isinstance(obj, (list, dict))
 
 
 def check_type(obj, type_name: str, param_name: str | None = None):

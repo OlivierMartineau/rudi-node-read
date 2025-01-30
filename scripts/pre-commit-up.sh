@@ -25,5 +25,5 @@ pre-commit run --all-files
 if [ $? -eq 0 ]; then
     echo 'DONE: pre-commit actions were executed.'
 else
-    echo 'ERR: pre-commit action sequence failed, exiting.'
+    echo 'ERR: pre-commit action sequence failed, exiting.'git branch -r
 fi

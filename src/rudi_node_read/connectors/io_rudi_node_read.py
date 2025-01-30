@@ -5,7 +5,7 @@ from rudi_node_read.utils.type_string import slash_join
 
 REQ_LIMIT = 500
 
-
+here = "RudiNodeConnector",
 class RudiNodeConnector(Connector):
     def __init__(self, server_url: str, headers_user_agent: str = "RudiNodeConnector"):
         """
@@ -18,13 +18,36 @@ class RudiNodeConnector(Connector):
 
         super().__init__(server_url)
 
-        # log_d("RudiNodeConnector", "attributes", self)
-        self.test_rudi_api_connection()
         self._headers = {
             "User-Agent": headers_user_agent,
             "Content-type": "text/plain",
             "Accept": "application/json",
         }
+        self._prefix = 'api'
+
+        self.test_rudi_api_connection()
+
+
+    def _get_catalog(self, url: str):
+        res = self.request(url=slash_join(self._prefix, url), req_method="GET", headers=self._headers)
+        if is_dict(res) and res.get(STATUS) in [301, 302, 308]:
+            server_url = str(res.get(REDIRECTION))
+            if not server_url.endswith(url):
+                log_e(here, f"!! Node '{self.host}'", "redirection incorrect!")
+                raise ConnectionError(f"Connection failed to node '{self.host}'")
+            log_d(here, f"redirection to {server_url}")
+            log_d(here, "base_url:", self.base_url)
+            log_d(here, "replaced:", server_url.replace(slash_join("",url), ""))
+            self._prefix = server_url.replace(f"/{url}", "")
+            log_d(here, "base_url:", self.base_url)
+
+            res = self.request(slash_join(self._prefix, url), req_method="GET", headers=self._headers)
+            if res is None:
+                log_e(here, f"!! Node '{self.host}'", "redirection failed!")
+                raise ConnectionError(f"Connection failed to node '{self.host}'")
+            log_d(here, f"Node '{self.host}'", "redirection OK")
+        return res
+
 
     def get_api(self, url: str):
         """
@@ -32,28 +55,15 @@ class RudiNodeConnector(Connector):
         :param url: part of the URL that comes after /api/admin
         :return: a JSON
         """
-        return self.request(url=slash_join("api/v1", url), req_method="GET", headers=self._headers)
+        return self._get_catalog(url=slash_join("v1", url))
+
 
     def test_rudi_api_connection(self):
-        test_path = "api/admin/hash"
-        test = self.request(test_path)
-        if test is None:
-            log_e("RudiNodeConnector", f"!! Node '{self.host}'", "no connection!")
+        res = self._get_catalog("admin/hash")
+        if res is None:
+            log_e(here, f"!! Node '{self.host}'", "no connection!")
             raise ConnectionError(f"Connection failed to node '{self.host}'")
-        if is_dict(test) and test.get(STATUS) in [301, 302]:
-            server_url = str(test.get(REDIRECTION))
-            if not server_url.endswith(test_path):
-                log_e("RudiNodeConnector", f"!! Node '{self.host}'", "redirection incorrect!")
-                raise ConnectionError(f"Connection failed to node '{self.host}'")
-            self._set_url(server_url.replace(f"/{test_path}", ""))
-            test = self.request(test_path)
-            if test is None:
-                log_e("RudiNodeConnector", f"!! Node '{self.host}'", "redirection failed!")
-                raise ConnectionError(f"Connection failed to node '{self.host}'")
-            log_d("RudiNodeConnector", f"Node '{self.host}'", "redirection OK")
-
-        else:
-            log_d("RudiNodeConnector", f"Node '{self.host}'", "connection OK")
+        log_d(here, f"Node '{self.host}'", "connection OK")
 
     def get_metadata_with_uuid(self, metadata_uuid: str):
         return self.get_api(f"resources/{metadata_uuid}")
