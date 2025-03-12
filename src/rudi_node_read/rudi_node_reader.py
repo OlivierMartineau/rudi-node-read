@@ -1,6 +1,8 @@
 from json import dumps
 from os.path import isdir, abspath
 from typing import Union
+from termcolor import colored
+
 
 from rudi_node_read.connectors.io_connector import https_download
 from rudi_node_read.connectors.io_rudi_node_read import RudiNodeConnector
@@ -16,6 +18,17 @@ from rudi_node_read.utils.type_string import slash_join
 _STATUS_SKIPPED = "skipped"
 _STATUS_MISSING = "missing"
 _STATUS_DOWNLOADED = "downloaded"
+
+LONG_SEP = "========================================================================"
+RUDI_ART = """
+                    ______    __   __  ______   ___  
+                    |    _ |  |  | |  ||      | |   | 
+                    |   | ||  |  | |  ||  _    ||   | 
+                    |   |_||_ |  |_|  || | |   ||   | 
+                    |    __  ||       || |_|   ||   | 
+                    |   |  | ||       ||       ||   | 
+                    |___|  |_||_______||______| |___| 
+"""  # http://patorjk.com/software/taag/#p=display&c=c%2B%2B&w=%20&f=Modular&t=RUDI
 
 
 class RudiNodeReader:
@@ -79,6 +92,27 @@ class RudiNodeReader:
         self._headers_user_agent = headers_user_agent
         self._connector = RudiNodeConnector(self._server_url, self._headers_user_agent)
         self._reset_cache()
+
+    @property
+    def light_node_summary_title(self) -> str:
+        """
+        Return a str with a nice and colored summary of the rudi-node
+        """
+        node_summary = colored(LONG_SEP, color="magenta")
+        node_summary += colored(RUDI_ART, color="green", attrs=["bold"])
+        node_summary += f"\n{colored('node url', color='green')} : {self.server_url}"
+        node_summary += f"\n{colored(f'metadata count', color='green')} : {self.metadata_count}\n"
+        node_summary += f"{colored(LONG_SEP, color='magenta')}\n"
+        return node_summary
+
+    @property
+    def catalogue_summary(self) -> str:
+        """
+        Return a str with a light catalogue summary
+        """
+        catalogue_summary = self.light_node_summary_title
+        catalogue_summary += self.create_textual_description_metadata(self.metadata_list)
+        return catalogue_summary
 
     @property
     def metadata_count(self) -> int:
@@ -302,6 +336,43 @@ class RudiNodeReader:
         :return: metadata whose `resource_title` attribute matches the `title` input parameter
         """
         return find_in_dict_list(self.metadata_list, {"available_formats": [{"media_id": media_uuid}]})
+
+    def create_textual_description_single_metadata(self, metadata: dict | str) -> str:
+        """
+        Return a small textual description of a single metadata, including title, metadata url and medias url
+        :param metadata: a metadata (as json) or the global uuid of the metadata
+        :return: a python str with the description of the metadata
+        """
+        if isinstance(metadata, str):
+            metadata_ = self.find_metadata_with_uuid(metadata)
+            if metadata_ is None:
+                raise Exception(f"No metadata with uuid {metadata} was found on rudi node.")
+            metadata = metadata_
+        resource_title = metadata["resource_title"]
+        meta_link = f"{self.server_url}/api/v1/resources/{metadata['global_id']}"
+        files_str = "\n"
+        for each_file in metadata["available_formats"]:
+            files_str += f"    {each_file['connector']['url']},\n"
+
+        textual_desc = f"""\n {colored(resource_title, 'magenta', attrs=['bold', 'underline'])} :\n    {colored('Métadonnée', attrs=['bold'])} : {meta_link} ,\n    {colored('Résumé', attrs=['bold'])} : {metadata["summary"][0]["text"]} ,\n    {colored('Fichier(s)', attrs=['bold'])} : {files_str}\n"""
+        return textual_desc
+
+    def create_textual_description_metadata(
+        self, metadata: dict | str | list[str] | list[dict], show_node_summary: bool = False
+    ) -> str:
+        """
+        Provide a small and light textual description of a single metadata or a list of metadata, including title, metadata url and medias url
+        :param metadata: a metadata (as json) or the global uuid of the metadata or a list of metadata or a list of uuids
+        :param show_node_summary: if True, adds a small and nice summary of the node to the output of the function
+        :return: a python str with the description of the metadata
+        """
+        if isinstance(metadata, dict) or isinstance(metadata, str):
+            return self.create_textual_description_single_metadata(metadata)
+
+        result = self.light_node_summary_title if show_node_summary else ""
+        for each_metadata in metadata:
+            result += self.create_textual_description_single_metadata(each_metadata)
+        return result
 
     @staticmethod
     def _download_media_from_info(media: dict, local_download_dir: str) -> dict:
