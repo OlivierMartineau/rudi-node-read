@@ -1,0 +1,89 @@
+backports.tarfile==1.2.0
+black==24.4.2
+build==1.2.1
+commitizen==3.27.0
+ipykernel==6.29.4
+jaraco.collections==5.1.0
+pip-chill==1.0.3
+pip3-autoremove==1.2.2
+pre-commit==3.7.1
+pytest-cov==5.0.0
+tomli==2.0.1
+twine==5.1.0
+# appnope==0.1.4 # Installed as dependency for ipykernel
+# argcomplete==3.3.0 # Installed as dependency for commitizen
+# asttokens==3.0.0 # Installed as dependency for stack-data
+# autocommand==2.2.2 # Installed as dependency for jaraco.text
+# certifi==2024.12.14 # Installed as dependency for requests
+# cfgv==3.4.0 # Installed as dependency for pre-commit
+# charset-normalizer==3.4.1 # Installed as dependency for commitizen, requests
+# click==8.1.8 # Installed as dependency for black
+# colorama==0.4.6 # Installed as dependency for commitizen
+# comm==0.2.2 # Installed as dependency for ipykernel
+# coverage==7.6.10 # Installed as dependency for pytest-cov
+# debugpy==1.8.12 # Installed as dependency for ipykernel
+# decli==0.6.2 # Installed as dependency for commitizen
+# decorator==5.1.1 # Installed as dependency for ipython
+# distlib==0.3.9 # Installed as dependency for virtualenv
+# docutils==0.21.2 # Installed as dependency for readme-renderer
+# executing==2.2.0 # Installed as dependency for stack-data
+# filelock==3.17.0 # Installed as dependency for virtualenv
+# identify==2.6.6 # Installed as dependency for pre-commit
+# idna==3.10 # Installed as dependency for requests
+# importlib-metadata==7.2.1 # Installed as dependency for commitizen, twine
+# inflect==7.3.1 # Installed as dependency for jaraco.text
+# iniconfig==2.0.0 # Installed as dependency for pytest
+# ipython==8.31.0 # Installed as dependency for ipykernel
+# jaraco.classes==3.4.0 # Installed as dependency for keyring
+# jaraco.context==6.0.1 # Installed as dependency for jaraco.text, keyring
+# jaraco.functools==4.1.0 # Installed as dependency for jaraco.text, keyring
+# jaraco.text==3.12.1 # Installed as dependency for jaraco.collections
+# jedi==0.19.2 # Installed as dependency for ipython
+# jinja2==3.1.5 # Installed as dependency for commitizen
+# jupyter-client==8.6.3 # Installed as dependency for ipykernel
+# jupyter-core==5.7.2 # Installed as dependency for ipykernel, jupyter-client
+# keyring==25.6.0 # Installed as dependency for twine
+# markdown-it-py==3.0.0 # Installed as dependency for rich
+# markupsafe==3.0.2 # Installed as dependency for jinja2
+# matplotlib-inline==0.1.7 # Installed as dependency for ipykernel, ipython
+# mdurl==0.1.2 # Installed as dependency for markdown-it-py
+# more-itertools==10.6.0 # Installed as dependency for inflect, jaraco.classes, jaraco.functools, jaraco.text
+# mypy-extensions==1.0.0 # Installed as dependency for black
+# nest-asyncio==1.6.0 # Installed as dependency for ipykernel
+# nh3==0.2.20 # Installed as dependency for readme-renderer
+# nodeenv==1.9.1 # Installed as dependency for pre-commit
+# packaging==24.2 # Installed as dependency for black, build, commitizen, ipykernel, pytest
+# parso==0.8.4 # Installed as dependency for jedi
+# pathspec==0.12.1 # Installed as dependency for black
+# pexpect==4.9.0 # Installed as dependency for ipython
+# pkginfo==1.12.0 # Installed as dependency for twine
+# platformdirs==4.3.6 # Installed as dependency for black, jupyter-core, virtualenv
+# pluggy==1.5.0 # Installed as dependency for pytest
+# prompt-toolkit==3.0.50 # Installed as dependency for ipython, questionary
+# psutil==6.1.1 # Installed as dependency for ipykernel
+# ptyprocess==0.7.0 # Installed as dependency for pexpect
+# pure-eval==0.2.3 # Installed as dependency for stack-data
+# pygments==2.19.1 # Installed as dependency for ipython, readme-renderer, rich
+# pyproject-hooks==1.2.0 # Installed as dependency for build
+# pytest==8.3.4 # Installed as dependency for pytest-cov
+# python-dateutil==2.9.0.post0 # Installed as dependency for jupyter-client
+# pyyaml==6.0.2 # Installed as dependency for commitizen, pre-commit
+# pyzmq==26.2.0 # Installed as dependency for ipykernel, jupyter-client
+# questionary==2.1.0 # Installed as dependency for commitizen
+# readme-renderer==44.0 # Installed as dependency for twine
+# requests==2.32.3 # Installed as dependency for requests-toolbelt, twine
+# requests-toolbelt==1.0.0 # Installed as dependency for twine
+# rfc3986==2.0.0 # Installed as dependency for twine
+# rich==13.9.4 # Installed as dependency for twine
+# six==1.17.0 # Installed as dependency for python-dateutil
+# stack-data==0.6.3 # Installed as dependency for ipython
+# termcolor==2.5.0 # Installed as dependency for commitizen
+# tomlkit==0.13.2 # Installed as dependency for commitizen
+# tornado==6.4.2 # Installed as dependency for ipykernel, jupyter-client
+# traitlets==5.14.3 # Installed as dependency for comm, ipykernel, ipython, jupyter-client, jupyter-core, matplotlib-inline
+# typeguard==4.3.0 # Installed as dependency for inflect
+# typing-extensions==4.12.2 # Installed as dependency for typeguard
+# urllib3==2.3.0 # Installed as dependency for requests, twine
+# virtualenv==20.29.1 # Installed as dependency for pre-commit
+# wcwidth==0.2.13 # Installed as dependency for prompt-toolkit
+# zipp==3.21.0 # Installed as dependency for importlib-metadata
