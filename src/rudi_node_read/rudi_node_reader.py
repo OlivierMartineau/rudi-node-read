@@ -436,7 +436,7 @@ class RudiNodeReader:
         media_name = safe_get_key(media, "media_name")
         media_url = safe_get_key(media, "connector", "url")
 
-        destination_path = abspath(slash_join(local_download_dir, media_name))
+        destination_path = abspath(join(local_download_dir, media_name))
         content = https_download(media_url)
         open(destination_path, "wb").write(content)
         log_d("media_download", "content saved to file", destination_path)
