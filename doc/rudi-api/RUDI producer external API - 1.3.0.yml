@@ -68,7 +68,7 @@ info:
 
 #•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 servers:
-  - url: https://data-rudi.aqmo.org
+  - url: https://bacasable.fenix.rudi-univ-rennes1.fr
 
 #•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 # DEFINITIONS
@@ -868,8 +868,7 @@ components:
           type: object
           properties:
             'api_documentation_url':
-              description:
-                Link towards the resource that describes the structure of the API
+              description: Link towards the resource that describes the structure of the API
               type: string
               format: uri
 
@@ -1000,8 +999,7 @@ components:
           # maxLength: 10
         #——————————————————————————
         'connector_parameters':
-          description:
-            Additional parameters that can be used to refine the call to the URL
+          description: Additional parameters that can be used to refine the call to the URL
           type: array
           items:
             type: object
@@ -1063,8 +1061,7 @@ components:
         'submission_date':
           allOf:
             - $ref: '#/components/schemas/Date'
-            - description:
-                Date when the integration request was submitted by the Producer node
+            - description: Date when the integration request was submitted by the Producer node
               type: string
         #——————————————————————————
         'treatment_date':

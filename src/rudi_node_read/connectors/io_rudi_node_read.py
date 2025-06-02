@@ -25,12 +25,17 @@ class RudiNodeConnector(Connector):
             "Content-type": "text/plain",
             "Accept": "application/json",
         }
-        self._prefix = "api"
+        self._prefix = "catalog"
 
         self.test_rudi_api_connection()
 
     def _get_catalog(self, url: str):
-        res = self.request(url=slash_join(self._prefix, url), req_method="GET", headers=self._headers)
+        try:
+            res = self.request(url=slash_join(self._prefix, url), req_method="GET", headers=self._headers)
+        except ConnectionError:
+            self._prefix = "api"
+            res = self.request(url=slash_join(self._prefix, url), req_method="GET", headers=self._headers)
+
         if is_dict(res) and res.get(STATUS) in [301, 302, 308]:
             server_url = str(res.get(REDIRECTION))
             if not server_url.endswith(url):

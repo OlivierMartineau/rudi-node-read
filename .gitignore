@@ -1,6 +1,7 @@
 # Python
 **/__pycache__
 venv
+pyvenv.cfg
 
 # VSCode
 .vscode
@@ -15,7 +16,6 @@ conf
 
 # Local download folder
 dwnld/*
-
 
 #========== [ gitignore.io ] ===========================================================================================
 #

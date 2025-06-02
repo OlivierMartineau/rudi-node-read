@@ -79,9 +79,7 @@ class RudiNodeReader:
         :return: the RudiNodeConnector object used for requesting the RUDI node
         """
         if not self._connector:
-            self._connector = RudiNodeConnector(
-                self._server_url, self._headers_user_agent
-            )
+            self._connector = RudiNodeConnector(self._server_url, self._headers_user_agent)
         return self._connector
 
     def connect(self, server_url: str, headers_user_agent: str = "RudiNodeGet") -> None:
@@ -103,9 +101,7 @@ class RudiNodeReader:
         node_summary = colored(LONG_SEP, color="magenta")
         node_summary += colored(RUDI_ART, color="green", attrs=["bold"])
         node_summary += f"\n{colored('node url', color='green')} : {self.server_url}"
-        node_summary += (
-            f"\n{colored(f'metadata count', color='green')} : {self.metadata_count}\n"
-        )
+        node_summary += f"\n{colored(f'metadata count', color='green')} : {self.metadata_count}\n"
         node_summary += f"{colored(LONG_SEP, color='magenta')}\n"
         return node_summary
 
@@ -115,9 +111,7 @@ class RudiNodeReader:
         Return a str with a light catalogue summary
         """
         catalogue_summary = self.light_node_summary_title
-        catalogue_summary += self.create_textual_description_metadata(
-            self.metadata_list
-        )
+        catalogue_summary += self.create_textual_description_metadata(self.metadata_list)
         return catalogue_summary
 
     @property
@@ -149,9 +143,7 @@ class RudiNodeReader:
             self._org_list = []
             for meta in self.metadata_list:
                 producer_info = safe_get_key(meta, "producer")
-                publisher_info = safe_get_key(
-                    meta, "metadata_info", "metadata_provider"
-                )
+                publisher_info = safe_get_key(meta, "metadata_info", "metadata_provider")
 
                 producer_id = safe_get_key(producer_info, "organization_id")
                 was_producer_found = not producer_id
@@ -205,9 +197,7 @@ class RudiNodeReader:
                     for prod_contact in meta_contacts:
                         prod_contact_id = safe_get_key(prod_contact, "contact_id")
                         if prod_contact_id:
-                            if not find_in_dict_list(
-                                self._contact_list, {"contact_id": prod_contact_id}
-                            ):
+                            if not find_in_dict_list(self._contact_list, {"contact_id": prod_contact_id}):
                                 self._contact_list.append(prod_contact)
 
         return self._contact_list
@@ -338,18 +328,14 @@ class RudiNodeReader:
         :param media_name: meta_contact of the media
         :return: metadata whose `resource_title` attribute matches the `title` input parameter
         """
-        return find_in_dict_list(
-            self.metadata_list, {"available_formats": [{"media_name": media_name}]}
-        )
+        return find_in_dict_list(self.metadata_list, {"available_formats": [{"media_name": media_name}]})
 
     def find_metadata_with_media_uuid(self, media_uuid: str) -> dict | None:
         """
         :param media_uuid: UUIDv4 of the media
         :return: metadata whose `resource_title` attribute matches the `title` input parameter
         """
-        return find_in_dict_list(
-            self.metadata_list, {"available_formats": [{"media_id": media_uuid}]}
-        )
+        return find_in_dict_list(self.metadata_list, {"available_formats": [{"media_id": media_uuid}]})
 
     def create_textual_description_single_metadata(self, metadata: dict | str) -> str:
         """
@@ -360,9 +346,7 @@ class RudiNodeReader:
         if isinstance(metadata, str):
             metadata_ = self.find_metadata_with_uuid(metadata)
             if metadata_ is None:
-                raise Exception(
-                    f"No metadata with uuid {metadata} was found on rudi node."
-                )
+                raise Exception(f"No metadata with uuid {metadata} was found on rudi node.")
             metadata = metadata_
         resource_title = metadata["resource_title"]
         meta_link = f"{self.server_url}/api/v1/resources/{metadata['global_id']}"
@@ -406,9 +390,7 @@ class RudiNodeReader:
         if media_type != "FILE":
             return {
                 "status": _STATUS_SKIPPED,
-                "media": pick_in_dict(
-                    media, ["media_name", "media_id", "media_url", "media_type"]
-                ),
+                "media": pick_in_dict(media, ["media_name", "media_id", "media_url", "media_type"]),
             }
 
         # If the file is not available on storage, we won't try to download it.
@@ -429,9 +411,7 @@ class RudiNodeReader:
 
         # The metadata says the file is available, let's download it
         if not isdir(local_download_dir):
-            raise FileNotFoundError(
-                f"The following folder does not exist: '{local_download_dir}'"
-            )
+            raise FileNotFoundError(f"The following folder does not exist: '{local_download_dir}'")
 
         media_name = safe_get_key(media, "media_name")
         media_url = safe_get_key(media, "connector", "url")
@@ -452,9 +432,7 @@ class RudiNodeReader:
         }
         return {"status": _STATUS_DOWNLOADED, "media": file_info}
 
-    def download_file_with_uuid(
-        self, media_uuid: str, local_download_dir: str
-    ) -> dict | None:
+    def download_file_with_uuid(self, media_uuid: str, local_download_dir: str) -> dict | None:
         """
         Download a file identified with the input UUID
         :param media_uuid: a UUIDv4 that identifies the media on the RUDI node
@@ -469,9 +447,7 @@ class RudiNodeReader:
         media = find_in_dict_list(media_list, {"media_id": media_uuid})
         return self._download_media_from_info(media, local_download_dir)
 
-    def download_file_with_name(
-        self, media_name: str, local_download_dir: str
-    ) -> dict | None:
+    def download_file_with_name(self, media_name: str, local_download_dir: str) -> dict | None:
         """
         Find a file from its name and download it if it is available
         :param media_name: the name of the file we want to download
@@ -485,9 +461,7 @@ class RudiNodeReader:
         media = find_in_dict_list(media_list, {"media_name": media_name})
         return self._download_media_from_info(media, local_download_dir)
 
-    def download_files_for_metadata(
-        self, metadata_id, local_download_dir
-    ) -> dict | None:
+    def download_files_for_metadata(self, metadata_id, local_download_dir) -> dict | None:
         """
         Download all the available files for a metadata
         :param metadata_id: the UUIDv4 of the metadata
@@ -495,9 +469,7 @@ class RudiNodeReader:
         :return: an object that lists the files that were downloaded, skipped or found missing
         """
         if not isdir(local_download_dir):
-            raise FileNotFoundError(
-                f"The following folder does not exist: '{local_download_dir}'"
-            )
+            raise FileNotFoundError(f"The following folder does not exist: '{local_download_dir}'")
 
         meta = self.find_metadata_with_uuid(metadata_id)
         media_list = safe_get_key(meta, "available_formats")
@@ -514,16 +486,12 @@ class RudiNodeReader:
             files_dwnld_info[status].append(dwnld_info["media"])
         return files_dwnld_info
 
-    def save_metadata_to_file(
-        self, local_download_dir: str, file_name: str = "rudi_node_metadata.json"
-    ) -> None:
+    def save_metadata_to_file(self, local_download_dir: str, file_name: str = "rudi_node_metadata.json") -> None:
         """
         Dumps the metadata list to a local file
         :param local_download_dir: the path to a local folder
         :param file_name: the name of the file in which the JSON representation of the list of metadata will be saved
         """
         file_path = abspath(join(local_download_dir, file_name))
-        json_str = dumps(obj=self.metadata_list, ensure_ascii=False, indent=2).encode(
-            "utf-8"
-        )
+        json_str = dumps(obj=self.metadata_list, ensure_ascii=False, indent=2).encode("utf-8")
         open(file_path, "wb").write(json_str)

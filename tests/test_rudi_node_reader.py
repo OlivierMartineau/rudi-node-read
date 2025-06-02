@@ -2,7 +2,7 @@ import pytest
 
 from rudi_node_read.rudi_node_reader import RudiNodeReader
 
-rudi_node_info = RudiNodeReader("https://data-rudi.aqmo.org")
+rudi_node_info = RudiNodeReader("https://bacasable.fenix.rudi-univ-rennes1.fr")
 
 
 @pytest.fixture
