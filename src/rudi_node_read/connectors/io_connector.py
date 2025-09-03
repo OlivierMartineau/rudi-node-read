@@ -1,10 +1,10 @@
-from http.client import HTTPSConnection, HTTPConnection
-from json import dumps, loads, JSONDecodeError
+from http.client import HTTPConnection, HTTPSConnection
+from json import JSONDecodeError, dumps, loads
 from typing import Literal, get_args
 from urllib.parse import urlsplit
 
 from rudi_node_read.utils.err import HttpError, LiteralUnexpectedValueException
-from rudi_node_read.utils.log import log_d_if, log_e, log_d
+from rudi_node_read.utils.log import log_d, log_d_if, log_e
 from rudi_node_read.utils.serializable import Serializable
 from rudi_node_read.utils.type_string import slash_join
 
@@ -60,14 +60,17 @@ class Connector(Serializable):
     def full_path(self, url: str = "/"):
         return slash_join("/", self.path, url)
 
+    def from_json(o):  # type: ignore
+        raise NotImplementedError()
+
     def request(
         self,
         url: str = "/",
         req_method: HttpRequestMethod = "GET",
-        body: dict = None,
-        headers: dict = None,
+        body: dict | None = None,
+        headers: dict | None = None,
         should_log_response: bool = False,
-    ) -> (str, dict):
+    ) -> dict | str | list | None:
         """Send a http(obj) request"""
 
         connection = HTTPSConnection(self.host) if self.scheme == "https" else HTTPConnection(self.host)
@@ -78,7 +81,7 @@ class Connector(Serializable):
             headers = {"Content-Type": "text/plain", "Accept": "application/json"}
         if body and isinstance(body, dict):
             headers["Content-type"] = "application/json"
-            body = dumps(body)
+            body = dumps(body)  # type: ignore
 
         path_url = self.full_path(url)
         log_d(f"{self.__class__.__name__}.request", "to", self.full_url(url))

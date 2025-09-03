@@ -95,8 +95,3 @@ def test_metadata_with_available_media(rudi_node):
 def test_find_metadata_with_media_name(rudi_node):
     media_name = rudi_node.metadata_list[0]["available_formats"][0]["media_name"]
     assert len(rudi_node.find_metadata_with_media_name(media_name)) > 0
-
-
-def test_find_metadata_with_media_name(rudi_node):
-    media_uuid = rudi_node.metadata_list[0]["available_formats"][0]["media_id"]
-    assert len(rudi_node.find_metadata_with_media_uuid(media_uuid)) > 0

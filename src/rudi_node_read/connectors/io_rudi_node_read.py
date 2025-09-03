@@ -1,10 +1,11 @@
 from rudi_node_read.connectors.io_connector import REDIRECTION, STATUS, Connector
+from rudi_node_read.rudi_types.rudi_meta import RudiMetadata
 from rudi_node_read.utils.log import log_d, log_e
 from rudi_node_read.utils.type_string import slash_join
 
 REQ_LIMIT = 500
 
-here = ("RudiNodeConnector",)
+here = "RudiNodeConnector"
 
 
 class RudiNodeConnector(Connector):
@@ -79,14 +80,14 @@ class RudiNodeConnector(Connector):
 
         return self.get_api(f"resources?{filter_str[1:]}")
 
-    def get_metadata_count(self):
+    def get_metadata_count(self) -> int:
         return self.get_api("resources?limit=1")["total"]
 
     def get_metadata_list(self, max_number: int = 0):
         meta_nb = self.get_metadata_count()
         meta_set = []
         req_offset = 0
-        if not max_number:
+        if max_number == 0:
             max_number = meta_nb
         while req_offset < meta_nb and req_offset < max_number:
             req_limit = REQ_LIMIT if req_offset + REQ_LIMIT < max_number else max_number - req_offset
@@ -115,3 +116,37 @@ class RudiNodeConnector(Connector):
                 }
             )
         return media_list_final
+
+    def get_rudi_meta_with_uuid(self, metadata_uuid: str) -> RudiMetadata | None:
+        """
+        Get from a RUDI node a metadata as a RudiMetadata object
+        """
+        meta_json = self.get_metadata_with_uuid(metadata_uuid)
+        if isinstance(meta_json, dict):
+            rudi_meta = RudiMetadata.from_json(meta_json)
+            return rudi_meta
+        return None
+
+    def get_rudi_meta_with_filter(self, rudi_fields_filter: dict):
+        """
+        Get from a RUDI node a list of RudiMetadata objects that correspond to the input filter
+        """
+        meta_list = self.get_metadata_with_filter(rudi_fields_filter)
+        if not isinstance(meta_list, list) or len(meta_list) < 1:
+            return []
+        rudi_meta_list = []
+        for meta_json in meta_list:
+            rudi_meta_list.append(RudiMetadata.from_json(meta_json))
+        return rudi_meta_list
+
+    def get_rudi_meta_list(self, max_number: int = 0):
+        """
+        Get the list of every metadata in a RUDI node as RudiMetadata objects
+        """
+        meta_list = self.get_metadata_list(max_number)
+        if not isinstance(meta_list, list) or len(meta_list) < 1:
+            return []
+        rudi_meta_list = []
+        for meta_json in meta_list:
+            rudi_meta_list.append(RudiMetadata.from_json(meta_json))
+        return rudi_meta_list

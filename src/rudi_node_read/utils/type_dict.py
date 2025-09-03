@@ -1,5 +1,22 @@
 from typing import Union
 
+from rudi_node_read.utils.typing_utils import get_type_name
+
+
+def check_is_dict(o) -> dict:
+    """
+    :return: True of input o is an object, False otherwise
+    """
+    if not isinstance(o, dict):
+        raise TypeError(f"input argument should be a Python 'dict'. Got: '{get_type_name(o)}'")
+    return o
+
+
+def check_is_dict_or_none(o) -> dict | None:
+    if o is None:
+        return None
+    return check_is_dict(o)
+
 
 def has_key(obj: dict, key_name: str) -> bool:
     """
