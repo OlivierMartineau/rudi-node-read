@@ -92,6 +92,7 @@ class RudiNodeConnector(Connector):
         while req_offset < meta_nb and req_offset < max_number:
             req_limit = REQ_LIMIT if req_offset + REQ_LIMIT < max_number else max_number - req_offset
             meta_list_partial = self.get_api(f"resources?sort_by=-updatedAt&limit={req_limit}&offset={req_offset}")
+            assert meta_list_partial is dict
             log_d("get_metadata_list", "total", meta_list_partial["total"])
             log_d("get_metadata_list", "len", len(meta_list_partial["items"]))
             meta_set += meta_list_partial["items"]
@@ -100,10 +101,12 @@ class RudiNodeConnector(Connector):
 
     def get_metadata_ids(self):
         meta_list = self.get_api("resources?fields=global_id,resource_title")
+        assert meta_list is dict
         return meta_list["items"]
 
     def get_list_media_for_metadata(self, metadata_uuid):
         meta = self.get_metadata_with_uuid(metadata_uuid)
+        assert meta is dict
         media_list = meta["available_formats"]
         media_list_final = []
         for media in media_list:
