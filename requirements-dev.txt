@@ -1,0 +1,272 @@
+Deprecated==1.3.1
+PyYAML==6.0.3
+commitizen==4.16.2
+jaraco.collections==5.2.1
+jupyter_client==8.8.0
+jupyter_core==5.9.1
+mdurl==0.1.2
+pip-chill==1.0.5
+pip-upgrade-outdated==1.5
+pip3-autoremove==2.0.1
+pkginfo==1.12.1.2
+pre_commit==4.6.0
+pure_eval==0.2.3
+pytokens==0.4.1
+readme_renderer==44.0
+stack-data==0.6.3
+# Babel==None # Installed as dependency for Jinja2
+# Django==None # Installed as dependency for jedi
+# Jinja2==3.1.6 # Installed as dependency for jedi
+# MarkupSafe==3.0.3 # Installed as dependency for Jinja2, jedi
+# PySocks==None # Installed as dependency for requests
+# PyTest==None # Installed as dependency for Deprecated
+# PyTest-Cov==None # Installed as dependency for Deprecated
+# Pygments==2.20.0 # Installed as dependency for jedi, readme_renderer
+# SecretStorage==None # Installed as dependency for keyring
+# Sphinx==None # Installed as dependency for jedi
+# abi3audit==None # Installed as dependency for psutil
+# aiohttp==None # Installed as dependency for black
+# alabaster==None # Installed as dependency for jedi
+# annotated-doc==0.0.4 # Installed as dependency for typer
+# anyio==None # Installed as dependency for jupyter_client
+# appnope==0.1.4 # Installed as dependency for ipykernel
+# argcomplete==3.6.3 # Installed as dependency for commitizen, ipython, pytest, traitlets
+# astroid==None # Installed as dependency for asttokens
+# asttokens==3.0.1 # Installed as dependency for executing, stack-data
+# attrs==None # Installed as dependency for jedi, pytest
+# babel==None # Installed as dependency for jedi
+# backports-zstd==None # Installed as dependency for urllib3
+# backports.tarfile==1.2.0 # Installed as dependency for jaraco.context
+# bandit==None # Installed as dependency for id
+# big-O==None # Installed as dependency for zipp
+# black==26.5.1 # Installed as dependency for ipython, psutil, pytokens
+# brotli==None # Installed as dependency for urllib3
+# brotlicffi==None # Installed as dependency for urllib3
+# build==1.5.0 # Installed as dependency for id, pytokens
+# bump==None # Installed as dependency for id
+# bump2version==None # Installed as dependency for Deprecated
+# certifi==2026.5.20 # Installed as dependency for jedi, requests
+# cffi==None # Installed as dependency for pyzmq
+# cfgv==3.5.0 # Installed as dependency for pre_commit
+# chardet==7.4.3 # Installed as dependency for requests
+# charset-normalizer==3.4.7 # Installed as dependency for commitizen, jedi
+# charset_normalizer==None # Installed as dependency for requests
+# check-manifest==None # Installed as dependency for psutil
+# click==8.4.1 # Installed as dependency for black, typer
+# cmarkgfm==None # Installed as dependency for readme_renderer
+# colorama==0.4.6 # Installed as dependency for Pygments, black, build, click, commitizen, ipython, jedi, psutil, pytest
+# comm==0.2.3 # Installed as dependency for ipykernel
+# commonmark~==None # Installed as dependency for markdown-it-py
+# covdefaults==None # Installed as dependency for python-discovery
+# coverage==7.14.0 # Installed as dependency for argcomplete, executing, jupyter_client, markdown-it-py, pluggy, psutil, python-discovery
+# coverage-enable-subprocess==None # Installed as dependency for executing
+# coverage[toml]==None # Installed as dependency for id, ipykernel, pytest-cov
+# curio==None # Installed as dependency for ipython
+# cython==None # Installed as dependency for stack-data
+# debugpy==1.8.20 # Installed as dependency for ipykernel
+# decli==0.6.3 # Installed as dependency for commitizen
+# decorator==5.3.1 # Installed as dependency for ipython
+# deprecated==None # Installed as dependency for commitizen
+# distlib==0.4.0 # Installed as dependency for virtualenv
+# docopt==None # Installed as dependency for jedi, parso
+# docrepr==None # Installed as dependency for ipython
+# docutils==0.22.4 # Installed as dependency for jedi, readme_renderer
+# exceptiongroup==None # Installed as dependency for ipython, pytest
+# executing==2.2.1 # Installed as dependency for stack-data
+# filelock==3.29.0 # Installed as dependency for python-discovery, virtualenv
+# flake8==None # Installed as dependency for jedi, matplotlib-inline, parso
+# flaky==None # Installed as dependency for ipykernel
+# google-re2==None # Installed as dependency for pathspec
+# gprof2dot==None # Installed as dependency for markdown-it-py
+# h2==None # Installed as dependency for urllib3
+# hyperscan==None # Installed as dependency for pathspec
+# hypothesis==None # Installed as dependency for pytest
+# id==1.6.1 # Installed as dependency for twine
+# id[test,==None # Installed as dependency for id
+# identify==2.6.19 # Installed as dependency for pre_commit
+# idna==3.16 # Installed as dependency for jedi, requests, rfc3986
+# imagesize==None # Installed as dependency for jedi
+# importlib-metadata==None # Installed as dependency for build, commitizen, twine, virtualenv
+# importlib_metadata==9.0.0 # Installed as dependency for keyring, typeguard
+# inflect==7.5.0 # Installed as dependency for jaraco.text
+# iniconfig==2.3.0 # Installed as dependency for jedi, pytest
+# inspect2==None # Installed as dependency for Deprecated
+# interrogate==None # Installed as dependency for id
+# intersphinx-registry==None # Installed as dependency for ipykernel, jupyter_core
+# intersphinx_registry==None # Installed as dependency for ipython
+# ipykernel==7.2.0 # Installed as dependency for ipython, jupyter_client, jupyter_core, markdown-it-py
+# ipyparallel==None # Installed as dependency for ipykernel
+# ipython==9.13.0 # Installed as dependency for black, executing, importlib_metadata, ipykernel
+# ipython-pygments-lexers==None # Installed as dependency for ipython
+# ipython[doc,matplotlib,terminal,test,test_extra]==None # Installed as dependency for ipython
+# ipython[matplotlib,test]==None # Installed as dependency for ipython
+# ipython[matplotlib]==None # Installed as dependency for ipython
+# ipython[test]==None # Installed as dependency for ipython
+# ipywidgets==None # Installed as dependency for rich
+# jaraco.classes==3.4.0 # Installed as dependency for jaraco.functools, keyring
+# jaraco.context==6.1.2 # Installed as dependency for jaraco.text, keyring
+# jaraco.functools==4.5.0 # Installed as dependency for jaraco.text, keyring, zipp
+# jaraco.itertools==None # Installed as dependency for zipp
+# jaraco.packaging==None # Installed as dependency for backports.tarfile, importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, zipp
+# jaraco.test==None # Installed as dependency for backports.tarfile, jaraco.context, zipp
+# jaraco.text==4.2.0 # Installed as dependency for jaraco.collections
+# jaraco.tidelift==None # Installed as dependency for importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, zipp
+# jedi==0.20.0 # Installed as dependency for ipython
+# jeepney==None # Installed as dependency for keyring
+# jinja2==None # Installed as dependency for commitizen
+# jupyter-client==None # Installed as dependency for ipykernel
+# jupyter-core==None # Installed as dependency for ipykernel, jupyter_client
+# jupyter_ai==None # Installed as dependency for ipython
+# jupyter_sphinx==None # Installed as dependency for markdown-it-py
+# keyring==25.7.0 # Installed as dependency for build, twine
+# linkify-it-py==None # Installed as dependency for markdown-it-py
+# littleutils==None # Installed as dependency for executing, stack-data
+# markdown-it-py==4.2.0 # Installed as dependency for rich
+# markdown-it-pyrs==None # Installed as dependency for markdown-it-py
+# markdown~==None # Installed as dependency for markdown-it-py
+# matplotlib==None # Installed as dependency for ipykernel, ipython, matplotlib-inline
+# matplotlib-inline==0.2.2 # Installed as dependency for ipykernel, ipython
+# mdit-py-plugins==None # Installed as dependency for markdown-it-py
+# mdurl~==None # Installed as dependency for markdown-it-py
+# mistletoe~==None # Installed as dependency for markdown-it-py
+# mistune~==None # Installed as dependency for markdown-it-py
+# mock==None # Installed as dependency for pytest
+# more-itertools==11.1.0 # Installed as dependency for jaraco.classes
+# more_itertools==None # Installed as dependency for inflect, jaraco.functools, jaraco.text, zipp
+# msgpack==None # Installed as dependency for jupyter_client
+# mypy==None # Installed as dependency for argcomplete, id, idna, jaraco.text, jupyter_client, pytokens, traitlets
+# mypy-extensions==None # Installed as dependency for black
+# myst-parser==None # Installed as dependency for ipykernel, jupyter_client, jupyter_core, markdown-it-py, traitlets
+# nbclient==None # Installed as dependency for ipython
+# nbdime==None # Installed as dependency for matplotlib-inline
+# nbformat==None # Installed as dependency for ipython
+# nbval==None # Installed as dependency for matplotlib-inline
+# nest-asyncio==1.6.0 # Installed as dependency for ipykernel
+# nh3==0.3.5 # Installed as dependency for readme_renderer
+# nodeenv==1.10.0 # Installed as dependency for pre_commit
+# notebook==None # Installed as dependency for matplotlib-inline
+# numpy==None # Installed as dependency for ipython
+# packaging==26.2 # Installed as dependency for black, build, commitizen, importlib_metadata, ipykernel, ipython, jedi, pip3-autoremove, psutil, pytest, twine
+# pandas==None # Installed as dependency for ipython
+# panflute~==None # Installed as dependency for markdown-it-py
+# paramiko==None # Installed as dependency for jupyter_client
+# parso==0.8.7 # Installed as dependency for jedi
+# pathlib2==None # Installed as dependency for jaraco.text
+# pathspec==1.1.1 # Installed as dependency for black
+# pexpect==4.9.0 # Installed as dependency for argcomplete, ipython
+# platformdirs==4.9.6 # Installed as dependency for black, jupyter_core, python-discovery, virtualenv
+# pluggy==1.6.0 # Installed as dependency for jedi, pytest, pytest-cov
+# portend==None # Installed as dependency for jaraco.context
+# pre-commit==None # Installed as dependency for ipykernel, jupyter_client, jupyter_core, pluggy, traitlets
+# pretend==None # Installed as dependency for id
+# process-tests==None # Installed as dependency for pytest-cov
+# prompt-toolkit==None # Installed as dependency for commitizen
+# prompt_toolkit==3.0.52 # Installed as dependency for ipython, questionary
+# psleak==None # Installed as dependency for psutil
+# psutil==7.2.2 # Installed as dependency for ipykernel, ipython, markdown-it-py
+# ptyprocess==0.7.0 # Installed as dependency for pexpect
+# pure-eval==None # Installed as dependency for stack-data
+# pydata-sphinx-theme==None # Installed as dependency for ipykernel, jupyter_client, jupyter_core, traitlets
+# pyfakefs==None # Installed as dependency for importlib_metadata, keyring
+# pygments==None # Installed as dependency for inflect, ipython, pytest, rich, stack-data
+# pygobject-stubs==None # Installed as dependency for keyring
+# pylint==None # Installed as dependency for psutil
+# pyperf==None # Installed as dependency for psutil
+# pypinfo==None # Installed as dependency for psutil
+# pyproject_hooks==1.2.0 # Installed as dependency for build
+# pyqt5==None # Installed as dependency for ipykernel
+# pyreadline3==None # Installed as dependency for psutil
+# pyside6==None # Installed as dependency for ipykernel
+# pysocks==None # Installed as dependency for urllib3
+# pytest==9.0.3 # Installed as dependency for asttokens, backports.tarfile, comm, executing, id, idna, importlib_metadata, inflect, ipykernel, ipython, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, jedi, jupyter_client, jupyter_core, keyring, markdown-it-py, matplotlib-inline, parso, pkginfo, pluggy, psutil, pure_eval, pytest-cov, python-discovery, pytokens, stack-data, termcolor, traitlets, wrapt, zipp
+# pytest-asyncio==None # Installed as dependency for ipykernel, ipython
+# pytest-benchmark==None # Installed as dependency for markdown-it-py, pluggy
+# pytest-checkdocs==None # Installed as dependency for backports.tarfile, importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, zipp
+# pytest-cov==7.1.0 # Installed as dependency for asttokens, backports.tarfile, id, importlib_metadata, inflect, ipykernel, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, jupyter_client, jupyter_core, keyring, markdown-it-py, pkginfo, psutil, pytokens, termcolor, zipp
+# pytest-enabler==None # Installed as dependency for backports.tarfile, importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, zipp
+# pytest-ignore-flaky==None # Installed as dependency for zipp
+# pytest-instafail==None # Installed as dependency for psutil
+# pytest-jupyter[client]==None # Installed as dependency for jupyter_client
+# pytest-mock==None # Installed as dependency for python-discovery, traitlets
+# pytest-mypy==None # Installed as dependency for importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, zipp
+# pytest-mypy-testing==None # Installed as dependency for traitlets
+# pytest-perf==None # Installed as dependency for importlib_metadata
+# pytest-regressions==None # Installed as dependency for markdown-it-py
+# pytest-ruff==None # Installed as dependency for importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, zipp
+# pytest-timeout==None # Installed as dependency for ipykernel, jupyter_client, jupyter_core, markdown-it-py
+# pytest-xdist==None # Installed as dependency for asttokens, psutil, pytest-cov
+# python-dateutil==2.9.0.post0 # Installed as dependency for jupyter_client
+# python-discovery==1.3.1 # Installed as dependency for virtualenv
+# pytokens~==None # Installed as dependency for black
+# pywin32==None # Installed as dependency for psutil
+# pywin32-ctypes==None # Installed as dependency for keyring
+# pyyaml==None # Installed as dependency for commitizen, markdown-it-py, pre_commit
+# pyzmq==27.1.0 # Installed as dependency for ipykernel, jupyter_client
+# questionary==2.1.1 # Installed as dependency for commitizen
+# readme-renderer==None # Installed as dependency for twine
+# requests==2.34.2 # Installed as dependency for jedi, markdown-it-py, psutil, pytest, requests-toolbelt, twine
+# requests-toolbelt==1.0.0 # Installed as dependency for twine
+# rfc3986==2.0.0 # Installed as dependency for twine
+# rich==15.0.0 # Installed as dependency for executing, twine, typer
+# roman-numerals==None # Installed as dependency for jedi
+# rst.linker==None # Installed as dependency for backports.tarfile, importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, zipp
+# rstcheck==None # Installed as dependency for psutil
+# ruff==None # Installed as dependency for argcomplete, id, idna, psutil
+# shellingham==1.5.4 # Installed as dependency for typer
+# shtab==None # Installed as dependency for keyring
+# six==1.17.0 # Installed as dependency for python-dateutil
+# snowballstemmer==None # Installed as dependency for jedi
+# sphinx==None # Installed as dependency for backports.tarfile, importlib_metadata, inflect, ipykernel, ipython, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, jupyter_client, keyring, markdown-it-py, psutil, python-discovery, traitlets, zipp
+# sphinx-autodoc-typehints==None # Installed as dependency for ipykernel, jupyter_client, jupyter_core, python-discovery
+# sphinx-book-theme~==None # Installed as dependency for markdown-it-py
+# sphinx-copybutton==None # Installed as dependency for markdown-it-py
+# sphinx-design==None # Installed as dependency for markdown-it-py
+# sphinx-lint==None # Installed as dependency for backports.tarfile, importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, zipp
+# sphinx-rtd-theme==None # Installed as dependency for ipython, jedi, psutil
+# sphinx_toml==None # Installed as dependency for ipython
+# sphinxcontrib-applehelp==None # Installed as dependency for jedi
+# sphinxcontrib-devhelp==None # Installed as dependency for jedi
+# sphinxcontrib-github-alt==None # Installed as dependency for ipykernel, jupyter_client
+# sphinxcontrib-htmlhelp==None # Installed as dependency for jedi
+# sphinxcontrib-jquery==None # Installed as dependency for jedi
+# sphinxcontrib-jsmath==None # Installed as dependency for jedi
+# sphinxcontrib-mermaid==None # Installed as dependency for python-discovery
+# sphinxcontrib-qthelp==None # Installed as dependency for jedi
+# sphinxcontrib-serializinghtml==None # Installed as dependency for jedi
+# sphinxcontrib-spelling==None # Installed as dependency for ipykernel, jupyter_client, jupyter_core
+# sphinxcontrib-towncrier==None # Installed as dependency for python-discovery
+# stack_data==None # Installed as dependency for ipython
+# termcolor==3.3.0 # Installed as dependency for commitizen
+# testpath==None # Installed as dependency for ipython
+# tokenize-rt==None # Installed as dependency for black
+# toml-sort==None # Installed as dependency for psutil
+# tomli==2.4.1 # Installed as dependency for black, build, coverage, pytest
+# tomlkit==0.15.0 # Installed as dependency for commitizen
+# tornado==6.5.5 # Installed as dependency for ipykernel, jupyter_client
+# towncrier==None # Installed as dependency for python-discovery
+# tox==None # Installed as dependency for Deprecated, pluggy, pytokens
+# traitlets==5.15.0 # Installed as dependency for ipykernel, ipython, jupyter_client, jupyter_core, matplotlib-inline
+# trio==None # Installed as dependency for ipykernel, ipython
+# twine==6.2.0 # Installed as dependency for psutil, pytokens
+# typeguard==4.5.2 # Installed as dependency for inflect, stack-data
+# typer==0.25.1 # Installed as dependency for typer-slim
+# typer-slim==0.24.0 # Installed as dependency for jaraco.text
+# types-decorator==None # Installed as dependency for ipython
+# types-pywin32==None # Installed as dependency for keyring
+# types-setuptools==None # Installed as dependency for jedi, parso
+# typing-extensions==None # Installed as dependency for black, commitizen, jedi, pathspec, virtualenv
+# typing_extensions==4.15.0 # Installed as dependency for inflect, ipython, typeguard
+# ukkonen==None # Installed as dependency for identify
+# urllib3==2.7.0 # Installed as dependency for id, jedi, requests, twine
+# uv==None # Installed as dependency for build
+# uvloop==None # Installed as dependency for black
+# validate-pyproject[all]==None # Installed as dependency for psutil
+# virtualenv==21.3.3 # Installed as dependency for build, pre_commit, psutil, pytest-cov
+# vulture==None # Installed as dependency for psutil
+# wcwidth==0.7.0 # Installed as dependency for prompt_toolkit
+# winloop==None # Installed as dependency for black
+# wmi==None # Installed as dependency for psutil
+# wrapt==2.2.1 # Installed as dependency for Deprecated
+# xmlschema==None # Installed as dependency for pytest
+# zipp==4.1.0 # Installed as dependency for importlib_metadata
+# zuban==None # Installed as dependency for jedi, parso

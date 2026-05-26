@@ -1,0 +1,33 @@
+deepdiff==9.1.0
+puremagic==2.2.0
+# Sphinx~==None # Installed as dependency for deepdiff
+# bump2version~==None # Installed as dependency for deepdiff, orderly-set
+# cachebox==5.2.3 # Installed as dependency for deepdiff
+# click~==None # Installed as dependency for deepdiff
+# coverage~==None # Installed as dependency for deepdiff, orderly-set
+# flake8-pyproject~==None # Installed as dependency for deepdiff, orderly-set
+# flake8~==None # Installed as dependency for deepdiff, orderly-set
+# flit-core==None # Installed as dependency for deepdiff
+# furo==None # Installed as dependency for backports.tarfile, deepdiff, importlib_metadata, inflect, jaraco.classes, jaraco.collections, jaraco.context, jaraco.functools, jaraco.text, keyring, python-discovery, zipp
+# ipdb~==None # Installed as dependency for deepdiff, orderly-set
+# jsonpickle~==None # Installed as dependency for deepdiff
+# nox==None # Installed as dependency for deepdiff
+# numpy~==None # Installed as dependency for deepdiff
+# orderly-set==5.5.0 # Installed as dependency for deepdiff
+# orjson==None # Installed as dependency for deepdiff, jupyter_client, orderly-set
+# orjson~==None # Installed as dependency for deepdiff
+# pandas~==None # Installed as dependency for deepdiff
+# polars~==None # Installed as dependency for deepdiff
+# pydantic~==None # Installed as dependency for deepdiff
+# pytest-benchmark~==None # Installed as dependency for deepdiff, orderly-set
+# pytest-cov~==None # Installed as dependency for deepdiff, orderly-set
+# pytest~==None # Installed as dependency for deepdiff, orderly-set
+# python-dateutil~==None # Installed as dependency for deepdiff
+# python-dotenv~==None # Installed as dependency for deepdiff, orderly-set
+# pytz==None # Installed as dependency for deepdiff
+# pyyaml~==None # Installed as dependency for deepdiff
+# sphinx-sitemap~==None # Installed as dependency for deepdiff
+# sphinxemoji~==None # Installed as dependency for deepdiff
+# tomli-w~==None # Installed as dependency for deepdiff
+# tomli~==None # Installed as dependency for deepdiff
+# uuid6==None # Installed as dependency for deepdiff
