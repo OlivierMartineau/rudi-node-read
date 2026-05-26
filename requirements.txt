@@ -1,4 +1,3 @@
-deepdiff==9.1.0
 puremagic==2.2.0
 # Sphinx~==None # Installed as dependency for deepdiff
 # bump2version~==None # Installed as dependency for deepdiff, orderly-set

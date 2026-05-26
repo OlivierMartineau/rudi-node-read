@@ -1,8 +1,6 @@
 from abc import ABC
 from json import dumps
 
-from deepdiff import DeepDiff
-
 from rudi_node_read.rudi_types.rudi_const import (
     CONNECTOR_PARAMS_TYPES,
     FILE_STORAGE_STATUSES,
@@ -493,7 +491,7 @@ if __name__ == "__main__":  # pragma: no cover
     }
     log_d(tests, "RudiMediaService.from_json", rudi_service := RudiMediaService.from_json(rudi_service_json))
     log_d(tests, "RudiMediaService.to_json", rudi_service.to_json())
-    log_d(tests, "RudiMediaService.to_json diff", DeepDiff(rudi_service_json, rudi_service.to_json()))
+    # log_d(tests, "RudiMediaService.to_json diff", DeepDiff(rudi_service_json, rudi_service.to_json()))
 
     params = RudiMediaConnectorParameter(key="key1", value=3)
     log_d(tests, "RudiMediaConnectorParameters", params.to_json())
