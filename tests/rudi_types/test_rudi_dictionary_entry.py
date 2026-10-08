@@ -12,11 +12,11 @@ from rudi_node_read.utils.type_dict import has_key
 def test_RudiDictionaryEntry_init():
     assert RudiDictionaryEntry("en", "testing")
     with pytest.raises(ValueError):
-        RudiDictionaryEntry(None, "testing")
+        RudiDictionaryEntry(None, "testing")  # type: ignore
     with pytest.raises(ValueError):
-        RudiDictionaryEntry("testing", None)
+        RudiDictionaryEntry("testing", None)  # type: ignore
     with pytest.raises(LiteralUnexpectedValueException):
-        RudiDictionaryEntry("testing", "testing")
+        RudiDictionaryEntry("testing", "testing")  # type: ignore
 
 
 def test_RudiDictionaryEntry_eq():
@@ -79,7 +79,7 @@ def test_RudiDictionaryEntryList_ne():
     entry_b = RudiDictionaryEntry.from_json("testing")
     assert RudiDictionaryEntryList([entry_a, entry_b]) != [entry_a, entry_b]
     assert RudiDictionaryEntryList([entry_a]) != entry_a
-    assert RudiDictionaryEntryList([entry_a]) != None
+    assert RudiDictionaryEntryList([entry_a]) != None  # noqa: E711
 
 
 def test_RudiDictionaryEntryList_to_json_str():

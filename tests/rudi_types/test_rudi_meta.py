@@ -67,7 +67,7 @@ RUDI_META = {
         "confidentiality": {"restricted_access": False, "gdpr_sensitive": False},
     },
     "metadata_info": {
-        "api_version": "1.3.2",
+        "api_version": "1.4.3",
         "metadata_dates": {"created": "2023-04-12T09:39:28.666+00:00", "updated": "2023-04-12T09:39:28.696+00:00"},
         "metadata_provider": {
             "organization_id": "44f5ac9d-34d6-44d0-99a9-0496654bde5c",

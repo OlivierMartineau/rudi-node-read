@@ -1,29 +1,25 @@
-[build-system]
-requires = ["setuptools>=67.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "rudi-node-read"
-version = "0.4.0"
+version = "0.5.0"
 authors = [{ name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" }]
 maintainers = [
     { name = "Olivier Martineau", email = "olivier.martineau@irisa.fr" },
 ]
 description = "Use the external API of a RUDI Producer node"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = "EUPL-1.2"
-license-files = ["LICENSE.md"]
+license-files = ["LICENCE.md"]
 classifiers = [
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Natural Language :: English",
     "Operating System :: OS Independent",
 ]
 keywords = [
     "rudi-node-read",
-    "rudi-node-get",
     "RUDI",
     "producer node",
     "RUDI node",
@@ -31,7 +27,34 @@ keywords = [
     "open-data",
     "Univ. Rennes",
 ]
-dynamic = ["dependencies", "optional-dependencies"]
+dependencies = [
+    "chardet>=7.6.0",
+    "deepdiff>=9.1.0",
+    "puremagic==1.30",
+    "termcolor>=3.3.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=26.10.0",
+    "commitizen>=4.19.2",
+    "pre-commit>=4.6.2",
+    "pyright>=1.1.414",
+    "ruff>=0.16.10",
+    "uv-bump>=0.6.0",
+]
+test = [
+    "bandit>=1.9.4",
+    "ipykernel>=7.4.0",
+    "pytest-cov>=7.1.0",
+    "pytest>=9.1.1",
+]
+build = [
+    "build>=1.6.1",
+ "setuptools>=84.0.0",
+ "twine>=7.0.0",
+ "wheel>=0.48.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/OlivierMartineau/rudi-node-read"
@@ -39,28 +62,39 @@ Documentation = "https://app.swaggerhub.com/apis/OlivierMartineau/RUDI-PRODUCER"
 Changelog = "https://github.com/OlivierMartineau/rudi-node-read/blob/release/CHANGELOG.md"
 Repository = "https://github.com/OlivierMartineau/rudi-node-read"
 
+[build-system]
+requires = ["setuptools>=84.0.0"]
+build-backend = "setuptools.build_meta"
+
+# ----- Tool: uv
+[tool.uv]
+default-groups = ["dev", "test"]
+
 # ----- Tool: black
 [tool.black]
 line-length = 120
-target-version = ['py310']
+target-version = ['py312']
 
 # ----- Tool: commitizen
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.4.0"
+version = "0.5.0"
 version_files = ["pyproject.toml:version"]
 
 # ----- Tool: pyright
 [tool.pyright]
-exclude = ["**/node_modules", "**/__pycache__"]
-include = ["src"]
-pythonVersion = "3.10"
-reportMissingImports = true
+exclude = ["**/__pycache__", "**/.venv"]
+include = ["src", "tests"]
+pythonVersion = "3.12"
+reportArgumentType = "warning"
 reportDuplicateImport = true
-reportUnusedImport = true
 reportImportCycles = true
-venvPath = "."
+reportIncompatibleMethodOverride = "warning"
+reportMissingImports = true
+reportUnusedImport = true
 venv = ".venv"
+venvPath = "."
+verboseOutput = true
 
 # ----- Tool: pytest
 [tool.pytest.ini_options]
@@ -81,3 +115,17 @@ include = ["rudi_node_read*"]
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
 optional-dependencies = { dev = { file = ["requirements-dev.txt"] } }
+
+# ----- Tool: Ruff
+[tool.ruff]
+# match Black
+line-length = 120
+# auto-fix issues (imports, unused vars)
+fix = false
+# common codes: E/F=flake8, I=imports, B=bugs, C=complexity
+# line length handled by Black
+exclude = ["**/.venv", "**/__pycache__", "**/.env"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "C"]
+ignore = ["E501"]

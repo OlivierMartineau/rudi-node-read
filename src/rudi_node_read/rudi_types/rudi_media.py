@@ -1,8 +1,6 @@
 from abc import ABC
 from json import dumps
 
-from deepdiff import DeepDiff
-
 from rudi_node_read.rudi_types.rudi_const import (
     CONNECTOR_PARAMS_TYPES,
     FILE_STORAGE_STATUSES,
@@ -18,6 +16,7 @@ from rudi_node_read.rudi_types.rudi_const import (
 )
 from rudi_node_read.rudi_types.rudi_contact import uuid4_str
 from rudi_node_read.rudi_types.rudi_dates import Date, RudiDates
+from rudi_node_read.utils.file_utils import FileDetails
 from rudi_node_read.utils.log import log_d
 from rudi_node_read.utils.serializable import Serializable
 from rudi_node_read.utils.type_dict import check_has_key, check_is_dict
@@ -340,7 +339,7 @@ class RudiMediaFile(RudiMedia):
         file_encoding: str | None = None,
         file_structure: str | None = None,
         file_storage_status: FileStorageStatus | None = "missing",
-        file_status_update: str | Date | None = Date.now_iso(),
+        file_status_update: str | Date | None = None,
         collection_tag: str | None = None,
     ):
         super().__init__(
@@ -370,11 +369,14 @@ class RudiMediaFile(RudiMedia):
             series=FILE_STORAGE_STATUSES,
             err_msg="incorrect value for a file storage status",
         )
-        self.file_status_update = (
-            file_status_update
-            if isinstance(file_status_update, Date)
-            else Date.from_str(file_status_update, is_none_accepted=True)
-        )
+        if not file_status_update:
+            self.file_status_update = Date.now_iso()
+        else:
+            self.file_status_update = (
+                file_status_update
+                if isinstance(file_status_update, Date)
+                else Date.from_str(file_status_update, is_none_accepted=True)
+            )
 
     @staticmethod
     def from_json(o: dict):
@@ -493,7 +495,7 @@ if __name__ == "__main__":  # pragma: no cover
     }
     log_d(tests, "RudiMediaService.from_json", rudi_service := RudiMediaService.from_json(rudi_service_json))
     log_d(tests, "RudiMediaService.to_json", rudi_service.to_json())
-    log_d(tests, "RudiMediaService.to_json diff", DeepDiff(rudi_service_json, rudi_service.to_json()))
+    # log_d(tests, "RudiMediaService.to_json diff", DeepDiff(rudi_service_json, rudi_service.to_json()))
 
     params = RudiMediaConnectorParameter(key="key1", value=3)
     log_d(tests, "RudiMediaConnectorParameters", params.to_json())

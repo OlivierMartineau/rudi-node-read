@@ -31,7 +31,8 @@ class Test_Serializable(unittest.TestCase):
         # assert is_jsonable(self.instance)
         assert self.instance.class_name == "Serializable"
         assert self.instance is not None
-        assert self.instance != None
+        # direct call: `== None` would trip ruff E711, `!= None` would test __ne__
+        assert self.instance.__eq__(None) is False
         assert self.instance != "None"
         assert self.instance != 0
         assert self.instance == other
@@ -61,3 +62,63 @@ class Test_Serializable(unittest.TestCase):
             "a_dict": {"2": "str"},
             "a_list": [1, 2],
         }
+
+
+class SerializableList(list, Serializable):
+    """A `Serializable` that is also a list: exercises the list branch of `to_json`."""
+
+    @staticmethod
+    def from_json(o):
+        return SerializableList(o)
+
+
+class FixedJson(Serializable):
+    """A `Serializable` whose `to_json` returns a canned value, to exercise `__eq__`."""
+
+    def __init__(self, json_value):
+        self._json_value = json_value
+
+    def to_json(self, keep_nones: bool = False):
+        return self._json_value
+
+    @staticmethod
+    def from_json(o):
+        return o
+
+
+def test_to_json_on_a_list():
+    assert SerializableList([1, 2, 3]).to_json() == [1, 2, 3]
+    nested = SerializableList([1, SerializableList([2, 3])])
+    assert nested.to_json() == [1, [2, 3]]
+
+
+def test_eq_when_json_types_differ():
+    assert FixedJson({"a": 1}) != FixedJson([1])
+    assert FixedJson([1]) != FixedJson({"a": 1})
+
+
+def test_eq_when_both_are_lists():
+    assert FixedJson([1, 2]) == FixedJson([2, 1])
+    assert FixedJson([1, 2]) != FixedJson([1, 3])
+    assert FixedJson([]) == FixedJson([])
+
+
+def test_eq_when_both_are_scalars():
+    assert FixedJson("abc") == FixedJson("abc")
+    assert FixedJson("abc") != FixedJson("abd")
+    assert FixedJson(1) == FixedJson(1)
+    assert FixedJson(1) != FixedJson(2)
+
+
+def test_to_json_with_non_str_scalars():
+    class Plain(Serializable):
+        @staticmethod
+        def from_json(o):
+            return o
+
+        def __init__(self):
+            self.a_float = 1.5
+            self.a_bool = False
+
+    plain = Plain()
+    assert plain.to_json() == {"a_float": 1.5, "a_bool": False}

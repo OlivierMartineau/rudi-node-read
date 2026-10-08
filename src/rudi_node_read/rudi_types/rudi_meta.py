@@ -90,7 +90,7 @@ class RudiMetadata(Serializable):
 
         self.resource_title = check_is_string(resource_title)
 
-        self.synopsis: RudiDictionaryEntryList = check_type(synopsis, RudiDictionaryEntryList)  # type:ignore
+        self.synopsis: RudiDictionaryEntryList = check_type(synopsis, RudiDictionaryEntryList)  # type: ignore
         self.summary: RudiDictionaryEntryList = check_type(summary, RudiDictionaryEntryList)
         # TODO clean summary
 
@@ -291,7 +291,7 @@ if __name__ == "__main__":  # pragma: no cover
             "confidentiality": {"restricted_access": False, "gdpr_sensitive": False},
         },
         "metadata_info": {
-            "api_version": "1.3.2",
+            "api_version": "1.4.3",
             "metadata_provider": {
                 "organization_id": "44f5ac9d-34d6-44d0-99a9-0496654bde5c",
                 "organization_name": "Breitenberg - Legros",

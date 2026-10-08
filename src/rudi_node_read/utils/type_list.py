@@ -1,4 +1,4 @@
-from deepdiff import DeepDiff
+from typing import Any
 
 from rudi_node_read.utils.typing_utils import get_type_name
 
@@ -37,10 +37,6 @@ def list_diff(list_a: list, list_b: list):
     return [x for x in list_a + list_b if x not in list_a or x not in list_b]
 
 
-def list_deep_diff(list_a: list, list_b: list, ignore_order: bool = True):
-    return DeepDiff(list_a, list_b, ignore_order=ignore_order)
-
-
 def are_list_different(list_a: list | None, list_b: list | None, ignore_order: bool = True) -> bool:
     """
     Compare two lists (with deep equality on each element of the list)
@@ -55,14 +51,14 @@ def are_list_different(list_a: list | None, list_b: list | None, ignore_order: b
         return list_b is not None
     if list_b is None:
         return True
-    return bool(list_deep_diff(list_a, list_b, ignore_order=ignore_order))
+    return bool(list_diff(list_a, list_b))
 
 
 def are_list_equal(list_a: list | None, list_b: list | None, ignore_order: bool = True):
     return not are_list_different(list_a, list_b, ignore_order)
 
 
-def merge_lists(list_a: list | None, list_b: list | None):
+def merge_lists(list_a: Any, list_b: Any):
     if list_b is None:
         return list_a
     if list_a is None:

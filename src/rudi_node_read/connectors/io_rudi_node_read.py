@@ -16,7 +16,7 @@ class RudiNodeConnector(Connector):
         :param headers_user_agent: (optional) identifies the user launching the request (or at least the module)
         in the request headers, for logging purpose.
         """
-        here = "RudiNodeConnector.__init__"
+        # here = "RudiNodeConnector.__init__"
 
         super().__init__(server_url)
 
@@ -74,14 +74,19 @@ class RudiNodeConnector(Connector):
 
     def get_metadata_with_filter(self, rudi_fields_filter: dict):
         filter_str = ""
-        for i, (key, val) in enumerate(rudi_fields_filter.items()):
+        for key, val in rudi_fields_filter.items():
             # TODO: special cases of producer / contact / available_formats
             filter_str += f"&{key}={val}"
 
         return self.get_api(f"resources?{filter_str[1:]}")
 
     def get_metadata_count(self) -> int:
-        return self.get_api("resources?limit=1")["total"]
+        res = self.get_api("resources?limit=1")
+        log_d("get_metadata_count", "res", res)
+        log_d("get_metadata_count", "type res", type(res).__name__)
+        if not isinstance(res, dict):
+            raise TypeError("The server should have returned a dict")
+        return res["total"]
 
     def get_metadata_list(self, max_number: int = 0):
         meta_nb = self.get_metadata_count()
@@ -92,6 +97,7 @@ class RudiNodeConnector(Connector):
         while req_offset < meta_nb and req_offset < max_number:
             req_limit = REQ_LIMIT if req_offset + REQ_LIMIT < max_number else max_number - req_offset
             meta_list_partial = self.get_api(f"resources?sort_by=-updatedAt&limit={req_limit}&offset={req_offset}")
+            assert isinstance(meta_list_partial, dict)
             log_d("get_metadata_list", "total", meta_list_partial["total"])
             log_d("get_metadata_list", "len", len(meta_list_partial["items"]))
             meta_set += meta_list_partial["items"]
@@ -100,11 +106,17 @@ class RudiNodeConnector(Connector):
 
     def get_metadata_ids(self):
         meta_list = self.get_api("resources?fields=global_id,resource_title")
+        assert isinstance(meta_list, dict)
         return meta_list["items"]
 
     def get_list_media_for_metadata(self, metadata_uuid):
         meta = self.get_metadata_with_uuid(metadata_uuid)
+        if not isinstance(meta, dict):
+            raise TypeError("[get_list_media_for_metadata] The server should have returned a dict")
         media_list = meta["available_formats"]
+        if not isinstance(media_list, list):
+            raise TypeError("[get_list_media_for_metadata] `available_formats` should be a list")
+
         media_list_final = []
         for media in media_list:
             media_list_final.append(

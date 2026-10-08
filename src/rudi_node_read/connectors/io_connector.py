@@ -17,7 +17,7 @@ REDIRECTION = "redirection"
 
 def https_download(resource_url: str, should_show_debug_line: bool = False):
     here = "https_download"
-    (scheme, netloc, path, query, fragment) = urlsplit(resource_url)
+    scheme, netloc, _, _, _ = urlsplit(resource_url)
     if scheme != "https":
         raise NotImplementedError("only HTTPS protocol is supported")
     connection = HTTPSConnection(netloc)
@@ -38,16 +38,10 @@ class Connector(Serializable):
     _default_connector = None
 
     def __init__(self, server_url: str):
-        self.scheme = None
-        self.host = None
-        self.path = None
-        self.base_url = None
-        self._set_url(server_url)
-
-    def _set_url(self, server_url: str):
-        (scheme, netloc, path, query, fragment) = urlsplit(server_url)
+        scheme, netloc, path, _, _ = urlsplit(server_url)
         if scheme != "http" and scheme != "https":
             raise NotImplementedError("only http and https are supported")
+
         self.scheme = scheme
         self.host = netloc
         self.path = path
@@ -72,7 +66,7 @@ class Connector(Serializable):
         should_log_response: bool = False,
     ) -> dict | str | list | None:
         """Send a http(obj) request"""
-
+        here = f"{self.__class__.__name__}.req"
         connection = HTTPSConnection(self.host) if self.scheme == "https" else HTTPConnection(self.host)
         if req_method not in HTTP_REQUEST_METHODS:
             raise LiteralUnexpectedValueException(req_method, HTTP_REQUEST_METHODS, "incorrect type for request method")
@@ -84,18 +78,18 @@ class Connector(Serializable):
             body = dumps(body)  # type: ignore
 
         path_url = self.full_path(url)
-        log_d(f"{self.__class__.__name__}.request", "to", self.full_url(url))
+        log_d(here, req_method, self.full_url(url))
         try:
             connection.request(req_method, path_url, body, headers)
         except ConnectionRefusedError as e:
             log_e(
-                self.__class__.__name__,
+                here,
                 "Error on request",
                 req_method,
                 self.full_url(url),
             )
-            log_e(self.__class__.__name__, "ERR", e)
-            raise e
+            log_e(here, "ERR", e)
+            raise
         return self.parse_response(connection, url, req_method, headers, body, should_log_response)
 
     def parse_response(
@@ -104,7 +98,7 @@ class Connector(Serializable):
         url: str,
         req_method: HttpRequestMethod,
         headers: dict,
-        body: dict,
+        body: dict | None = None,
         should_log_response: bool = True,
     ):
         """Basic parsing of the result"""
@@ -125,6 +119,7 @@ class Connector(Serializable):
         rdata = response.read()
         try:
             response_data = loads(rdata)
+            # log_d(here, "Response is a JSON", response_data)
             log_d_if(should_log_response, here, "Response is a JSON", response_data)
         except (TypeError, JSONDecodeError):
             response_data = repr(rdata)

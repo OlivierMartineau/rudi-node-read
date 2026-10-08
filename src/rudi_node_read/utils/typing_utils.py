@@ -1,5 +1,5 @@
 from re import compile
-from typing import Type
+from typing import Any
 
 
 def get_type_name(obj) -> str:
@@ -10,7 +10,7 @@ def is_type_name(obj, type_name: str) -> bool:
     return get_type_name(obj) == type_name
 
 
-def is_type(o, target_class: Type | tuple) -> bool:
+def is_type(o, target_class: type | tuple) -> bool:
     return isinstance(o, target_class)
 
 
@@ -22,7 +22,7 @@ def does_inherit_from(obj, mother_class) -> bool:
     return issubclass(type(obj), mother_class)
 
 
-def is_bool(b: bool) -> bool:
+def is_bool(b: Any) -> bool:
     return isinstance(b, bool)
 
 
@@ -39,7 +39,7 @@ def check_is_bool_or_none(b: bool | None) -> bool | None:
 
 
 # https://stackoverflow.com/a/152596/1563072
-def check_type(o, target_class: Type | tuple):
+def check_type(o, target_class: type | tuple):
     if o is None:
         raise ValueError("input should not be null")
     if isinstance(o, target_class):
@@ -52,7 +52,7 @@ def check_type(o, target_class: Type | tuple):
     raise TypeError(f"input should be of type {target_class_name}, got '{get_type_name(o)}'")
 
 
-def check_type_or_null(o, target_class: Type | tuple):
+def check_type_or_null(o, target_class: type | tuple):
     if o is None:
         return None
     return check_type(o, target_class=target_class)
@@ -85,8 +85,8 @@ def ensure_is_int(n) -> int:
         return n
     try:
         return int(n)
-    except:
-        raise TypeError(f"input parameter of type '{get_type_name(n)}' cannot be cast into an int: '{n}'.")
+    except (ValueError, TypeError) as e:
+        raise TypeError(f"input parameter of type '{get_type_name(n)}' cannot be cast into an int: '{n}'.") from e
 
 
 def ensure_is_int_or_none(n) -> int | None:
@@ -96,8 +96,8 @@ def ensure_is_int_or_none(n) -> int | None:
         return n
     try:
         return int(n)
-    except (ValueError, TypeError):
-        raise TypeError(f"input parameter of type '{get_type_name(n)}' cannot be cast into an int: '{n}'.")
+    except (ValueError, TypeError) as e:
+        raise TypeError(f"input parameter of type '{get_type_name(n)}' cannot be cast into an int: '{n}'.") from e
 
 
 def is_number(n) -> bool:
@@ -118,7 +118,7 @@ REGEX_INT = compile(r"^[+-]?[0-9]+$")
 REGEX_FLOAT = compile(r"^[+-]?[0-9]*[.][0-9]+([eE][+-]?[0-9]+)?$")
 
 
-def to_number(n: str | int | float) -> int | float:
+def to_number(n: str | float) -> int | float:
     if isinstance(n, (int, float)):
         return n
     if REGEX_INT.match(n):
@@ -131,8 +131,8 @@ def to_number(n: str | int | float) -> int | float:
 def to_float(val) -> float:
     try:
         f_val = float(val)
-    except (TypeError, ValueError):
-        raise ValueError(f"could not convert value into a float: '{val}'")
+    except (TypeError, ValueError) as e:
+        raise ValueError(f"could not convert value into a float: '{val}'") from e
     return f_val
 
 
@@ -158,4 +158,4 @@ def is_null(val, strict: bool = False) -> bool:
     if not strict:
         return (not val) or (val in ["null", "None"])
     # log_d("is_null", val, "strict=", strict)
-    return val != 0 and not is_bool(val) and not val and not (val in ["null", "None", "[]", "{}"])
+    return val != 0 and not is_bool(val) and not val and val not in ["null", "None", "[]", "{}"]

@@ -15,6 +15,6 @@ def check_type(obj, type_name: str, param_name: str | None = None):
 def to_float(val):
     try:
         f_val = float(val)
-    except (TypeError, ValueError):
-        raise ValueError(f"could not convert value into a float: '{val}'")
+    except (TypeError, ValueError) as e:
+        raise ValueError(f"could not convert value into a float: '{val}'") from e
     return f_val

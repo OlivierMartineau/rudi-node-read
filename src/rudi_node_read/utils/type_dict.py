@@ -1,5 +1,3 @@
-from typing import Union
-
 from rudi_node_read.utils.typing_utils import get_type_name
 
 
@@ -26,7 +24,7 @@ def has_key(obj: dict, key_name: str) -> bool:
     """
     if not isinstance(obj, dict):
         return False
-    return key_name in obj.keys() and obj[key_name] is not None
+    return key_name in obj and obj[key_name] is not None
 
 
 def check_has_key(obj: dict, key_name: str):
@@ -63,10 +61,10 @@ def pick_in_dict(obj: dict, props: list[str]):
     :param props: the attributes to keep from the input object
     :return:
     """
-    return dict((k, obj[k]) for k in props if k in obj)
+    return {k: obj[k] for k in props if k in obj}
 
 
-def is_element_matching_filter(element, match_filter) -> bool:
+def is_element_matching_filter(element, match_filter) -> bool:  # noqa: C901
     """
     An element is considered to be matching a filter if all the key/value pairs in the filter are found in the element
     :param element: element that is tested
@@ -106,13 +104,13 @@ def is_element_matching_one_of_filters(element, search_filter_list: list) -> boo
     :param search_filter_list: list of filter objects
     :return: True if the element is matching at least one of the filter object of the filter list
     """
-    for i, filter_dict in enumerate(search_filter_list):
+    for filter_dict in search_filter_list:
         if is_element_matching_filter(element, filter_dict):
             return True
     return False
 
 
-def filter_dict_list(searched_list: list, search_filter: Union[dict, list[dict]]) -> list:
+def filter_dict_list(searched_list: list, search_filter: dict | list[dict]) -> list:
     """
     Filter the elements of a list with a given filter object.
     If the filter is a list of filter objects, a list element is kept if it matches at least one of the filter

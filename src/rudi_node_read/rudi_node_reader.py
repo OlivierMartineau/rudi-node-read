@@ -1,6 +1,5 @@
 from json import dumps
 from os.path import isdir
-from typing import Union
 
 from termcolor import colored
 
@@ -130,7 +129,6 @@ class RudiNodeReader:
         """
         if not self._meta_list:
             self._meta_list = self.connector.get_metadata_list()
-
         return self._meta_list
 
     @property
@@ -295,7 +293,7 @@ class RudiNodeReader:
         """
         return self.filter_metadata({"theme": theme})
 
-    def get_metadata_with_keywords(self, keywords: Union[str, list]) -> list[dict]:
+    def get_metadata_with_keywords(self, keywords: str | list) -> list[dict]:
         """
         :param keywords: a string or a list of strings used to filter the metadata by keywords
         :return: list of the metadata whose `keywords` attribute contains every `keywords` input parameter

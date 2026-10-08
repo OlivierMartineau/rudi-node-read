@@ -38,13 +38,16 @@ def rudi_api_http_error_to_string(status, err_type, err_msg):
 
 
 class HttpError(Exception):
-    def __init__(self, err_msg: str, req_method=None, base_url=None, url=None):
-        err_msg = f"{err_msg}"
-        if type(err_msg) is dict and "error" in err_msg and "message" in err_msg:
+    def __init__(self, err_msg: str | dict, req_method=None, base_url=None, url=None):
+        if isinstance(err_msg, dict) and "error" in err_msg and "message" in err_msg:
             if "status" in err_msg:
-                err_msg = rudi_api_http_error_to_string(err_msg["status"], err_msg["error"], err_msg["message"])
+                err_msg = rudi_api_http_error_to_string(
+                    status=err_msg["status"], err_type=err_msg["error"], err_msg=err_msg["message"]
+                )
             elif "statusCode" in err_msg:
                 err_msg = rudi_api_http_error_to_string(err_msg["statusCode"], err_msg["error"], err_msg["message"])
+        else:
+            err_msg = f"{err_msg}"
         if req_method and base_url:
             err_msg = f"for request '{req_method} {slash_join(base_url, url)}' -> {err_msg}"
         super().__init__(f"HTTP ERR {err_msg}")

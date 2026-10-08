@@ -1,4 +1,0 @@
-deepdiff
-termcolor==3.1.0
-chardet
-puremagic

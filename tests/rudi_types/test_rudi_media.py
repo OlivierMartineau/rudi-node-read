@@ -1,5 +1,6 @@
 from copy import deepcopy
 from json import dumps
+from pathlib import Path
 
 import pytest
 from deepdiff.diff import DeepDiff
@@ -12,9 +13,13 @@ from rudi_node_read.rudi_types.rudi_media import (
     RudiMediaConnectorParameterList,
     RudiMediaFile,
     RudiMediaService,
+    get_normalized_type_name,
 )
 from rudi_node_read.utils.err import LiteralUnexpectedValueException
 from rudi_node_read.utils.type_dict import safe_get_key
+
+SAMPLE_MEDIA_FILE = Path(__file__).resolve().parents[2] / "dwnld" / "unicorn.png"
+SAMPLE_MEDIA_UUID = "2611547a-42f1-4d7c-b736-2fef5cca30fe"
 
 RUDI_FILE = {
     "media_type": "FILE",
@@ -203,14 +208,14 @@ def test_RudiMediaConnectorParameter_from_json():
     assert len(cp_list) == 3
 
     with pytest.raises(TypeError):
-        RudiMediaConnectorParameter.from_json(4)
+        RudiMediaConnectorParameter.from_json(4)  # type: ignore
 
 
 def test_RudiMediaConnectorParameterList():
     assert len(RudiMediaConnectorParameterList(RudiMediaConnectorParameter.from_json(OK_CP[0]))) == 1
     assert len(RudiMediaConnectorParameterList(RudiMediaConnectorParameter.from_json(OK_CP))) == 3
     with pytest.raises(TypeError):
-        RudiMediaConnectorParameterList(4)
+        RudiMediaConnectorParameterList(4)  # type: ignore
 
 
 def test_RudiMediaConnectorParameterList_to_json():
@@ -222,7 +227,7 @@ def test_RudiMediaConnectorParameterList_from_json():
     assert len(RudiMediaConnectorParameterList.from_json(OK_CP[0])) == 1
     assert len(RudiMediaConnectorParameterList.from_json(OK_CP)) == 3
     with pytest.raises(TypeError):
-        RudiMediaConnectorParameterList.from_json(4)
+        RudiMediaConnectorParameterList.from_json(4)  # type: ignore
 
 
 rudi_media_connector_json = {
@@ -289,3 +294,42 @@ def test_RudiMediaConnector():
     assert connector_parameters[0].value_type == "STRING"
     with pytest.raises(TypeError):
         RudiMediaConnector(url, connector_parameters=4)  # type: ignore
+
+
+def test_get_normalized_type_name():
+    assert get_normalized_type_name("true") == "bool"
+    assert get_normalized_type_name("FALSE") == "bool"
+    assert get_normalized_type_name("not a bool") == "str"
+    assert get_normalized_type_name(True) == "bool"
+    assert get_normalized_type_name(4) == "int"
+
+
+def test_RudiMediaFile_set_url():
+    rudi_file = RudiMediaFile.from_json(deepcopy(RUDI_FILE))
+    rudi_file.set_url("https://node.test/storage/download/new-uuid")
+    assert rudi_file.connector.url == "https://node.test/storage/download/new-uuid"
+
+
+def test_RudiMediaFile_set_status():
+    rudi_file = RudiMediaFile.from_json(deepcopy(RUDI_FILE))
+    assert rudi_file.file_storage_status == "available"
+    rudi_file.set_status("missing")
+    assert rudi_file.file_storage_status == "missing"
+    assert rudi_file.file_status_update is not None
+    rudi_file.set_status("available")
+    assert rudi_file.file_storage_status == "available"
+
+
+def test_RudiMediaFile_from_local_file():
+    rudi_file = RudiMediaFile.from_local_file(
+        str(SAMPLE_MEDIA_FILE),
+        media_id=SAMPLE_MEDIA_UUID,
+        file_url="https://node.test/storage/download/new-uuid",
+    )
+    assert rudi_file.media_id == SAMPLE_MEDIA_UUID
+    assert rudi_file.media_name == "unicorn.png"
+    assert rudi_file.file_type == "image/png"
+    assert rudi_file.file_size > 0
+    assert rudi_file.checksum.algo == "MD5"
+    assert len(rudi_file.checksum.hash_str) == 32
+    assert rudi_file.connector.url == "https://node.test/storage/download/new-uuid"

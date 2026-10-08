@@ -1,4 +1,4 @@
-from rudi_node_read.utils.jwt import is_jwt_expired, pad_b64_str, get_jwt_basic_auth
+from rudi_node_read.utils.jwt import get_jwt_basic_auth, is_jwt_expired, pad_b64_str
 
 
 def test_pad_b64_str():

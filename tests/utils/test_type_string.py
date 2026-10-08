@@ -1,11 +1,53 @@
+from os.path import abspath, join
+
 import pytest
 
-from rudi_node_read.utils.type_string import is_iso_full_date, is_string, is_uuid_v4, check_is_uuid4, slash_join
+from rudi_node_read.utils.type_string import (
+    absolute_path,
+    check_is_email,
+    check_is_string,
+    check_is_string_or_none,
+    check_is_uuid4,
+    is_email,
+    is_iso_full_date,
+    is_string,
+    is_uuid_v4,
+    slash_join,
+)
 
 
 def test_is_string():
     assert is_string("e")
     assert not is_string(["e"])
+
+
+def test_check_is_string():
+    assert check_is_string("e") == "e"
+    with pytest.raises(TypeError):
+        check_is_string(5)  # type: ignore
+    assert check_is_string_or_none(None) is None
+    assert check_is_string_or_none("e") == "e"
+    with pytest.raises(TypeError):
+        check_is_string_or_none(5)  # type: ignore
+
+
+def test_is_email():
+    assert is_email("jean-patrick@contact.test")
+    assert not is_email("not an email")
+    assert not is_email(5)  # type: ignore
+
+
+def test_check_is_email():
+    assert check_is_email("jean-patrick@contact.test") == "jean-patrick@contact.test"
+    with pytest.raises(ValueError):
+        check_is_email(None)  # type: ignore
+    with pytest.raises(ValueError):
+        check_is_email("not an email")
+
+
+def test_absolute_path():
+    assert absolute_path("a", "b") == abspath(join("a", "b"))
+    assert absolute_path("/already/absolute") == "/already/absolute"
 
 
 def test_is_iso_full_date():
@@ -15,7 +57,7 @@ def test_is_iso_full_date():
 
 
 def test_is_uuid_v4():
-    assert not is_uuid_v4(None)
+    assert not is_uuid_v4(None)  # type: ignore
     assert not is_uuid_v4("")
     assert not is_uuid_v4("1")
     assert not is_uuid_v4("1d8b8d5d5-82d4-4a93-96e8-451daa124a70")
@@ -25,7 +67,7 @@ def test_is_uuid_v4():
 
 def test_validate_uuid_v4():
     with pytest.raises(ValueError):
-        check_is_uuid4(None)
+        check_is_uuid4(None)  # type: ignore
     with pytest.raises(ValueError):
         check_is_uuid4("")
     with pytest.raises(ValueError):

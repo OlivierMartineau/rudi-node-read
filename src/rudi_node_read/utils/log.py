@@ -45,7 +45,8 @@ def decorator_timer(some_function):
     def _wrap(*args, **kwargs):
         multiplier = 1
         begin = time()
-        for count in range(multiplier):
+        result = None
+        for _ in range(multiplier):
             result = some_function(*args, **kwargs)
         duration = (time() - begin) / multiplier
         return result, duration

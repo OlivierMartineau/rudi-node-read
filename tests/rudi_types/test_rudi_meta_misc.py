@@ -16,7 +16,7 @@ def test_RudiDatasetSize():
 
     assert RudiDatasetSize.from_json(None) is None
     with pytest.raises(TypeError):
-        RudiDatasetSize.from_json(4)
+        RudiDatasetSize.from_json(4)  # type: ignore
 
 
 def test_RudiDataTemporalSpread():
@@ -36,7 +36,7 @@ def test_RudiDataTemporalSpread():
 
 
 META_INFO = {  # pragma: no cover
-    "api_version": "1.3.2",
+    "api_version": "1.4.3",
     "metadata_dates": {"created": "2023-04-12T09:39:28.666+00:00", "updated": "2023-04-12T09:39:28.696+00:00"},
     "metadata_provider": {
         "organization_id": "44f5ac9d-34d6-44d0-99a9-0496654bde5c",
@@ -57,12 +57,12 @@ META_INFO = {  # pragma: no cover
 
 def test_RudiMetadataInfo():
     meta_info = RudiMetadataInfo.from_json(META_INFO)
-    assert meta_info.api_version == "1.3.2"
-    assert RudiMetadataInfo.from_json({"api_version": "1.3.2"}).metadata_dates.created > "2023.07"
+    assert meta_info.api_version == "1.4.3"
+    assert RudiMetadataInfo.from_json({"api_version": "1.4.3"}).metadata_dates.created > "2023.07"
     assert (
         RudiMetadataInfo.from_json(
             {
-                "api_version": "1.3.2",
+                "api_version": "1.4.3",
                 "metadata_contacts": {
                     "contact_id": "f275bed9-6b62-43f1-b617-a392896a617c",
                     "contact_name": "Sherri Dickinson",
@@ -76,7 +76,7 @@ def test_RudiMetadataInfo():
     with pytest.raises(TypeError):
         RudiMetadataInfo.from_json(
             {
-                "api_version": "1.3.2",
+                "api_version": "1.4.3",
                 "metadata_contacts": "Sherri Dickinson",
             }
         )

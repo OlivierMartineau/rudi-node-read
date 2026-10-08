@@ -15,7 +15,7 @@ from rudi_node_read.utils.type_dict import (
 def test_has_key():
     assert has_key({"key": "val"}, "key")
     assert not has_key({"key": "val"}, "a")
-    assert not has_key("key", "a")
+    assert not has_key("key", "a")  # type: ignore
 
 
 def test_check_has_key():

@@ -17,6 +17,8 @@ REGEX_RANDOM_DATE = compile(
 
 TimeSpec = Literal["seconds", "milliseconds", "microseconds"]
 
+TZ = datetime.now().astimezone().tzinfo
+
 
 class Date(Serializable):
     def __init__(self, date_str: str | int | None):
@@ -99,7 +101,7 @@ class Date(Serializable):
         elif isinstance(other, (int, str)):
             other_date = Date(other)
         else:
-            raise ValueError(f"Cannot compare a date and a '{other.__class__.__name__}' (got '{other}')")
+            raise TypeError(f"Cannot compare a date and a '{other.__class__.__name__}' (got '{other}')")
         return self.datetime > other_date.datetime
 
     def __lt__(self, other):
@@ -127,20 +129,20 @@ class Date(Serializable):
         return Date(date_str)
 
     @staticmethod
-    def from_json(o: str):  # type: ignore
+    def from_json(o: str | None):  # type: ignore
         return Date.from_str(o)
 
     @staticmethod
     def time_epoch_s(delay_s: int = 0) -> int:
-        return int(datetime.timestamp(datetime.now())) + delay_s
+        return int(datetime.timestamp(datetime.now(tz=TZ))) + delay_s
 
     @staticmethod
     def time_epoch_ms(delay_ms: int = 0):
-        return int(1000 * datetime.timestamp(datetime.now())) + delay_ms
+        return int(1000 * datetime.timestamp(datetime.now(tz=TZ))) + delay_ms
 
     @staticmethod
     def now_str() -> str:
-        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return datetime.now(tz=TZ).strftime("%Y-%m-%d %H:%M:%S")
 
     @staticmethod
     def now():

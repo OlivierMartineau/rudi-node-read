@@ -60,10 +60,7 @@ def is_uuid_v4(uuid: str) -> bool:
         return False
     try:
         uuid_v4 = UUID(str(uuid))
-        if uuid_v4.version == 4:
-            return True
-        else:
-            return False
+        return uuid_v4.version == 4
     except ValueError:
         return False
 
