@@ -1836,7 +1836,7 @@ dev = [
     { name = "pre-commit", specifier = ">=4.6.2" },
     { name = "pyright", specifier = ">=1.1.414" },
     { name = "ruff", specifier = ">=0.16.10" },
-    { name = "uv-bump", specifier = ">=0.6.0" },
+    { name = "uv-bump", specifier = ">=0.5.0" },
 ]
 test = [
     { name = "bandit", specifier = ">=1.9.4" },
@@ -2080,11 +2080,11 @@ wheels = [
 
 [[package]]
 name = "uv-bump"
-version = "0.6.0"
+version = "0.5.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/3e/ce/27f8c01e3bc8e356b212da502e22308ac04c55ca96c9cb4f379a16061ac6/uv_bump-0.6.0.tar.gz", hash = "sha256:1a0c65538442021e38d8cbf5f7948cc3386f1b1eb607f6a414e6003d7b2fcc3b", size = 6547, upload-time = "2026-07-18T06:16:54.902Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3e/ce/27f8c01e3bc8e356b212da502e22308ac04c55ca96c9cb4f379a16061ac6/uv_bump-0.5.0.tar.gz", hash = "sha256:1a0c65538442021e38d8cbf5f7948cc3386f1b1eb607f6a414e6003d7b2fcc3b", size = 6547, upload-time = "2026-07-18T06:16:54.902Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ed/d1/b1d7f4d02df203634235b8ae6618233046240c01ea0f77924fe0436aa112/uv_bump-0.6.0-py3-none-any.whl", hash = "sha256:c184c362e83ea531dd5b5f4213f10b7fa1549c8f0bf30640897cc3e6104bd4ba", size = 7858, upload-time = "2026-07-18T06:16:53.806Z" },
+    { url = "https://files.pythonhosted.org/packages/ed/d1/b1d7f4d02df203634235b8ae6618233046240c01ea0f77924fe0436aa112/uv_bump-0.5.0-py3-none-any.whl", hash = "sha256:c184c362e83ea531dd5b5f4213f10b7fa1549c8f0bf30640897cc3e6104bd4ba", size = 7858, upload-time = "2026-07-18T06:16:53.806Z" },
 ]
 
 [[package]]

@@ -41,7 +41,7 @@ dev = [
     "pre-commit>=4.6.2",
     "pyright>=1.1.414",
     "ruff>=0.16.10",
-    "uv-bump>=0.6.0",
+    "uv-bump>=0.5.0",
 ]
 test = [
     "bandit>=1.9.4",
@@ -49,12 +49,7 @@ test = [
     "pytest-cov>=7.1.0",
     "pytest>=9.1.1",
 ]
-build = [
-    "build>=1.6.1",
- "setuptools>=84.0.0",
- "twine>=7.0.0",
- "wheel>=0.48.0",
-]
+build = ["build>=1.6.1", "setuptools>=84.0.0", "twine>=7.0.0", "wheel>=0.48.0"]
 
 [project.urls]
 Homepage = "https://github.com/OlivierMartineau/rudi-node-read"
